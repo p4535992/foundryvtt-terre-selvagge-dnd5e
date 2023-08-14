@@ -1,14 +1,11 @@
-import { SpellPointsForm } from "./settings-form.js";
-import { SpellPoints } from "./spellpoints.js";
+import { CorruzioneSettingsForm } from "./corruzione-settings-form.js";
+import { SpellPoints } from "./corruzione.js";
 
-export const MODULE_NAME = 'dnd5e-spellpoints';
+// Handlebars.registerHelper("spFormat", (path, ...args) => {
+//   return game.i18n.format(path, args[0].hash);
+// });
 
-Handlebars.registerHelper("spFormat", (path, ...args) => {
-  return game.i18n.format(path, args[0].hash);
-});
-
-
-Hooks.on('init', () => {
+Hooks.on("init", () => {
   //console.log('SpellPoints init');
 
   /** should spellpoints be enabled */
@@ -18,7 +15,7 @@ Hooks.on('init', () => {
     scope: "world",
     config: true,
     default: false,
-    type: Boolean
+    type: Boolean,
   });
 
   game.settings.registerMenu(MODULE_NAME, MODULE_NAME, {
@@ -26,8 +23,8 @@ Hooks.on('init', () => {
     label: "dnd5e-spellpoints.form-title",
     hint: "dnd5e-spellpoints.form-hint",
     icon: "fas fa-magic",
-    type: SpellPointsForm,
-    restricted: true
+    type: CorruzioneSettingsForm,
+    restricted: true,
   });
 
   game.settings.register(MODULE_NAME, "settings", {
@@ -46,13 +43,12 @@ Hooks.on('init', () => {
       break;
     }
   }
-
 });
 
 /** spell launch dialog **/
 Hooks.on("renderAbilityUseDialog", async (dialog, html, formData) => {
   SpellPoints.checkDialogSpellPoints(dialog, html, formData);
-})
+});
 
 Hooks.on("updateItem", SpellPoints.calculateSpellPoints);
 Hooks.on("createItem", SpellPoints.calculateSpellPoints);
@@ -62,15 +58,15 @@ Hooks.on("renderActorSheet5e", (app, html, data) => {
 });
 
 /**
-  * Hook that is triggered after the SpellPointsForm has been rendered. This
-  * sets the visiblity of the custom formula fields based on if the current
-  * formula is a custom formula.
-  */
-Hooks.on('renderSpellPointsForm', (spellPointsForm, html, data) => {
-  const isCustom = (data.isCustom || "").toString().toLowerCase() == "true"
-  spellPointsForm.setCustomOnlyVisibility(isCustom)
-})
+ * Hook that is triggered after the CorruzioneSettingsForm has been rendered. This
+ * sets the visiblity of the custom formula fields based on if the current
+ * formula is a custom formula.
+ */
+Hooks.on("renderCorruzioneSettingsForm", (spellPointsForm, html, data) => {
+  const isCustom = (data.isCustom || "").toString().toLowerCase() == "true";
+  spellPointsForm.setCustomOnlyVisibility(isCustom);
+});
 
 Hooks.on("dnd5e.preItemUsageConsumption", (item, consume, options, update) => {
   SpellPoints.castSpell(item, consume, options, update);
-})
+});

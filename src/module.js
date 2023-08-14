@@ -17,15 +17,13 @@ import { initHooks, readyHooks, setupHooks } from "./scripts/main.js";
 import CONSTANTS from "./scripts/constants/constants.js";
 import { error } from "./scripts/lib/lib.js";
 import API from "./scripts/API/api.js";
-import { LuckPointSettings } from "./scripts/settings";
 
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
 Hooks.once("init", async () => {
   // Register custom module settings
-  // registerSettings();
-  LuckPointSettings.registerSettings();
+  registerSettings();
   initHooks();
   // Assign custom classes and constants here
 });
@@ -52,7 +50,6 @@ Hooks.once("ready", () => {
   //   if (game.modules.get("socketlib")) word = "activate";
   //   throw error(`Requires the 'socketlib' module. Please ${word} it.`);
   // }
-  LuckPointSettings.registerLocalizedSettings();
   readyHooks();
 });
 
