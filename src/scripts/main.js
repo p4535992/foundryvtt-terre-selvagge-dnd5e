@@ -17,9 +17,9 @@ export const setupHooks = async () => {
 };
 
 export const readyHooks = () => {
-  Hooks.on("updateActor", (actor, updates, data) => {
-    Corruzione.calculateCorruzione(actor, updates, data);
-  });
+  // Hooks.on("updateActor", (actor, updates, data) => {
+  //   Corruzione.calculateCorruzione(actor, updates, data);
+  // });
 
   Hooks.on("renderActorSheet5e", (app, html, data) => {
     Corruzione.mixedMode(app, html, data);

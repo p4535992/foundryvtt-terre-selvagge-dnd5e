@@ -147,78 +147,78 @@ export class Corruzione {
       }
     }
   }
-  /**
-   * If the module is active, the actor is a character, and the actor has a spell point resource, then
-   * update the spell point resource's maximum value
-   * @param actor - The actor that was updated.
-   * @param updates - The updates that are being applied to the item.
-   * @param isDifferent - true if the item is being updated, false if it's being dropped
-   * @returns True
-   */
-  static calculateCorruzione(actor, updates, isDifferent) {
-    // const actor = item.parent;
+  // /**
+  //  * If the module is active, the actor is a character, and the actor has a spell point resource, then
+  //  * update the spell point resource's maximum value
+  //  * @param actor - The actor that was updated.
+  //  * @param updates - The updates that are being applied to the item.
+  //  * @param isDifferent - true if the item is being updated, false if it's being dropped
+  //  * @returns True
+  //  */
+  // static calculateCorruzione(actor, updates, isDifferent) {
+  //   // const actor = item.parent;
 
-    if (!Corruzione.isModuleActive() || !Corruzione.isActorCharacter(actor)) {
-      return true;
-    }
-    /* updating or dropping a class item */
-    // if (item.type !== "class") {
-    //   return true;
-    // }
-    if (!getProperty(updates.system, "levels")) {
-      return true;
-    }
-    let corruzioneResource = Corruzione.getCorruzioneResource(actor);
-    const actorName = actor.name;
+  //   if (!Corruzione.isModuleActive() || !Corruzione.isActorCharacter(actor)) {
+  //     return true;
+  //   }
+  //   /* updating or dropping a class item */
+  //   // if (item.type !== "class") {
+  //   //   return true;
+  //   // }
+  //   if (!getProperty(updates.system, "levels")) {
+  //     return true;
+  //   }
+  //   let corruzioneResource = Corruzione.getCorruzioneResource(actor);
+  //   const actorName = actor.name;
 
-    let SpeakTo = game.users.filter((u) => u.isGM);
-    let message = "";
+  //   let SpeakTo = game.users.filter((u) => u.isGM);
+  //   let message = "";
 
-    if (!corruzioneResource) {
-      message =
-        "CORRUZIONE: Cannot find resource '" +
-        CONSTANTS.RESOURCE_CORRUZIONE.LABEL +
-        "' on " +
-        actorName +
-        " character sheet!";
-      ChatMessage.create({
-        content: "<i style='color:red;'>" + message + "</i>",
-        speaker: ChatMessage.getSpeaker({ alias: actorName }),
-        isContentVisible: false,
-        isAuthor: true,
-        whisper: SpeakTo,
-      });
-      return true;
-    }
-    const corruzioneMax = CONSTANTS.RESOURCE_CORRUZIONE.MAX;
-    // const isCustom = Corruzione.settings.isCustom.toString().toLowerCase() == "true";
-    // const corruzioneMax = isCustom
-    // ? Corruzione._calculateCorruzioneCustom(actor)
-    // : Corruzione._calculateCorruzioneFixed(item, updates, actor);
+  //   if (!corruzioneResource) {
+  //     message =
+  //       "CORRUZIONE: Cannot find resource '" +
+  //       CONSTANTS.RESOURCE_CORRUZIONE.LABEL +
+  //       "' on " +
+  //       actorName +
+  //       " character sheet!";
+  //     ChatMessage.create({
+  //       content: "<i style='color:red;'>" + message + "</i>",
+  //       speaker: ChatMessage.getSpeaker({ alias: actorName }),
+  //       isContentVisible: false,
+  //       isAuthor: true,
+  //       whisper: SpeakTo,
+  //     });
+  //     return true;
+  //   }
+  //   const corruzioneMax = CONSTANTS.RESOURCE_CORRUZIONE.MAX;
+  //   // const isCustom = Corruzione.settings.isCustom.toString().toLowerCase() == "true";
+  //   // const corruzioneMax = isCustom
+  //   // ? Corruzione._calculateCorruzioneCustom(actor)
+  //   // : Corruzione._calculateCorruzioneFixed(item, updates, actor);
 
-    const corruzioneCurrentMax = getProperty(actor, `system.resources.${corruzioneResource.key}.max`);
-    const corruzioneCurrentValue = getProperty(actor, `system.resources.${corruzioneResource.key}.value`);
+  //   const corruzioneCurrentMax = getProperty(actor, `system.resources.${corruzioneResource.key}.max`);
+  //   const corruzioneCurrentValue = getProperty(actor, `system.resources.${corruzioneResource.key}.value`);
 
-    if (corruzioneCurrentMax > corruzioneMax) {
-      let updateActor = { [`system.resources.${corruzioneResource.key}.max`]: corruzioneMax };
-      actor.update(updateActor);
-      let message =
-        "CORRUZIONE: Found resource '" +
-        corruzioneCurrentValue +
-        "' on " +
-        actorName +
-        " character sheet! Your Maximum " +
-        corruzioneCurrentMax +
-        " have been updated to " +
-        corruzioneMax;
-      ChatMessage.create({
-        content: "<i style='color:red;'>" + message + "</i>",
-        speaker: ChatMessage.getSpeaker({ alias: actorName }),
-        isContentVisible: false,
-        isAuthor: true,
-        whisper: SpeakTo,
-      });
-    }
-    return true;
-  }
+  //   if (corruzioneCurrentMax > corruzioneMax) {
+  //     let updateActor = { [`system.resources.${corruzioneResource.key}.max`]: corruzioneMax };
+  //     actor.update(updateActor);
+  //     let message =
+  //       "CORRUZIONE: Found resource '" +
+  //       corruzioneCurrentValue +
+  //       "' on " +
+  //       actorName +
+  //       " character sheet! Your Maximum " +
+  //       corruzioneCurrentMax +
+  //       " have been updated to " +
+  //       corruzioneMax;
+  //     ChatMessage.create({
+  //       content: "<i style='color:red;'>" + message + "</i>",
+  //       speaker: ChatMessage.getSpeaker({ alias: actorName }),
+  //       isContentVisible: false,
+  //       isAuthor: true,
+  //       whisper: SpeakTo,
+  //     });
+  //   }
+  //   return true;
+  // }
 }
