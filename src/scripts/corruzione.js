@@ -1,6 +1,6 @@
 import { MODULE_NAME } from "./main.js";
 
-export class SpellPoints {
+export class Corruzione {
   static get settings() {
     return mergeObject(this.defaultSettings, game.settings.get(MODULE_NAME, "settings"));
   }
@@ -137,7 +137,7 @@ export class SpellPoints {
   }
 
   /** check what resource is spellpoints on this actor **/
-  static getSpellPointsResource(actor) {
+  static getCorruzioneResource(actor) {
     let _resources = getProperty(actor, "system.resources");
     for (let r in _resources) {
       if (_resources[r].label == this.settings.spResource) {
@@ -164,12 +164,12 @@ export class SpellPoints {
     }
     const actor = item.actor;
     /** do nothing if module is not active **/
-    if (!SpellPoints.isModuleActive() || !SpellPoints.isActorCharacter(actor)) return [item, consume, options];
+    if (!Corruzione.isModuleActive() || !Corruzione.isActorCharacter(actor)) return [item, consume, options];
 
     const settings = this.settings;
 
-    /* if mixedMode active Check if SpellPoints is enabled for this actor */
-    if (settings.spMixedMode && !SpellPoints.isMixedActorSpellPointEnabled(actor)) return [item, consume, options];
+    /* if mixedMode active Check if Corruzione is enabled for this actor */
+    if (settings.spMixedMode && !Corruzione.isMixedActorSpellPointEnabled(actor)) return [item, consume, options];
 
     /** check if this is a spell casting **/
     if (item.type != "spell") return [item, consume, options];
@@ -178,20 +178,20 @@ export class SpellPoints {
     if (item.system.preparation.mode == "pact" && !settings.spMixedMode && !settings.warlockUseSp)
       return [item, consume, options];
 
-    let spellPointResource = SpellPoints.getSpellPointsResource(actor);
+    let spellPointResource = Corruzione.getCorruzioneResource(actor);
 
     /** not found any resource for spellpoints ? **/
     if (!spellPointResource) {
       ChatMessage.create({
         content:
           "<i style='color:red;'>" +
-          game.i18n.format("dnd5e-spellpoints.actorNoSP", { ActorName: actor.name, SpellPoints: settings.spResource }) +
+          game.i18n.format("dnd5e-spellpoints.actorNoSP", { ActorName: actor.name, Corruzione: settings.spResource }) +
           "</i>",
         speaker: ChatMessage.getSpeaker({ alias: actor.name }),
       });
       game.i18n.format("dnd5e-spellpoints.createNewResource", settings.spResource);
       ui.notifications.error(
-        game.i18n.format("dnd5e-spellpoints.createNewResource", { SpellPoints: settings.spResource })
+        game.i18n.format("dnd5e-spellpoints.createNewResource", { Corruzione: settings.spResource })
       );
       return {};
     }
@@ -199,9 +199,9 @@ export class SpellPoints {
     /** find the spell level just cast */
     const spellLvl = item.system.level;
 
-    let actualSpellPoints = 0;
+    let actualCorruzione = 0;
     if (actor.system.resources[spellPointResource.key].hasOwnProperty("value")) {
-      actualSpellPoints = actor.system.resources[spellPointResource.key].value;
+      actualCorruzione = actor.system.resources[spellPointResource.key].value;
     }
 
     /* get spell cost in spellpoints */
@@ -221,16 +221,16 @@ export class SpellPoints {
     };
     actor.update(updateActor);
     /** update spellpoints **/
-    if (actualSpellPoints - spellPointCost >= 0) {
+    if (actualCorruzione - spellPointCost >= 0) {
       /* character has enough spellpoints */
       spellPointResource.values.value = spellPointResource.values.value - spellPointCost;
 
       ChatMessage.create({
         content:
           "<i style='color:green;'>" +
-          game.i18n.format("dnd5e-spellpoints.spellUsingSpellPoints", {
+          game.i18n.format("dnd5e-spellpoints.spellUsingCorruzione", {
             ActorName: actor.name,
-            SpellPoints: this.settings.spResource,
+            Corruzione: this.settings.spResource,
             spellPointUsed: spellPointCost,
             remainingPoints: spellPointResource.values.value,
           }) +
@@ -240,12 +240,12 @@ export class SpellPoints {
         isAuthor: true,
         whisper: SpeakTo,
       });
-    } else if (actualSpellPoints - spellPointCost < 0) {
+    } else if (actualCorruzione - spellPointCost < 0) {
       /** check if actor can cast using HP **/
       if (this.settings.spEnableVariant) {
         // spell point resource is 0 but character can still cast.
         spellPointResource.values.value = 0;
-        const hpMaxLost = spellPointCost * SpellPoints.withActorData(SpellPoints.settings.spLifeCost, actor);
+        const hpMaxLost = spellPointCost * Corruzione.withActorData(Corruzione.settings.spLifeCost, actor);
         const hpActual = actor.system.attributes.hp.value;
         let hpTempMaxActual = actor.system.attributes.hp.tempmax;
         const hpMaxFull = actor.system.attributes.hp.max;
@@ -290,7 +290,7 @@ export class SpellPoints {
             "<i style='color:red;'>" +
             game.i18n.format("dnd5e-spellpoints.notEnoughSp", {
               ActorName: actor.name,
-              SpellPoints: this.settings.spResource,
+              Corruzione: this.settings.spResource,
             }) +
             "</i>",
           speaker: ChatMessage.getSpeaker({ alias: actor.name }),
@@ -325,8 +325,8 @@ export class SpellPoints {
    * @param formData - The data that was submitted by the user.
    * @returns the value of the variable `level`
    */
-  static checkDialogSpellPoints(dialog, html, formData) {
-    if (!SpellPoints.isModuleActive()) return;
+  static checkDialogCorruzione(dialog, html, formData) {
+    if (!Corruzione.isModuleActive()) return;
 
     /** check if actor is a player character **/
     let actor = getProperty(dialog, "item.actor");
@@ -335,8 +335,8 @@ export class SpellPoints {
     // Declare settings as a separate variable because jQuery overrides `this` when in an each() block
     let settings = this.settings;
 
-    /* if mixedMode active Check if SpellPoints is enabled for this actor */
-    if (settings.spMixedMode && !SpellPoints.isMixedActorSpellPointEnabled(actor)) return;
+    /* if mixedMode active Check if Corruzione is enabled for this actor */
+    if (settings.spMixedMode && !Corruzione.isMixedActorSpellPointEnabled(actor)) return;
 
     /** check if this is a spell **/
     if (getProperty(dialog, "item.type") !== "spell") return;
@@ -351,12 +351,12 @@ export class SpellPoints {
     const baseSpellLvl = spell.level;
 
     /** get spellpoints **/
-    let spellPointResource = SpellPoints.getSpellPointsResource(actor);
+    let spellPointResource = Corruzione.getCorruzioneResource(actor);
 
     if (!spellPointResource) {
       // this actor has no spell point resource what to do?
       const messageCreate = game.i18n.format("dnd5e-spellpoints.pleaseCreate", {
-        SpellPoints: this.settings.spResource,
+        Corruzione: this.settings.spResource,
       });
       $("#ability-use-form", html).append('<div class="spError">' + messageCreate + "</div>");
       return;
@@ -374,11 +374,11 @@ export class SpellPoints {
         level = selectValue;
       }
 
-      cost = SpellPoints.withActorData(settings.spellPointsCosts[level], actor);
+      cost = Corruzione.withActorData(settings.spellPointsCosts[level], actor);
 
       let newText = `${CONFIG.DND5E.spellLevels[level]} (${game.i18n.format("dnd5e-spellpoints.spellCost", {
         amount: cost,
-        SpellPoints: settings.spResource,
+        Corruzione: settings.spResource,
       })})`;
       if ((selectValue == "pact" && warlockCanCast) || selectValue != "pact") {
         $(this).text(newText);
@@ -389,14 +389,14 @@ export class SpellPoints {
 
     /** Calculate spell point cost and warn user if they have none left */
     let spellPointCost = 0;
-    const actualSpellPoints = actor.system.resources[spellPointResource.key].value;
+    const actualCorruzione = actor.system.resources[spellPointResource.key].value;
     if (preparation == "pact" && warlockCanCast) spellPointCost = cost;
-    else spellPointCost = SpellPoints.withActorData(SpellPoints.settings.spellPointsCosts[baseSpellLvl], actor);
-    const missing_points = typeof actualSpellPoints === "undefined" || actualSpellPoints - spellPointCost < 0;
+    else spellPointCost = Corruzione.withActorData(Corruzione.settings.spellPointsCosts[baseSpellLvl], actor);
+    const missing_points = typeof actualCorruzione === "undefined" || actualCorruzione - spellPointCost < 0;
 
     if (missing_points) {
       const messageNotEnough = game.i18n.format("dnd5e-spellpoints.youNotEnough", {
-        SpellPoints: this.settings.spResource,
+        Corruzione: this.settings.spResource,
       });
       $("#ability-use-form", html).append('<div class="spError">' + messageNotEnough + "</div>");
     }
@@ -409,11 +409,11 @@ export class SpellPoints {
     html.on("click", ".dialog-button.copy", function (e) {
       e.preventDefault();
       /** if not consumeSlot we ignore cost, go on and cast or if variant active **/
-      if (!$('input[name="consumeSpellSlot"]', html).prop("checked") || SpellPoints.settings.spEnableVariant) {
+      if (!$('input[name="consumeSpellSlot"]', html).prop("checked") || Corruzione.settings.spEnableVariant) {
         $(".dialog-button.original", html).trigger("click");
       } else if ($('select[name="consumeSpellLevel"]', html).length > 0) {
         if (missing_points) {
-          ui.notifications.error("You don't have enough: '" + SpellPoints.settings.spResource + "' to cast this spell");
+          ui.notifications.error("You don't have enough: '" + Corruzione.settings.spResource + "' to cast this spell");
           dialog.close();
         } else {
           $(".dialog-button.original", html).trigger("click");
@@ -427,8 +427,8 @@ export class SpellPoints {
    * @param {object} actor The actor used for variables.
    * @return {number} The calculated maximum spell points.
    */
-  static _calculateSpellPointsCustom(actor) {
-    let SpellPointsMax = SpellPoints.withActorData(SpellPoints.settings.spCustomFormulaBase, actor);
+  static _calculateCorruzioneCustom(actor) {
+    let CorruzioneMax = Corruzione.withActorData(Corruzione.settings.spCustomFormulaBase, actor);
 
     let hasSpellSlots = false;
     let spellPointsFromSlots = 0;
@@ -444,8 +444,7 @@ export class SpellPoints {
         continue;
       }
 
-      spellPointsFromSlots +=
-        slot.max * SpellPoints.withActorData(SpellPoints.settings.spellPointsCosts[slotLvl], actor);
+      spellPointsFromSlots += slot.max * Corruzione.withActorData(Corruzione.settings.spellPointsCosts[slotLvl], actor);
       if (slot.max > 0) {
         hasSpellSlots = true;
       }
@@ -455,10 +454,10 @@ export class SpellPoints {
       return 0;
     }
 
-    SpellPointsMax +=
-      spellPointsFromSlots * SpellPoints.withActorData(SpellPoints.settings.spCustomFormulaSlotMultiplier, actor);
+    CorruzioneMax +=
+      spellPointsFromSlots * Corruzione.withActorData(Corruzione.settings.spCustomFormulaSlotMultiplier, actor);
 
-    return SpellPointsMax;
+    return CorruzioneMax;
   }
 
   /**
@@ -471,7 +470,7 @@ export class SpellPoints {
    * @param {object} actor The actor used for variables.
    * @return {number} The calculated maximum spell points.
    */
-  static _calculateSpellPointsFixed(item, updates, actor) {
+  static _calculateCorruzioneFixed(item, updates, actor) {
     /* not an update? **/
     let changedClassLevel = null;
     let changedClassID = null;
@@ -520,7 +519,7 @@ export class SpellPoints {
       totalSpellcastingLevel += spellcastingLevels["third"].reduce((sum, level) => sum + Math.floor(level / 3), 0);
     }
 
-    return parseInt(SpellPoints.settings.spellPointsByLevel[totalSpellcastingLevel]) || 0;
+    return parseInt(Corruzione.settings.spellPointsByLevel[totalSpellcastingLevel]) || 0;
   }
 
   /**
@@ -531,23 +530,23 @@ export class SpellPoints {
    * @param isDifferent - true if the item is being updated, false if it's being dropped
    * @returns True
    */
-  static calculateSpellPoints(item, updates, isDifferent) {
+  static calculateCorruzione(item, updates, isDifferent) {
     const actor = item.parent;
 
-    if (!SpellPoints.isModuleActive() || !SpellPoints.isActorCharacter(actor)) return true;
+    if (!Corruzione.isModuleActive() || !Corruzione.isActorCharacter(actor)) return true;
 
-    if (!SpellPoints.settings.spAutoSpellpoints) {
+    if (!Corruzione.settings.spAutoSpellpoints) {
       return true;
     }
-    /* if mixedMode active Check if SpellPoints is enabled for this actor */
-    if (SpellPoints.settings.spMixedMode && !SpellPoints.isMixedActorSpellPointEnabled(actor)) return true;
+    /* if mixedMode active Check if Corruzione is enabled for this actor */
+    if (Corruzione.settings.spMixedMode && !Corruzione.isMixedActorSpellPointEnabled(actor)) return true;
 
     /* updating or dropping a class item */
     if (item.type !== "class") return true;
 
     if (!getProperty(updates.system, "levels")) return true;
 
-    let spellPointResource = SpellPoints.getSpellPointsResource(actor);
+    let spellPointResource = Corruzione.getCorruzioneResource(actor);
     const actorName = actor.name;
 
     let SpeakTo = game.users.filter((u) => u.isGM);
@@ -556,7 +555,7 @@ export class SpellPoints {
     if (!spellPointResource) {
       message =
         "SPELLPOINTS: Cannot find resource '" +
-        SpellPoints.settings.spResource +
+        Corruzione.settings.spResource +
         "' on " +
         actorName +
         " character sheet!";
@@ -570,21 +569,21 @@ export class SpellPoints {
       return true;
     }
 
-    const isCustom = SpellPoints.settings.isCustom.toString().toLowerCase() == "true";
-    const SpellPointsMax = isCustom
-      ? SpellPoints._calculateSpellPointsCustom(actor)
-      : SpellPoints._calculateSpellPointsFixed(item, updates, actor);
+    const isCustom = Corruzione.settings.isCustom.toString().toLowerCase() == "true";
+    const CorruzioneMax = isCustom
+      ? Corruzione._calculateCorruzioneCustom(actor)
+      : Corruzione._calculateCorruzioneFixed(item, updates, actor);
 
-    if (SpellPointsMax > 0) {
-      let updateActor = { [`system.resources.${spellPointResource.key}.max`]: SpellPointsMax };
+    if (CorruzioneMax > 0) {
+      let updateActor = { [`system.resources.${spellPointResource.key}.max`]: CorruzioneMax };
       actor.update(updateActor);
       let message =
         "SPELLPOINTS: Found resource '" +
-        SpellPoints.settings.spResource +
+        Corruzione.settings.spResource +
         "' on " +
         actorName +
         " character sheet! Your Maximum " +
-        SpellPoints.settings.spResource +
+        Corruzione.settings.spResource +
         " have been updated.";
       ChatMessage.create({
         content: "<i style='color:green;'>" + message + "</i>",
@@ -611,7 +610,7 @@ export class SpellPoints {
     }
 
     let checked = "";
-    if (SpellPoints.isMixedActorSpellPointEnabled(data.actor)) {
+    if (Corruzione.isMixedActorSpellPointEnabled(data.actor)) {
       checked = "checked";
     }
 

@@ -1,72 +1,45 @@
-import { CorruzioneSettingsForm } from "./corruzione-settings-form.js";
-import { SpellPoints } from "./corruzione.js";
+import { setApi } from "../module";
+import API from "./API/api";
+import { CorruzioneSettingsForm } from "./corruzione-settings-form.js.bak";
+import { Corruzione } from "./corruzione.js";
 
 // Handlebars.registerHelper("spFormat", (path, ...args) => {
 //   return game.i18n.format(path, args[0].hash);
 // });
 
-Hooks.on("init", () => {
-  //console.log('SpellPoints init');
+export const initHooks = async () => {
+  // Hooks.once("socketlib.ready", registerSocket);
+  // registerSocket();
+};
 
-  /** should spellpoints be enabled */
-  game.settings.register(MODULE_NAME, "spEnableSpellpoints", {
-    name: "Enable Spell Points system",
-    hint: "Enables or disables spellpoints for casting spells, this will override the slot cost for player tokens.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean,
-  });
+export const setupHooks = async () => {
+  setApi(API);
+};
 
-  game.settings.registerMenu(MODULE_NAME, MODULE_NAME, {
-    name: "dnd5e-spellpoints.form",
-    label: "dnd5e-spellpoints.form-title",
-    hint: "dnd5e-spellpoints.form-hint",
-    icon: "fas fa-magic",
-    type: CorruzioneSettingsForm,
-    restricted: true,
-  });
+export const readyHooks = () => {};
 
-  game.settings.register(MODULE_NAME, "settings", {
-    name: "Spell Points Settings",
-    scope: "world",
-    default: SpellPoints.defaultSettings,
-    type: Object,
-    config: false,
-    //onChange: (x) => window.location.reload()
-  });
+// /** spell launch dialog **/
+// Hooks.on("renderAbilityUseDialog", async (dialog, html, formData) => {
+//   Corruzione.checkDialogCorruzione(dialog, html, formData);
+// });
 
-  let _betterRollsActive = false;
-  for (const mod of game.data.modules) {
-    if (mod.id == "betterrolls5e" && mod.active) {
-      _betterRollsActive = true;
-      break;
-    }
-  }
-});
-
-/** spell launch dialog **/
-Hooks.on("renderAbilityUseDialog", async (dialog, html, formData) => {
-  SpellPoints.checkDialogSpellPoints(dialog, html, formData);
-});
-
-Hooks.on("updateItem", SpellPoints.calculateSpellPoints);
-Hooks.on("createItem", SpellPoints.calculateSpellPoints);
+// Hooks.on("updateItem", Corruzione.calculateCorruzione);
+// Hooks.on("createItem", Corruzione.calculateCorruzione);
 
 Hooks.on("renderActorSheet5e", (app, html, data) => {
-  SpellPoints.mixedMode(app, html, data);
+  Corruzione.mixedMode(app, html, data);
 });
 
-/**
- * Hook that is triggered after the CorruzioneSettingsForm has been rendered. This
- * sets the visiblity of the custom formula fields based on if the current
- * formula is a custom formula.
- */
-Hooks.on("renderCorruzioneSettingsForm", (spellPointsForm, html, data) => {
-  const isCustom = (data.isCustom || "").toString().toLowerCase() == "true";
-  spellPointsForm.setCustomOnlyVisibility(isCustom);
-});
+// /**
+//  * Hook that is triggered after the CorruzioneSettingsForm has been rendered. This
+//  * sets the visiblity of the custom formula fields based on if the current
+//  * formula is a custom formula.
+//  */
+// Hooks.on("renderCorruzioneSettingsForm", (spellPointsForm, html, data) => {
+//   const isCustom = (data.isCustom || "").toString().toLowerCase() == "true";
+//   spellPointsForm.setCustomOnlyVisibility(isCustom);
+// });
 
-Hooks.on("dnd5e.preItemUsageConsumption", (item, consume, options, update) => {
-  SpellPoints.castSpell(item, consume, options, update);
-});
+// Hooks.on("dnd5e.preItemUsageConsumption", (item, consume, options, update) => {
+//   Corruzione.castSpell(item, consume, options, update);
+// });

@@ -1,5 +1,5 @@
 import { MODULE_NAME } from "./main.js";
-import { SpellPoints } from "./corruzione.js";
+import { Corruzione } from "./corruzione.js";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
   function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -35,9 +35,9 @@ export class CorruzioneSettingsForm extends FormApplication {
   getData(options) {
     let data = mergeObject(
       {
-        spFormulas: Object.fromEntries(Object.keys(SpellPoints.formulas).map(formula_key => [formula_key, game.i18n.localize(`dnd5e-spellpoints.${formula_key}`)]))
+        spFormulas: Object.fromEntries(Object.keys(Corruzione.formulas).map(formula_key => [formula_key, game.i18n.localize(`dnd5e-spellpoints.${formula_key}`)]))
       },
-      this.reset ? mergeObject(SpellPoints.defaultSettings, { requireSave: true }) : mergeObject(SpellPoints.settings, { requireSave: false })
+      this.reset ? mergeObject(Corruzione.defaultSettings, { requireSave: true }) : mergeObject(Corruzione.settings, { requireSave: false })
     );
     this.reset = false;
     return data;
@@ -63,7 +63,7 @@ export class CorruzioneSettingsForm extends FormApplication {
 
   _updateObject(event, formData) {
     return __awaiter(this, void 0, void 0, function* () {
-      let settings = mergeObject(SpellPoints.settings, formData, { insertKeys: true, insertValues: true });
+      let settings = mergeObject(Corruzione.settings, formData, { insertKeys: true, insertValues: true });
       yield game.settings.set(MODULE_NAME, 'settings', settings);
     });
   }
@@ -85,7 +85,7 @@ export class CorruzioneSettingsForm extends FormApplication {
     const input_name = event.originalEvent.target.name
     if (input_name == "spFormula") {
       const input_value = event.originalEvent.target.value;
-      const formulaOverrides = SpellPoints.formulas[input_value]
+      const formulaOverrides = Corruzione.formulas[input_value]
       const isCustom = (formulaOverrides.isCustom || "").toString().toLowerCase() == "true"
       for (let elementName in formulaOverrides) {
         if (formulaOverrides[elementName] instanceof Object) {
