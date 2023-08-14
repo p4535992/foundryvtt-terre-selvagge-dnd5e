@@ -16,7 +16,15 @@ export const setupHooks = async () => {
   setApi(API);
 };
 
-export const readyHooks = () => {};
+export const readyHooks = () => {
+  Hooks.on("updateActor", (actor, updates, data) => {
+    Corruzione.calculateCorruzione(actor, updates, data);
+  });
+
+  Hooks.on("renderActorSheet5e", (app, html, data) => {
+    Corruzione.mixedMode(app, html, data);
+  });
+};
 
 // /** spell launch dialog **/
 // Hooks.on("renderAbilityUseDialog", async (dialog, html, formData) => {
@@ -25,10 +33,6 @@ export const readyHooks = () => {};
 
 // Hooks.on("updateItem", Corruzione.calculateCorruzione);
 // Hooks.on("createItem", Corruzione.calculateCorruzione);
-
-Hooks.on("renderActorSheet5e", (app, html, data) => {
-  Corruzione.mixedMode(app, html, data);
-});
 
 // /**
 //  * Hook that is triggered after the CorruzioneSettingsForm has been rendered. This

@@ -1,4 +1,5 @@
-import { MODULE_NAME } from "./main.js";
+
+import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -17,9 +18,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 export class CorruzioneSettingsForm extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      title: game.i18n.localize('dnd5e-spellpoints.form-title'),
+      title: game.i18n.localize('ts-corruzione-dnd5e.form-title'),
       id: 'ts-corruzione-dnd5e-settings-form',
-      template: `modules/${MODULE_NAME}/templates/ts-corruzione-dnd5e-settings-form.html`,
+      template: `modules/${CONSTANTS.MODULE_ID}/templates/ts-corruzione-dnd5e-settings-form.html`,
       width: 500,
       closeOnSubmit: true
     });
@@ -35,7 +36,7 @@ export class CorruzioneSettingsForm extends FormApplication {
   getData(options) {
     let data = mergeObject(
       {
-        spFormulas: Object.fromEntries(Object.keys(Corruzione.formulas).map(formula_key => [formula_key, game.i18n.localize(`dnd5e-spellpoints.${formula_key}`)]))
+        spFormulas: Object.fromEntries(Object.keys(Corruzione.formulas).map(formula_key => [formula_key, game.i18n.localize(`ts-corruzione-dnd5e.${formula_key}`)]))
       },
       this.reset ? mergeObject(Corruzione.defaultSettings, { requireSave: true }) : mergeObject(Corruzione.settings, { requireSave: false })
     );
@@ -64,7 +65,7 @@ export class CorruzioneSettingsForm extends FormApplication {
   _updateObject(event, formData) {
     return __awaiter(this, void 0, void 0, function* () {
       let settings = mergeObject(Corruzione.settings, formData, { insertKeys: true, insertValues: true });
-      yield game.settings.set(MODULE_NAME, 'settings', settings);
+      yield game.settings.set(CONSTANTS.MODULE_ID, 'settings', settings);
     });
   }
 
