@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants/constants";
-import { log } from "./lib/lib";
+import { SUPPORTED_SHEET, log } from "./lib/lib";
 
 export class Corruzione {
   static isActorCharacter(actor) {
@@ -40,20 +40,20 @@ export class Corruzione {
   /**
    * It adds a checkbox to the character sheet that allows the user to enable/disable spell points for
    * the character
-   * @param app - The application object.
+   * @param actorSheet - The application object.
    * @param html - The HTML of the Actor sheet.
    * @param data - The data object passed to the sheet.
    * @returns The return value is the html_checkbox variable.
    */
-  static async mixedMode(app, html, data) {
+  static async mixedMode(actorSheet, html, data) {
     if (!this.isModuleActive() || data.actor.type != "character") {
       return;
     }
 
-    if (!app) {
+    if (!actorSheet) {
       return;
     }
-    const a = app.object;
+    const a = actorSheet.object;
     console.log("PIPPO Update resource primary label " + a.name);
     if (
       a &&
@@ -88,6 +88,63 @@ export class Corruzione {
         "system.resources.primary.label": CONSTANTS.RESOURCE_CORRUZIONE.LABEL,
         "system.resources.primary.max": CONSTANTS.RESOURCE_CORRUZIONE.MAX,
       });
+    }
+
+    let sheetClass = actorSheet.object.flags?.core?.sheetClass ?? "";
+    if (!sheetClass) {
+      for (const obj of SUPPORTED_SHEET) {
+        if (game.modules.get(obj.moduleId)?.active && actorSheet.template.includes(obj.templateId)) {
+          sheetClass = obj.name;
+        }
+        if (sheetClass) {
+          break;
+        }
+      }
+    }
+
+    switch (sheetClass) {
+      case "dnd5e.Tidy5eSheet": {
+        const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        // Set css on corruzione
+        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        }
+        if (!game.user.isGM) {
+          const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");
+          for (let i = 0; i < inputs.length; ++i) {
+            inputs[i].setAttribute("readonly", true);
+          }
+        }
+        break;
+      }
+      case "dnd5e.CompactBeyond5eSheet": {
+        const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        // Set css on corruzione
+        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        }
+        if (!game.user.isGM) {
+          const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");
+          for (let i = 0; i < inputs.length; ++i) {
+            inputs[i].setAttribute("readonly", true);
+          }
+        }
+        break;
+      }
+      default: {
+        const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        // Set css on corruzione
+        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        }
+        if (!game.user.isGM) {
+          const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");
+          for (let i = 0; i < inputs.length; ++i) {
+            inputs[i].setAttribute("readonly", true);
+          }
+        }
+        break;
+      }
     }
   }
   /**
