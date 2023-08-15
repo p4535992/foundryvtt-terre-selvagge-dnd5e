@@ -21,13 +21,14 @@ export function setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, optio
 export function setPriceToZeroIfObjectIsNotCreatedByGM(item, updates, isDifferent) {
   if (!game.user.isGM) {
     const actor = item.parent;
-    log(`setPriceToZeroIfObjectIsNotCreatedByGM for item '${createData.name}' on actor '${actor?.name}'`);
+    log(`setPriceToZeroIfObjectIsNotCreatedByGM for item '${item.name}' on actor '${actor?.name}'`);
     if (!item.name || item.name.includes("(Copy)") || item.name.includes("(Copia)") || item.name.startsWith("New ")) {
       if (getProperty(item, "system.price.value") >= 0) {
         item.update({
           "system.price.value": 0,
-          "flags.item-linking.isLinked": null,
+          "flags.item-linking": null,
         });
+        //item.unsetFlag("item-linking", "isLinked");
       }
     }
   }
