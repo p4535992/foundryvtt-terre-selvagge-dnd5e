@@ -118,3 +118,33 @@ export const SUPPORTED_SHEET = [
     moduleId: "obsidian",
   },
 ];
+
+/**
+ * Evaluates the given formula with the given actors data. Uses FoundryVTT's Roll
+ * to make this evaluation.
+ * @param {string|number} formula The rollable formula to evaluate.
+ * @param {object} actor The actor used for variables.
+ * @return {number} The result of the formula.
+ */
+export function rollFormulaWithActorSync(formula, actor) {
+  let dataObject = actor.getRollData();
+  dataObject.flags = actor.flags;
+  const r = new Roll(formula.toString(), dataObject);
+  r.evaluate({ async: false });
+  return r.total;
+}
+
+/**
+ * Evaluates the given formula with the given actors data. Uses FoundryVTT's Roll
+ * to make this evaluation.
+ * @param {string|number} formula The rollable formula to evaluate.
+ * @param {object} actor The actor used for variables.
+ * @return {number} The result of the formula.
+ */
+export async function rollFormulaWithActorASync(formula, actor) {
+  let dataObject = actor.getRollData();
+  dataObject.flags = actor.flags;
+  const r = new Roll(formula.toString(), dataObject);
+  await r.evaluate({ async: true });
+  return r.total;
+}

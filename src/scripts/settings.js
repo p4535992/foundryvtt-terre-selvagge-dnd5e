@@ -10,6 +10,15 @@ export const registerSettings = function () {
   //   restricted: true,
   // });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "formulaCraftingToolNoProf", {
+    name: `${CONSTANTS.MODULE_ID}.setting.formulaCraftingToolNoProf.name`,
+    hint: `${CONSTANTS.MODULE_ID}.setting.formulaCraftingToolNoProf.hint`,
+    scope: "world",
+    config: true,
+    default: "-2",
+    type: String,
+  });
+
   // ========================================================================
 
   game.settings.register(CONSTANTS.MODULE_ID, "debug", {

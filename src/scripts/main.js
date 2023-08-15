@@ -2,7 +2,11 @@ import { setApi } from "../module";
 import API from "./API/api";
 import { CorruzioneSettingsForm } from "./corruzione-settings-form.js.bak";
 import { Corruzione } from "./corruzione.js";
-import { setPriceToZeroIfObjectIsNotCreatedByGM, setPriceToZeroIfObjectIsNotPreCreatedByGM } from "./custom";
+import {
+  applyCustomRuleForCraftingItemsWithoutProficiency,
+  setPriceToZeroIfObjectIsNotCreatedByGM,
+  setPriceToZeroIfObjectIsNotPreCreatedByGM,
+} from "./custom";
 
 // Handlebars.registerHelper("spFormat", (path, ...args) => {
 //   return game.i18n.format(path, args[0].hash);
@@ -32,6 +36,10 @@ export const readyHooks = () => {
 
   Hooks.on("createItem", (item, updates, isDifferent) => {
     setPriceToZeroIfObjectIsNotCreatedByGM(item, updates, isDifferent);
+  });
+
+  Hooks.on("dnd5e.preRollToolCheck", (actor, itemData, type) => {
+    applyCustomRuleForCraftingItemsWithoutProficiency(actor, itemData, type);
   });
 };
 
