@@ -2,7 +2,7 @@ import { setApi } from "../module";
 import API from "./API/api";
 import { CorruzioneSettingsForm } from "./corruzione-settings-form.js.bak";
 import { Corruzione } from "./corruzione.js";
-import { setPriceToZeroIfObjectIsNotCreatedByGM } from "./custom";
+import { setPriceToZeroIfObjectIsNotCreatedByGM, setPriceToZeroIfObjectIsNotPreCreatedByGM } from "./custom";
 
 // Handlebars.registerHelper("spFormat", (path, ...args) => {
 //   return game.i18n.format(path, args[0].hash);
@@ -27,7 +27,11 @@ export const readyHooks = () => {
   });
 
   Hooks.on("preCreateItem", (doc, createData, options, user) => {
-    setPriceToZeroIfObjectIsNotCreatedByGM(doc, createData, options, user);
+    setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user);
+  });
+
+  Hooks.on("createItem", (item, updates, isDifferent) => {
+    setPriceToZeroIfObjectIsNotCreatedByGM(item, updates, isDifferent);
   });
 };
 

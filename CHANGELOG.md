@@ -1,4 +1,4 @@
-### 0.0.3
+### 0.0.3-4
 
 - Added check on price for item copied form players
 
