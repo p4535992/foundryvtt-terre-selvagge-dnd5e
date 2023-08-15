@@ -54,7 +54,7 @@ export class Corruzione {
       return;
     }
     const a = actorSheet.object;
-    console.log("PIPPO Update resource primary label " + a.name);
+    log("Update resource primary label " + a.name);
     if (
       a &&
       a.type === "character" &&
