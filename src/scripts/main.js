@@ -1,12 +1,12 @@
-import { setApi } from "../module";
-import API from "./API/api";
+import { setApi } from "../module.js";
+import API from "./API/api.js";
 import { Corruzione } from "./corruzione.js";
 import {
   applyCustomRuleForCraftingItemsWithoutProficiency,
   setPriceToZeroIfObjectIsNotCreatedByGM,
   setPriceToZeroIfObjectIsNotPreCreatedByGM,
-} from "./custom";
-import { setItemLinkingColor } from "./item-color-linking";
+} from "./custom.js";
+import { setItemLinkingColor } from "./item-color-linking.js";
 
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);

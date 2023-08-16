@@ -1,5 +1,5 @@
-import CONSTANTS from "./constants/constants";
-import { SUPPORTED_SHEET, log } from "./lib/lib";
+import CONSTANTS from "./constants/constants.js";
+import { SUPPORTED_SHEET, log } from "./lib/lib.js";
 
 export class Corruzione {
   static isActorCharacter(actor) {

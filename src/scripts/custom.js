@@ -1,5 +1,5 @@
-import CONSTANTS from "./constants/constants";
-import { log, rollFormulaWithActorASync, rollFormulaWithActorSync } from "./lib/lib";
+import CONSTANTS from "./constants/constants.js";
+import { log, rollFormulaWithActorASync, rollFormulaWithActorSync } from "./lib/lib.js";
 
 export function setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user) {
   if (!game.user.isGM) {
