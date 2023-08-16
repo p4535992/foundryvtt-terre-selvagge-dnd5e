@@ -1,16 +1,11 @@
 import { setApi } from "../module";
 import API from "./API/api";
-import { CorruzioneSettingsForm } from "./corruzione-settings-form.js.bak";
 import { Corruzione } from "./corruzione.js";
 import {
   applyCustomRuleForCraftingItemsWithoutProficiency,
   setPriceToZeroIfObjectIsNotCreatedByGM,
   setPriceToZeroIfObjectIsNotPreCreatedByGM,
 } from "./custom";
-
-// Handlebars.registerHelper("spFormat", (path, ...args) => {
-//   return game.i18n.format(path, args[0].hash);
-// });
 
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);
@@ -22,9 +17,9 @@ export const setupHooks = async () => {
 };
 
 export const readyHooks = () => {
-  // Hooks.on("updateActor", (actor, updates, data) => {
-  //   Corruzione.calculateCorruzione(actor, updates, data);
-  // });
+  //// Hooks.on("updateActor", (actor, updates, data) => {
+  ////   Corruzione.calculateCorruzione(actor, updates, data);
+  //// });
 
   Hooks.on("renderActorSheet5e", (app, html, data) => {
     Corruzione.mixedMode(app, html, data);
