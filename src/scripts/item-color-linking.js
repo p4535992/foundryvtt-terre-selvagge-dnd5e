@@ -1,3 +1,5 @@
+import CONSTANTS from "./constants/constants";
+
 export function setItemLinkingColor(actorSheet, html, data) {
   if (!actorSheet) {
     return;
