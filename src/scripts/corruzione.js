@@ -45,7 +45,7 @@ export class Corruzione {
    * @param data - The data object passed to the sheet.
    * @returns The return value is the html_checkbox variable.
    */
-  static async mixedMode(actorSheet, html, data) {
+  static async managePrimaryResourceCorruzione(actorSheet, html, data) {
     if (!this.isModuleActive() || data.actor.type != "character") {
       return;
     }

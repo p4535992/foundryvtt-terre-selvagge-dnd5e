@@ -6,6 +6,7 @@ import {
   setPriceToZeroIfObjectIsNotCreatedByGM,
   setPriceToZeroIfObjectIsNotPreCreatedByGM,
 } from "./custom";
+import { setItemLinkingColor } from "./item-color-linking";
 
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);
@@ -22,7 +23,8 @@ export const readyHooks = () => {
   //// });
 
   Hooks.on("renderActorSheet5e", (app, html, data) => {
-    Corruzione.mixedMode(app, html, data);
+    Corruzione.managePrimaryResourceCorruzione(app, html, data);
+    setItemLinkingColor(app, html, data);
   });
 
   Hooks.on("preCreateItem", (doc, createData, options, user) => {
