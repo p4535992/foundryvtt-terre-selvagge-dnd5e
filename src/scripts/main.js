@@ -32,7 +32,7 @@ export const readyHooks = () => {
   });
 
   Hooks.on("preCreateItem", (doc, createData, options, user) => {
-    setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user);
+    // setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user);
   });
 
   Hooks.on("createItem", (item, updates, isDifferent) => {

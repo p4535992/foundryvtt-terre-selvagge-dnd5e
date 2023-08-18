@@ -1,3 +1,7 @@
+### 0.0.11
+
+- Add code for delete item with (Copy) label for non GM user
+
 ### 0.0.10
 
 - Add colored background based on item rarity

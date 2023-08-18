@@ -1,22 +1,22 @@
 import CONSTANTS from "./constants/constants.js";
-import { log, rollFormulaWithActorASync, rollFormulaWithActorSync } from "./lib/lib.js";
+import { log, rollFormulaWithActorASync, rollFormulaWithActorSync, warn } from "./lib/lib.js";
 
-export function setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user) {
-  if (!game.user.isGM) {
-    const actor = doc.actor;
-    log(`setPriceToZeroIfObjectIsNotPreCreatedByGM for item '${createData.name}' on actor '${actor?.name}'`);
-    if (
-      !createData.name ||
-      createData.name.includes("(Copy)") ||
-      createData.name.includes("(Copia)") ||
-      createData.name.startsWith("New ")
-    ) {
-      doc.updateSource({
-        "system.price.value": 0,
-      });
-    }
-  }
-}
+// export function setPriceToZeroIfObjectIsNotPreCreatedByGM(doc, createData, options, user) {
+//   if (!game.user.isGM) {
+//     const actor = doc.actor;
+//     log(`setPriceToZeroIfObjectIsNotPreCreatedByGM for item '${createData.name}' on actor '${actor?.name}'`);
+//     if (
+//       !createData.name ||
+//       createData.name.includes("(Copy)") ||
+//       createData.name.includes("(Copia)") ||
+//       createData.name.startsWith("New ")
+//     ) {
+//       doc.updateSource({
+//         "system.price.value": 0,
+//       });
+//     }
+//   }
+// }
 
 export function setPriceToZeroIfObjectIsNotCreatedByGM(item, updates, isDifferent) {
   if (!game.user.isGM) {
@@ -24,11 +24,12 @@ export function setPriceToZeroIfObjectIsNotCreatedByGM(item, updates, isDifferen
     log(`setPriceToZeroIfObjectIsNotCreatedByGM for item '${item.name}' on actor '${actor?.name}'`);
     if (!item.name || item.name.includes("(Copy)") || item.name.includes("(Copia)") || item.name.startsWith("New ")) {
       if (getProperty(item, "system.price.value") >= 0) {
-        item.update({
-          "system.price.value": 0,
-          "flags.item-linking": null,
-        });
-        //item.unsetFlag("item-linking", "isLinked");
+        // item.update({
+        //   "system.price.value": 0,
+        //   "flags.item-linking": null,
+        // });
+        warn(`Deleted the item ${item.name} creato da ${game.user.name}`);
+        item.delete();
       }
     }
   }
