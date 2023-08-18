@@ -7,17 +7,21 @@ import {
   setPriceToZeroIfObjectIsNotPreCreatedByGM,
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
+import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);
   // registerSocket();
+  initHooksrRarityColors();
 };
 
 export const setupHooks = async () => {
+  setupHooksRarityColors();
   setApi(API);
 };
 
 export const readyHooks = () => {
+  readyHooksRarityColors();
   //// Hooks.on("updateActor", (actor, updates, data) => {
   ////   Corruzione.calculateCorruzione(actor, updates, data);
   //// });
