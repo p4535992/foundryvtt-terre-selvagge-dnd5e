@@ -5,24 +5,22 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
   itemToCheck = getItem(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
   // const baseItemUuid = getProperty(itemToCheck,`flags.item-linking.baseItem`);
-  /*
   const baseItemUuid = itemToCheck.getFlag("item-linking", "baseItem");
   if (baseItemUuid) {
-    ui.notifications.warn(`Nop baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`);
+    warn(`Nop baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
   }
   const baseItem = fromUuid(baseItemUuid);
   if (baseItem) {
-    ui.notifications.warn(`Nop baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`);
+    warn(`Nop baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
   }
-  */
 
-  const baseItem = itemToCheck;
+  //   const baseItem = itemToCheck;
 
   const actor = itemToCheck.actor;
   if (!actor) {
-    ui.notifications.warn(`${game.user.name} please at least select a actor`);
+    warn(`${game.user.name} please at least select a actor`, true);
     return;
   }
 
@@ -74,7 +72,7 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
             let secondaryWeaponID = target.getAttribute("id");
             if (target.nodeName != "IMG") d.render(true);
             if (target.nodeName == "IMG" && (secondaryWeaponID = target.getAttribute("id"))) {
-              let secondaryChosenWeapon = actor.items.get(secondaryWeaponID);
+              let secondaryChosenWeapon = retrieveBonusFromCollection(weaponsSecondary, secondaryWeaponID);
               let chosenSecondaryContent = d.data.content;
               let getMainWeaponId = $(chosenSecondaryContent).find(".mainWeaponImg").attr("id");
               let mainChosenWeapon = actor.items.get(getMainWeaponId);
@@ -97,8 +95,28 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
           icon: "<i class='fas fa-check'></i>",
           label: "Accept Loadout!",
           callback: async (html) => {
-            // TODO
             log(`Accept Loadout!`);
+            let weaponMain;
+            let weaponSecondary;
+            const weaponMainId = html[0].querySelector(".mainWeaponImg").id;
+            weaponMain = actor.items.get(weaponMainId);
+
+            const weaponSecondaryId = html[0].querySelector(".secondaryWeaponImg")?.id;
+            if (weaponSecondaryId) {
+              weaponSecondary = retrieveBonusFromCollection(weaponsSecondary, weaponSecondaryId);
+            }
+            // const results = [weaponMain, weaponSecondary];
+            // resolve(results);
+
+            if (!weaponMain) {
+              warn(`${game.user.name} you didn't choose any weapon for you main hand (loadout aborted) :(`, true);
+              return;
+            }
+            if (!weaponSecondary) {
+              warn(`${game.user.name} you didn't choose any bonus for you main hand (loadout aborted) :(`, true);
+              return;
+            }
+            applyBonusToItem(weaponMain, weaponSecondary);
           },
         },
         no: {
@@ -121,12 +139,13 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
     });
   });
 
-  const results = await mainDialog;
-  const weaponMain = results[0];
-  if (!weaponMain) {
-    ui.notifications.warn(`${game.user.name} you didn't choose any weapon for you main hand (loadout aborted) :(`);
-    return;
-  }
+  //   const results = await mainDialog;
+  //   const weaponMain = results[0];
+  //   const bonusMain = results[1];
+  //   if (!weaponMain) {
+  //     warn(`${game.user.name} you didn't choose any weapon for you main hand (loadout aborted) :(`);
+  //     return;
+  //   }
 }
 
 function initialDialogContent(weapons) {
@@ -175,7 +194,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
             <hr>
             <form>  
             <div class="form-group">
-            <label for="type">Secondary Item selected:</label>
+            <label for="type">Bonus selected:</label>
             <div class="form-fields"><center style="width: 40px">
             <div class="secondaryWeaponImages"><a class="secondaryWeaponImg" id="${secondaryWeapon.id}">
                 <img height="36" src="${secondaryWeapon?.img}" title="${secondaryWeapon.name}" id="${secondaryWeapon.id}"/></a></div>
@@ -197,7 +216,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
       <hr>
       <form>  
         <div class="form-group">
-        <label for="type">Items available:</label>
+        <label for="type">Bonus available:</label>
           <div class="form-fields"><center><a class="secondaryWeaponImg">
           ${weaponsSecondary}
           </a></center></div>
@@ -229,4 +248,16 @@ function retrieveBonusesFromItem(baseItem) {
   // returns a Collection of bonuses on the object.
   let bonusesInitial = game.modules.get("babonus").api.getCollection(baseItem);
   return bonusesInitial;
+}
+
+function retrieveBonusFromCollection(collection, id) {
+  // returns a Collection of bonuses on the object.
+  let bonusesInitial = collection.get(id);
+  return bonusesInitial;
+}
+
+function applyBonusToItem(item, bonus) {
+  // returns a Collection of bonuses on the object.
+  game.modules.get("babonus").api.embedBabonus(item, bonus);
+  return item;
 }
