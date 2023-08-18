@@ -1,5 +1,6 @@
 import { setApi } from "../module.js";
 import API from "./API/api.js";
+import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
 import {
   applyCustomRuleForCraftingItemsWithoutProficiency,
@@ -9,10 +10,30 @@ import {
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
+export let invPlusActive = false;
+export let itemContainerActive = false;
+export let dfredsConvenientEffectsActive = false;
+export let invMidiQol = false;
+export let dfQualityLifeActive = false;
+export let daeActive = false;
+export let backPackManagerActive = false;
+export let babonusActive = false;
+export let itemLinkModuleActive = false;
+
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);
   // registerSocket();
   initHooksrRarityColors();
+
+  invPlusActive = game.modules.get(CONSTANTS.INVENTORY_PLUS_MODULE_NAME)?.active;
+  invMidiQol = game.modules.get(CONSTANTS.MIDI_QOL_MODULE_NAME)?.active;
+  itemContainerActive = game.modules.get(CONSTANTS.ITEM_COLLECTION_MODULE_NAME)?.active;
+  dfredsConvenientEffectsActive = game.modules.get(CONSTANTS.DFREDS_CONVENIENT_EFFECTS_MODULE_NAME)?.active;
+  dfQualityLifeActive = game.modules.get(CONSTANTS.DF_QUALITY_OF_LIFE_MODULE_NAME)?.active;
+  daeActive = game.modules.get(CONSTANTS.DAE_MODULE_NAME)?.active;
+  backPackManagerActive = game.modules.get(CONSTANTS.BACKPACK_MANAGER_MODULE_NAME)?.active;
+  babonusActive = game.modules.get(CONSTANTS.BABONUS_MODULE_NAME)?.active;
+  itemLinkModuleActive = game.modules.get("item-linking")?.active;
 };
 
 export const setupHooks = async () => {

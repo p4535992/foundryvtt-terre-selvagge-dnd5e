@@ -5,7 +5,14 @@ const CONSTANTS = {
     LABEL: "Corruzione",
     MAX: 12,
   },
+  INVENTORY_PLUS_MODULE_NAME: "inventory-plus",
+  MIDI_QOL_MODULE_NAME: "midi-qol",
+  ITEM_COLLECTION_MODULE_NAME: "itemcollection",
   DFREDS_CONVENIENT_EFFECTS_MODULE_NAME: "dfreds-convenient-effects",
+  DF_QUALITY_OF_LIFE_MODULE_NAME: "df-qol",
+  DAE_MODULE_NAME: "dae",
+  BACKPACK_MANAGER_MODULE_NAME: "backpack-manager",
+  BABONUS_MODULE_NAME: "babonus",
   DFREDS_CONVENIENT_EFFECTS: {
     FLAGS: {
       DESCRIPTION: "description",
