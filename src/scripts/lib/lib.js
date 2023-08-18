@@ -148,3 +148,29 @@ export async function rollFormulaWithActorASync(formula, actor) {
   await r.evaluate({ async: true });
   return r.total;
 }
+
+export function getDocument(target) {
+  if (stringIsUuid(target)) {
+    target = fromUuidSync(target);
+  }
+  return target?.document ?? target;
+}
+
+export function getItem(target) {
+  if (stringIsUuid(target)) {
+    target = fromUuidSync(target);
+  }
+  return target;
+}
+
+export function stringIsUuid(inId) {
+  return typeof inId === "string" && (inId.match(/\./g) || []).length && !inId.endsWith(".");
+}
+
+export function getUuid(target) {
+  if (stringIsUuid(target)) {
+    return target;
+  }
+  const document = getDocument(target);
+  return document?.uuid ?? false;
+}

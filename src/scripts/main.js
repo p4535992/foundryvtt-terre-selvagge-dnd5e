@@ -2,11 +2,7 @@ import { setApi } from "../module.js";
 import API from "./API/api.js";
 import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
-import {
-  applyCustomRuleForCraftingItemsWithoutProficiency,
-  setPriceToZeroIfObjectIsNotCreatedByGM,
-  setPriceToZeroIfObjectIsNotPreCreatedByGM,
-} from "./custom.js";
+import { applyCustomRuleForCraftingItemsWithoutProficiency, setPriceToZeroIfObjectIsNotCreatedByGM } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 

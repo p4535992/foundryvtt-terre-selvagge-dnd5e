@@ -1,9 +1,11 @@
-import { warn } from "./lib/lib";
+import { getItem, log, warn } from "./lib/lib";
 
-export async function retrieveAndApplyBonuses(args) {
-  const [itemToCheck] = args;
+export async function retrieveAndApplyBonuses(itemToCheck) {
+  //   const [itemToCheck] = args;
+  itemToCheck = getItem(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
   // const baseItemUuid = getProperty(itemToCheck,`flags.item-linking.baseItem`);
+  /*
   const baseItemUuid = itemToCheck.getFlag("item-linking", "baseItem");
   if (baseItemUuid) {
     ui.notifications.warn(`Nop baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`);
@@ -14,6 +16,9 @@ export async function retrieveAndApplyBonuses(args) {
     ui.notifications.warn(`Nop baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`);
     return;
   }
+  */
+
+  const baseItem = itemToCheck;
 
   const actor = itemToCheck.actor;
   if (!actor) {
@@ -22,7 +27,7 @@ export async function retrieveAndApplyBonuses(args) {
   }
 
   const weaponsInitial = retrieveWeaponsFromActor(actor);
-  const weaponsSecondary = []; // retrieveBonusesFromItem(baseItem);
+  const weaponsSecondary = retrieveBonusesFromItem(baseItem);
 
   let content = initialDialogContent(weaponsInitial);
 
@@ -34,35 +39,49 @@ export async function retrieveAndApplyBonuses(args) {
       title: `Weapon Loadout for ${actor.name}`,
       content,
       render: (html) => {
-        containerMain = document.querySelector(".mainWeaponImg");
+        let containerMain = document.querySelector(".mainWeaponImg");
         //$(".mainWeaponImg").css("padding": "1px","border": "0px","border-radius": "5px")
-        clickMain =
+        let clickMain =
           containerMain &&
           containerMain.addEventListener("click", async function getMain(event) {
-            target = event.target;
+            let target = event.target;
+            let mainWeaponID = target.getAttribute("id");
+            let mainChosenWeapon;
+            let chosenMainContent;
             if (target.nodeName != "IMG") d.render(true);
             if (target.nodeName == "IMG" && (mainWeaponID = target.getAttribute("id"))) {
               mainChosenWeapon = actor.items.get(mainWeaponID);
               chosenMainContent = await mainWeaponChosenDialogContent(mainChosenWeapon);
             }
+
+            let secondaryDialogContent = await getSecondaryDialogContent(
+              mainChosenWeapon,
+              chosenMainContent,
+              false,
+              weaponsSecondary
+            );
+            d.data.content = secondaryDialogContent[0];
+            d.render(true);
+
             return mainChosenWeapon;
           });
-        containerSecondary = document.querySelector(".secondaryWeaponImg");
+        let containerSecondary = document.querySelector(".secondaryWeaponImg");
         // $(".secondaryWeaponImg").css("padding": "1px","border": "0px","border-radius": "5px")
-        clickSecondary =
+        let clickSecondary =
           containerSecondary &&
           containerSecondary.addEventListener("click", async function getSecondary(event) {
-            target = event.target;
+            let target = event.target;
+            let secondaryWeaponID = target.getAttribute("id");
             if (target.nodeName != "IMG") d.render(true);
             if (target.nodeName == "IMG" && (secondaryWeaponID = target.getAttribute("id"))) {
-              secondaryChosenWeapon = actor.items.get(secondaryWeaponID);
-              chosenSecondaryContent = d.data.content;
-              getMainWeaponId = $(chosenSecondaryContent).find(".mainWeaponImg").attr("id");
-              mainChosenWeapon = actor.items.get(getMainWeaponId);
-              ccc = await mainWeaponChosenDialogContent(mainChosenWeapon);
+              let secondaryChosenWeapon = actor.items.get(secondaryWeaponID);
+              let chosenSecondaryContent = d.data.content;
+              let getMainWeaponId = $(chosenSecondaryContent).find(".mainWeaponImg").attr("id");
+              let mainChosenWeapon = actor.items.get(getMainWeaponId);
+              let ccc = await mainWeaponChosenDialogContent(mainChosenWeapon);
               ccc = ccc.replace("Weapons available:", "Bonus item:");
 
-              chosenInitialSecondaryContent = await getSecondaryDialogContent(
+              let chosenInitialSecondaryContent = await getSecondaryDialogContent(
                 mainChosenWeapon,
                 ccc,
                 secondaryChosenWeapon,
@@ -79,13 +98,17 @@ export async function retrieveAndApplyBonuses(args) {
           label: "Accept Loadout!",
           callback: async (html) => {
             // TODO
+            log(`Accept Loadout!`);
           },
         },
         no: {
           icon: "<i class='fas fa-times'></i>",
           label: "Reset selection",
           callback: () => {
-            // TODO
+            log(`Reset selection`);
+            let contentReset = initialDialogContent(weaponsInitial);
+            d.data.content = contentReset;
+            d.render(true);
           },
         },
       },
@@ -97,34 +120,13 @@ export async function retrieveAndApplyBonuses(args) {
       id: "Loadout",
     });
   });
-}
 
-function retrieveWeaponsFromActor(actor) {
-  // gather the available weapons.
-  let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
-
-  function plainComparing(a, b) {
-    return a.localeCompare(b, undefined, { sensitivity: "base" });
+  const results = await mainDialog;
+  const weaponMain = results[0];
+  if (!weaponMain) {
+    ui.notifications.warn(`${game.user.name} you didn't choose any weapon for you main hand (loadout aborted) :(`);
+    return;
   }
-
-  weaponsInitial = weaponsInitial.sort((a, b) => {
-    return plainComparing(a.name, b.name);
-  });
-
-  return weaponsInitial;
-}
-
-function retrieveBonusesFromItem(baseItem) {
-  // returns a Collection of bonuses on the object.
-  let bonusesInitial = game.modules.get("babonus").api.getCollection(baseItem);
-
-  function plainComparing(a, b) {
-    return a.localeCompare(b, undefined, { sensitivity: "base" });
-  }
-
-  bonusesInitial = bonusesInitial.sort((a, b) => {
-    return plainComparing(a.name, b.name);
-  });
 }
 
 function initialDialogContent(weapons) {
@@ -134,7 +136,7 @@ function initialDialogContent(weapons) {
     ``
   );
   let content = `
-      <p>Choose weapon.</p>
+      <p>Choose weapon to boost.</p>
       <hr>
       <form>  
       <div class="form-group">
@@ -187,7 +189,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
     return returns;
   }
   weaponsSecondary = weaponsSecondary.reduce(
-    (acc, weapon) => (acc += `<img height="36" src="${weapon?.img}" title="${weapon.name}" id="${weapon.id}"/>`),
+    (acc, weapon) => (acc += `<img height="36" src="${weapon?.item.img}" title="${weapon.name}" id="${weapon.id}"/>`),
     ``
   );
   let secondaryDialogContent = `
@@ -206,4 +208,25 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
   content += secondaryDialogContent;
   let returns = [content, secondaryDialogInitialContent];
   return returns;
+}
+
+function retrieveWeaponsFromActor(actor) {
+  // gather the available weapons.
+  let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
+
+  function plainComparing(a, b) {
+    return a.localeCompare(b, undefined, { sensitivity: "base" });
+  }
+
+  weaponsInitial = weaponsInitial.sort((a, b) => {
+    return plainComparing(a.name, b.name);
+  });
+
+  return weaponsInitial;
+}
+
+function retrieveBonusesFromItem(baseItem) {
+  // returns a Collection of bonuses on the object.
+  let bonusesInitial = game.modules.get("babonus").api.getCollection(baseItem);
+  return bonusesInitial;
 }
