@@ -39,6 +39,32 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 # API
 
+The api is reachable from the variable `game.modules.get('ts-corruzione-dnd5e').api` or from the socket libary `socketLib` on the variable `game.modules.get('ts-corruzione-dnd5e').socket` if present and active.
+
+#### retrieveAndApplyBonuses({item: uuid|Item, type:string, name?:string, suffix?:string):void ⇒ <code>void</code>
+
+Recupera gli item presenti su un attore, di un certo tipo (e.g. weapon) dall'attore corrente e permette di selzionare uno degli item su cui settare uno degli effetti del modulo babonus sull'arma scelta.
+In pratica applica un bonus di babonus all'item scelto.
+
+**Returns**: <code>boolean</code> - The boolean value for tell if the target is near enough to the source token
+
+| Param | Type | Description |
+| --- | --- | --- |
+| item | <code>uuid|Item</code> | The uuid of the item or the item object himself |
+| type | <code>string</code> | The type of the item to choose (background|backpack|base|class|consumable|equipment|feat|loot|spell|subclass|tool|weapon) |
+| name | <code>string</code> | OPTIONAL: The new name of the item |
+| image | <code>string</code> | OPTIONAL: The path to the new image of the item |
+| suffix | <code>string</code> | OPTIONAL: Applied a suffix on the name of the item |
+
+**Example**:
+
+```
+game.modules.get('ts-corruzione-dnd5e').api.retrieveAndApplyBonuses({
+    item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5",
+    type: "weapon"
+}}:boolean
+
+```
 
 # Build
 

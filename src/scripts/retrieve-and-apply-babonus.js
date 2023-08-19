@@ -1,18 +1,23 @@
-import { getItem, log, warn } from "./lib/lib";
+import { getItem, isItemBeaverCrafted, log, warn } from "./lib/lib";
 
-export async function retrieveAndApplyBonuses(itemToCheck) {
+export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, itemNewName, itemNewImage, itemNewSuffix) {
   //   const [itemToCheck] = args;
   itemToCheck = getItem(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
   // const baseItemUuid = getProperty(itemToCheck,`flags.item-linking.baseItem`);
   const baseItemUuid = itemToCheck.getFlag("item-linking", "baseItem");
-  if (baseItemUuid) {
-    warn(`Nop baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
+  if (!baseItemUuid) {
+    warn(`No baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
   }
   const baseItem = fromUuid(baseItemUuid);
-  if (baseItem) {
-    warn(`Nop baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
+  if (!baseItem) {
+    warn(`No baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
+    return;
+  }
+
+  if (!itemTypeToCheck) {
+    warn(`No itemTypeToCheck is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
   }
 
@@ -34,7 +39,7 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
 
   const mainDialog = await new Promise((resolve, reject) => {
     d = new Dialog({
-      title: `Weapon Loadout for ${actor.name}`,
+      title: `Item Loadout for ${actor.name}`,
       content,
       render: (html) => {
         let containerMain = document.querySelector(".mainWeaponImg");
@@ -46,7 +51,9 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
             let mainWeaponID = target.getAttribute("id");
             let mainChosenWeapon;
             let chosenMainContent;
-            if (target.nodeName != "IMG") d.render(true);
+            if (target.nodeName != "IMG") {
+              d.render(true);
+            }
             if (target.nodeName == "IMG" && (mainWeaponID = target.getAttribute("id"))) {
               mainChosenWeapon = actor.items.get(mainWeaponID);
               chosenMainContent = await mainWeaponChosenDialogContent(mainChosenWeapon);
@@ -70,7 +77,9 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
           containerSecondary.addEventListener("click", async function getSecondary(event) {
             let target = event.target;
             let secondaryWeaponID = target.getAttribute("id");
-            if (target.nodeName != "IMG") d.render(true);
+            if (target.nodeName != "IMG") {
+              d.render(true);
+            }
             if (target.nodeName == "IMG" && (secondaryWeaponID = target.getAttribute("id"))) {
               let secondaryChosenWeapon = retrieveBonusFromCollection(weaponsSecondary, secondaryWeaponID);
               let chosenSecondaryContent = d.data.content;
@@ -116,7 +125,19 @@ export async function retrieveAndApplyBonuses(itemToCheck) {
               warn(`${game.user.name} you didn't choose any bonus for you main hand (loadout aborted) :(`, true);
               return;
             }
-            applyBonusToItem(weaponMain, weaponSecondary);
+            await applyBonusToItem(weaponMain, weaponSecondary);
+            let currentName = weaponMain.name;
+            let currentImage = weaponMain.img;
+            if (itemNewName) {
+              currentName = itemNewSuffix ? itemNewName + " " + itemNewSuffix : itemNewName;
+            }
+            if (itemNewImage) {
+              currentImage = itemNewImage;
+            }
+            await weaponMain.update({
+              name: currentName,
+              img: currentImage,
+            });
           },
         },
         no: {
@@ -229,9 +250,12 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
   return returns;
 }
 
-function retrieveWeaponsFromActor(actor) {
+function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
   // gather the available weapons.
-  let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
+  //let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
+  let weaponsInitial = actor.itemTypes[itemTypeToCheck].filter((weapon) => {
+    return (!!weapon.getRollData().item.quantity || weapon.item.quantity > 0) && isItemBeaverCrafted(weapon);
+  });
 
   function plainComparing(a, b) {
     return a.localeCompare(b, undefined, { sensitivity: "base" });
@@ -256,8 +280,8 @@ function retrieveBonusFromCollection(collection, id) {
   return bonusesInitial;
 }
 
-function applyBonusToItem(item, bonus) {
+async function applyBonusToItem(item, bonus) {
   // returns a Collection of bonuses on the object.
-  game.modules.get("babonus").api.embedBabonus(item, bonus);
+  const item = await game.modules.get("babonus").api.embedBabonus(item, bonus);
   return item;
 }

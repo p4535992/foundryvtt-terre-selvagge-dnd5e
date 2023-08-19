@@ -59,6 +59,32 @@ export const readyHooks = () => {
   Hooks.on("dnd5e.preRollToolCheck", (actor, itemData, type) => {
     applyCustomRuleForCraftingItemsWithoutProficiency(actor, itemData, type);
   });
+
+  //   /**
+  //  * A hook event that fires when an item is used, after the measured template has been created if one is needed.
+  //  * @function dnd5e.useItem
+  //  * @memberof hookEvents
+  //  * @param {Item5e} item                                Item being used.
+  //  * @param {ItemUseConfiguration} config                Configuration data for the roll.
+  //  * @param {ItemUseOptions} options                     Additional options for configuring item usage.
+  //  * @param {MeasuredTemplateDocument[]|null} templates  The measured templates if they were created.
+  //  */
+  //   Hooks.on("dnd5e.useItem", (item, config, options, templates) => {
+
+  //   });
+
+  //     /**
+  //    * A hook event that fires before an item usage is configured.
+  //    * @function dnd5e.preUseItem
+  //    * @memberof hookEvents
+  //    * @param {Item5e} item                  Item being used.
+  //    * @param {ItemUseConfiguration} config  Configuration data for the item usage being prepared.
+  //    * @param {ItemUseOptions} options       Additional options used for configuring item usage.
+  //    * @returns {boolean}                    Explicitly return `false` to prevent item from being used.
+  //    */
+  //    Hooks.on("dnd5e.preUseItem", (item, config, options) => {
+
+  //    });
 };
 
 // /** spell launch dialog **/

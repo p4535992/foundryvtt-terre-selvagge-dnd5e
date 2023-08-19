@@ -167,6 +167,17 @@ export function stringIsUuid(inId) {
   return typeof inId === "string" && (inId.match(/\./g) || []).length && !inId.endsWith(".");
 }
 
+export function isItemBeaverCrafted(item) {
+  const status = item.getFlag("beavers-crafting", "status");
+  if (status === "created") {
+    return true;
+  }
+  if (status === "updated") {
+    return true;
+  }
+  return false;
+}
+
 export function getUuid(target) {
   if (stringIsUuid(target)) {
     return target;
