@@ -1,6 +1,9 @@
 import { debug, isEmptyObject, warn } from "./lib/lib";
 
 export function patchDAECreateActiveEffect(effect, _config, _userId) {
+  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+    return;
+  }
   debug("Patch DAE CreateActiveEffect");
   if (effect.parent instanceof Item && effect.parent.parent instanceof Actor) {
     const item = effect.parent;
@@ -27,6 +30,9 @@ export function patchDAECreateActiveEffect(effect, _config, _userId) {
 }
 
 export function patchDAEDeleteActiveEffect(effect, _config, _userId) {
+  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+    return;
+  }
   debug("Patch DAE DeleteActiveEffect");
   if (effect.parent instanceof Item && effect.parent.parent instanceof Actor) {
     const item = effect.parent;
@@ -41,6 +47,9 @@ export function patchDAEDeleteActiveEffect(effect, _config, _userId) {
 }
 
 export function patchDAEUpdateActiveEffect(effect, _config, _userId) {
+  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+    return;
+  }
   debug("Patch DAE UpdateActiveEffect");
   if (effect.parent instanceof Item && effect.parent.parent instanceof Actor) {
     const item = effect.parent;

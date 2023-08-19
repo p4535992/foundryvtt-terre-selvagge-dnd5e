@@ -20,6 +20,15 @@ export const registerSettings = function () {
     type: String,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "patchDAE", {
+    name: `${CONSTANTS.MODULE_ID}.setting.patchDAE.name`,
+    hint: `${CONSTANTS.MODULE_ID}.setting.patchDAE.hint`,
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
   // ========================================================================
 
   // RARITY COLOR
