@@ -104,7 +104,7 @@ export class Corruzione {
 
     switch (sheetClass) {
       case "dnd5e.Tidy5eSheet": {
-        const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        const htmlPrimaryResource = html.find(".attributes").find(".resource")[0];
         // Set css on corruzione
         if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
           htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");

@@ -282,6 +282,6 @@ function retrieveBonusFromCollection(collection, id) {
 
 async function applyBonusToItem(item, bonus) {
   // returns a Collection of bonuses on the object.
-  const item = await game.modules.get("babonus").api.embedBabonus(item, bonus);
-  return item;
+  const itemWithBonus = await game.modules.get("babonus").api.embedBabonus(item, bonus);
+  return itemWithBonus;
 }

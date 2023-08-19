@@ -1,4 +1,4 @@
-import { debug, warn } from "./lib/lib.js";
+import { debug, isEmptyObject, warn } from "./lib/lib.js";
 import CONSTANTS from "./constants/constants.js";
 
 export let ORIGINAL_CONFIG = {};
@@ -455,18 +455,6 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
       };
     }
   }
-}
-
-export function isEmptyObject(obj) {
-  // because Object.keys(new Date()).length === 0;
-  // we have to do some additional check
-  if (obj === null || obj === undefined) {
-    return true;
-  }
-  const result =
-    obj && // null and undefined check
-    Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
-  return result;
 }
 
 /**

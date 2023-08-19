@@ -1,6 +1,6 @@
-import { ORIGINAL_CONFIG, isEmptyObject, prepareConfigurations } from "../raritycolors.js";
+import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants/constants.js";
-import { log } from "../lib/lib.js";
+import { isEmptyObject, log } from "../lib/lib.js";
 
 export class RarityColorsApp extends FormApplication {
   static get defaultOptions() {

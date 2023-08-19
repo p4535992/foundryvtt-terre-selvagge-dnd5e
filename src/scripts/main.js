@@ -4,6 +4,7 @@ import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
 import { applyCustomRuleForCraftingItemsWithoutProficiency, setPriceToZeroIfObjectIsNotCreatedByGM } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
+import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export let invPlusActive = false;
@@ -108,3 +109,23 @@ export const readyHooks = () => {
 // Hooks.on("dnd5e.preItemUsageConsumption", (item, consume, options, update) => {
 //   Corruzione.castSpell(item, consume, options, update);
 // });
+
+// Hooks.on("preCreateActiveEffect", (activeEffect, _config, _userId) => {
+//   patchDAEPreCreateActiveEffect(activeEffect, _config, _userId);
+// });
+
+// Hooks.on("preUpdateActiveEffect", (activeEffect, _config, _userId) => {
+//   patchDAEPreUpdateActiveEffect(activeEffect, _config, _userId);
+// });
+
+Hooks.on("createActiveEffect", (activeEffect, _config, _userId) => {
+  patchDAECreateActiveEffect(activeEffect, _config, _userId);
+});
+
+Hooks.on("deleteActiveEffect", (activeEffect, _config, _userId) => {
+  patchDAEDeleteActiveEffect(activeEffect, _config, _userId);
+});
+
+Hooks.on("updateActiveEffect", (activeEffect, _config, _userId) => {
+  patchDAEUpdateActiveEffect(activeEffect, _config, _userId);
+});

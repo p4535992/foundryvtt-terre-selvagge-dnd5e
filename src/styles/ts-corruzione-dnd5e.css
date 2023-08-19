@@ -1,14 +1,14 @@
 /* resource corruzione */
 
-.attributes li.attribute.resource.ts-corruzione-dnd5e-resource {
+.attributes .resource.ts-corruzione-dnd5e-resource {
   background-image: url(/modules/ts-corruzione-dnd5e/assets/images/background_corruzione.jpg);
   background-attachment: inherit;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.attributes .attribute.resource.ts-corruzione-dnd5e-resource input[type="text"],
-.attributes .attribute.resource.ts-corruzione-dnd5e-resource span.sep {
+.attributes .resource.ts-corruzione-dnd5e-resource input[type="text"],
+.attributes .resource.ts-corruzione-dnd5e-resource span.sep {
   color: antiquewhite;
 }
 

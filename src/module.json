@@ -2,7 +2,7 @@
   "id": "ts-corruzione-dnd5e",
   "title": "Terre Selvagge - Corruzione (Dnd5e)",
   "description": "The intent of the module is to give your players 'corruzione' points for playing their character.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "authors": [
     {
       "name": "p4535992",
@@ -64,8 +64,8 @@
     "maximum": 11
   },
   "url": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e",
-  "manifest": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/releases/download/0.0.11/module.json",
-  "download": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/releases/download/0.0.11/module.zip",
+  "manifest": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/releases/download/0.0.12/module.json",
+  "download": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/releases/download/0.0.12/module.zip",
   "readme": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/blob/main/README.md",
   "changelog": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/blob/main/CHANGELOG.md",
   "bugs": "https://github.com/p4535992/foundryvtt-ts-corruzione-dnd5e/issues",
