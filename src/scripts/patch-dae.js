@@ -1,7 +1,8 @@
+import CONSTANTS from "./constants/constants";
 import { debug, isEmptyObject, warn } from "./lib/lib";
 
-export function patchDAECreateActiveEffect(effect, _config, _userId) {
-  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+export async function patchDAECreateActiveEffect(effect, _config, _userId) {
+  if (!game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
     return;
   }
   debug("Patch DAE CreateActiveEffect");
@@ -17,7 +18,7 @@ export function patchDAECreateActiveEffect(effect, _config, _userId) {
     }
     if (!isAlreadyOnActor) {
       debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
-      return CONFIG.ActiveEffect.documentClass.create(
+      return await CONFIG.ActiveEffect.documentClass.create(
         {
           ...effect.toObject(),
           origin: effect.parent.uuid,
@@ -29,8 +30,8 @@ export function patchDAECreateActiveEffect(effect, _config, _userId) {
   }
 }
 
-export function patchDAEDeleteActiveEffect(effect, _config, _userId) {
-  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+export async function patchDAEDeleteActiveEffect(effect, _config, _userId) {
+  if (!game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
     return;
   }
   debug("Patch DAE DeleteActiveEffect");
@@ -40,14 +41,14 @@ export function patchDAEDeleteActiveEffect(effect, _config, _userId) {
     for (const effectToDelete of actor.effects) {
       if (effectToDelete.origin === item.uuid && effectToDelete.name === effect.name) {
         debug(`Deleted effect ${effectToDelete.name}|${effectToDelete.id}`);
-        effectToDelete.delete();
+        await effectToDelete.delete();
       }
     }
   }
 }
 
-export function patchDAEUpdateActiveEffect(effect, _config, _userId) {
-  if (!game.settings.register(CONSTANTS.MODULE_ID, "patchDAE")) {
+export async function patchDAEUpdateActiveEffect(effect, _config, _userId) {
+  if (!game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
     return;
   }
   debug("Patch DAE UpdateActiveEffect");
@@ -63,7 +64,7 @@ export function patchDAEUpdateActiveEffect(effect, _config, _userId) {
     }
     if (!isAlreadyOnActor) {
       debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
-      return CONFIG.ActiveEffect.documentClass.create(
+      return await CONFIG.ActiveEffect.documentClass.create(
         {
           ...effect.toObject(),
           origin: effect.parent.uuid,

@@ -118,14 +118,14 @@ export const readyHooks = () => {
 //   patchDAEPreUpdateActiveEffect(activeEffect, _config, _userId);
 // });
 
-Hooks.on("createActiveEffect", (activeEffect, _config, _userId) => {
-  patchDAECreateActiveEffect(activeEffect, _config, _userId);
+Hooks.on("createActiveEffect", async (activeEffect, _config, _userId) => {
+  await patchDAECreateActiveEffect(activeEffect, _config, _userId);
 });
 
-Hooks.on("deleteActiveEffect", (activeEffect, _config, _userId) => {
-  patchDAEDeleteActiveEffect(activeEffect, _config, _userId);
+Hooks.on("deleteActiveEffect", async (activeEffect, _config, _userId) => {
+  await patchDAEDeleteActiveEffect(activeEffect, _config, _userId);
 });
 
-Hooks.on("updateActiveEffect", (activeEffect, _config, _userId) => {
-  patchDAEUpdateActiveEffect(activeEffect, _config, _userId);
+Hooks.on("updateActiveEffect", async (activeEffect, _config, _userId) => {
+  await patchDAEUpdateActiveEffect(activeEffect, _config, _userId);
 });
