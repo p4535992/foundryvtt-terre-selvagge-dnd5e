@@ -41,7 +41,7 @@ export async function patchDAEDeleteActiveEffect(effect, _config, _userId) {
     for (const effectToDelete of actor.effects) {
       if (effectToDelete.origin === item.uuid && effectToDelete.name === effect.name) {
         debug(`Deleted effect ${effectToDelete.name}|${effectToDelete.id}`);
-        await effectToDelete.delete();
+        effectToDelete.delete();
       }
     }
   }
@@ -64,13 +64,13 @@ export async function patchDAEUpdateActiveEffect(effect, _config, _userId) {
     }
     if (!isAlreadyOnActor) {
       debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
-      return await CONFIG.ActiveEffect.documentClass.create(
-        {
-          ...effect.toObject(),
-          origin: effect.parent.uuid,
-        },
-        { parent: item.parent }
-      );
+      // return await CONFIG.ActiveEffect.documentClass.create(
+      //   {
+      //     ...effect.toObject(),
+      //     origin: effect.parent.uuid,
+      //   },
+      //   { parent: item.parent }
+      // );
     }
     return;
   }
