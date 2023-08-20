@@ -1,4 +1,5 @@
 import CONSTANTS from "../constants/constants.js";
+import { error } from "../lib/lib.js";
 import { retrieveAndApplyBonuses } from "../retrieve-and-apply-babonus.js";
 
 const API = {
@@ -8,11 +9,17 @@ const API = {
     //   throw error("retrieveAndApplyBonuses| inAttributes must be of type array");
     // }
     // const [uuidOrItem] = inAttributes;
-    if (typeof inDefaults !== "object") {
-      throw error("retrieveAndApplyBonuses | inDefaults must be of type object");
+    if (typeof inAttributes !== "object") {
+      throw error("retrieveAndApplyBonuses | inAttributes must be of type object");
     }
 
-    retrieveAndApplyBonuses(inDefaults.item, inDefaults.type, inDefaults.name, inDefaults.image, inDefaults.suffix);
+    retrieveAndApplyBonuses(
+      inAttributes.item,
+      inAttributes.type,
+      inAttributes.name,
+      inAttributes.image,
+      inAttributes.suffix
+    );
   },
 };
 

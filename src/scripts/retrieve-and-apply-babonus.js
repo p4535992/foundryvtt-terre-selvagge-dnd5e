@@ -138,6 +138,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               name: currentName,
               img: currentImage,
             });
+            await actor.deleteEmbeddedDocuments("Item", [weaponSecondary.id]);
           },
         },
         no: {
