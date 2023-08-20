@@ -29,7 +29,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
     return;
   }
 
-  const weaponsInitial = retrieveWeaponsFromActor(actor);
+  const weaponsInitial = retrieveWeaponsFromActor(actor, itemTypeToCheck);
   const weaponsSecondary = retrieveBonusesFromItem(baseItem);
 
   let content = initialDialogContent(weaponsInitial);
