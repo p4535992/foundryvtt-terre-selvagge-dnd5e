@@ -89,6 +89,10 @@ export function printMacroWithoutAuthor() {
   const macro = game.macros.find((m) => {
     if (!m.author) {
       warn(`Macro ${m.name}|${m.id} has not author`);
+      warn(`Macro ${m.name}|${m.id} is been updated with author: ` + game.user);
+      m.update({
+        author: game.user,
+      });
     }
   });
 }
