@@ -10,7 +10,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
     warn(`No baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
   }
-  const baseItem = fromUuid(baseItemUuid);
+  const baseItem = await fromUuid(baseItemUuid);
   if (!baseItem) {
     warn(`No baseItem is been found for ${itemToCheck.name}|${itemToCheck.uuid}`, true);
     return;
@@ -261,7 +261,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
 function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
   // gather the available weapons.
   //let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
-  let weaponsInitial = actor.itemTypes[itemTypeToCheck].filter((weapon) => {
+  let weaponsInitial = actor.itemTypes[itemTypeToCheck]?.filter((weapon) => {
     return (!!weapon.getRollData().item.quantity || weapon.item.quantity > 0) && isItemBeaverCrafted(weapon);
   });
 
