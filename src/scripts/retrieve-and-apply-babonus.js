@@ -303,3 +303,11 @@ async function applyBonusToItem(item, bonus) {
   const itemWithBonus = await game.modules.get("babonus").api.embedBabonus(item, bonus);
   return itemWithBonus;
 }
+
+export async function clearBabonusFromItem(itemToCheck) {
+  itemToCheck = getItem(itemToCheck);
+  const collection = retrieveBonusesFromItem(itemToCheck);
+  for (const bonus of collection) {
+    await game.modules.get("babonus").api.deleteBonus(itemToCheck, bonus.id);
+  }
+}
