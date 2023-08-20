@@ -138,7 +138,14 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               name: currentName,
               img: currentImage,
             });
-            await actor.deleteEmbeddedDocuments("Item", [weaponSecondary.id]);
+
+            if (weaponSecondary.system.quantity > 1) {
+              log(`Update quantity item '${weaponSecondary.name}|${weaponSecondary.id}'`);
+              await weaponSecondary.update({ "system.quantity": weaponSecondary.system.quantity - 1 });
+            } else {
+              log(`Delete item '${weaponSecondary.name}|${weaponSecondary.id}'`);
+              await actor.deleteEmbeddedDocuments("Item", [weaponSecondary.id]);
+            }
           },
         },
         no: {
