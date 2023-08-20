@@ -1,7 +1,7 @@
 import CONSTANTS from "./constants/constants";
 import { debug, isEmptyObject, warn } from "./lib/lib";
 
-export async function patchDAECreateActiveEffect(effect, _config, _userId) {
+export function patchDAECreateActiveEffect(effect, _config, _userId) {
   if (!game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
     return;
   }
@@ -18,7 +18,7 @@ export async function patchDAECreateActiveEffect(effect, _config, _userId) {
     }
     if (!isAlreadyOnActor) {
       debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
-      return await CONFIG.ActiveEffect.documentClass.create(
+      return CONFIG.ActiveEffect.documentClass.create(
         {
           ...effect.toObject(),
           origin: effect.parent.uuid,
