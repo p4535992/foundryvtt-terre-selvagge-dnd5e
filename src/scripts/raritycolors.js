@@ -183,23 +183,25 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   if (!rarityFlag) {
     return;
   }
+  let item = appData;
+  if (!item) {
+    return;
+  }
   if (isEmptyObject(mapConfigurations)) {
     mapConfigurations = prepareMapConfigurations();
   }
   // Color item name
   const itemNameElement = html.find(`input[name="name"]`);
   const itemRarityElement = html.find(`select[name="system.rarity"]`);
-  const itemType = appData.document.type;
-  let rarityOrType = appData.system.rarity
-    ? appData.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim()
-    : itemType;
+  const itemType = item.document.type;
+  let rarityOrType = item.system.rarity ? item.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim() : itemType;
 
   let spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
   let featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
   const isSpell = itemType === "spell";
   const isFeat = itemType === "feat";
   let doColor = false;
-  if (appData.system.rarity && appData.system.rarity !== "common") {
+  if (item.system.rarity && item.system.rarity !== "common") {
     doColor = true;
   } else if (isSpell && spellFlag) {
     rarityOrType = item?.system.school ?? "spell";

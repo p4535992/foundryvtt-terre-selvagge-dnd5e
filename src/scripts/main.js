@@ -2,7 +2,11 @@ import { setApi } from "../module.js";
 import API from "./API/api.js";
 import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
-import { applyCustomRuleForCraftingItemsWithoutProficiency, setPriceToZeroIfObjectIsNotCreatedByGM } from "./custom.js";
+import {
+  applyCustomRuleForCraftingItemsWithoutProficiency,
+  printMacroWithoutAuthor,
+  setPriceToZeroIfObjectIsNotCreatedByGM,
+} from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { warn } from "./lib/lib.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
@@ -41,6 +45,7 @@ export const setupHooks = async () => {
 
 export const readyHooks = () => {
   readyHooksRarityColors();
+  printMacroWithoutAuthor();
   //// Hooks.on("updateActor", (actor, updates, data) => {
   ////   Corruzione.calculateCorruzione(actor, updates, data);
   //// });

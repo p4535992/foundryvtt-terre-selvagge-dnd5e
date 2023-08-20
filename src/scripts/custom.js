@@ -84,3 +84,11 @@ export function applyCustomRuleForCraftingItemsWithoutProficiency(actor, itemDat
   // parts = parts.concat("1") // this will add a generic +1 at the end of the parts
   // foundry.utils.setProperty(args[1],"parts",parts)
 }
+
+export function printMacroWithoutAuthor() {
+  const macro = game.macros.find((m) => {
+    if (!m.author) {
+      warn(`Macro ${m.name}|${m.id} has not author`);
+    }
+  });
+}
