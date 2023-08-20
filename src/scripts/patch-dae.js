@@ -10,6 +10,24 @@ export async function patchDAECreateActiveEffect(effect, _config, _userId) {
     const item = effect.parent;
     const actor = effect.parent.parent;
 
+    const effectIdsFromThisEffect = actor.effects
+      .filter((effectToDelete) => effectToDelete.origin === item.uuid && effectToDelete.name === effect.name)
+      .map((effectToDelete) => effectToDelete.id);
+
+    if (effectIdsFromThisEffect && effectIdsFromThisEffect.length > 0) {
+      debug(`Deleted effects ${effectIdsFromThisEffect}`);
+      await actor.deleteEmbeddedDocuments("ActiveEffect", effectIdsFromThisEffect);
+
+      debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
+      await CONFIG.ActiveEffect.documentClass.create(
+        {
+          ...effect.toObject(),
+          origin: effect.parent.uuid,
+        },
+        { parent: item.parent }
+      );
+    }
+
     debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
     await CONFIG.ActiveEffect.documentClass.create(
       {
