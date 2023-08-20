@@ -4,6 +4,7 @@ import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
 import { applyCustomRuleForCraftingItemsWithoutProficiency, setPriceToZeroIfObjectIsNotCreatedByGM } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
+import { warn } from "./lib/lib.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
