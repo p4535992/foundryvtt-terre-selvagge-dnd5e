@@ -62,7 +62,7 @@ In pratica applica un bonus di babonus all'item scelto.
 game.modules.get('ts-corruzione-dnd5e').api.retrieveAndApplyBonuses({
     item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5",
     type: "weapon"
-}}:boolean
+}}
 
 ```
 
