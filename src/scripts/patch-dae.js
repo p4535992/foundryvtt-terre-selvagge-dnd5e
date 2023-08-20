@@ -10,20 +10,14 @@ export async function patchDAECreateActiveEffect(effect, _config, _userId) {
     const item = effect.parent;
     const actor = effect.parent.parent;
 
-    const effectIdsFromThisEffect = actor.effects
-      .filter((effectToCheck) => effectToCheck.origin === item.uuid && effectToCheck.name === effect.name)
-      .map((effectToCheck) => effectToCheck.id);
-
-    if (!effectIdsFromThisEffect || effectIdsFromThisEffect - length <= 0) {
-      debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
-      await CONFIG.ActiveEffect.documentClass.create(
-        {
-          ...effect.toObject(),
-          origin: effect.parent.uuid,
-        },
-        { parent: item.parent }
-      );
-    }
+    debug("Attempting to Transfer an effect to an Actor", { effectUuid: effect.uuid, actor: item.parent });
+    await CONFIG.ActiveEffect.documentClass.create(
+      {
+        ...effect.toObject(),
+        origin: effect.parent.uuid,
+      },
+      { parent: item.parent }
+    );
   }
 }
 
