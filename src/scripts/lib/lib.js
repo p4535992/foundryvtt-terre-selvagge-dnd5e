@@ -197,3 +197,11 @@ export function isEmptyObject(obj) {
     Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
   return result;
 }
+
+export function isItemLinked(itemToCheck) {
+  const isLinked = itemToCheck.getFlag("item-linking", "baseItem");
+  if (isLinked) {
+    return true;
+  }
+  return false;
+}

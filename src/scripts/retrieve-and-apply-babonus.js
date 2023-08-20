@@ -1,4 +1,4 @@
-import { getItem, isItemBeaverCrafted, log, warn } from "./lib/lib";
+import { getItem, isItemBeaverCrafted, isItemLinked, log, warn } from "./lib/lib";
 
 export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, itemNewName, itemNewImage, itemNewSuffix) {
   //   const [itemToCheck] = args;
@@ -63,7 +63,8 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               mainChosenWeapon,
               chosenMainContent,
               false,
-              weaponsSecondary
+              weaponsSecondary,
+              itemToCheck.img
             );
             d.data.content = secondaryDialogContent[0];
             d.render(true);
@@ -92,7 +93,8 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
                 mainChosenWeapon,
                 ccc,
                 secondaryChosenWeapon,
-                weaponsSecondary
+                weaponsSecondary,
+                itemToCheck.img
               );
               d.data.content = chosenInitialSecondaryContent[0];
               d.render(true);
@@ -130,6 +132,8 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
             let currentImage = weaponMain.img;
             if (itemNewName) {
               currentName = itemNewSuffix ? itemNewName + " " + itemNewSuffix : itemNewName;
+            } else {
+              currentName = itemNewSuffix ? currentName + " " + itemNewSuffix : currentName;
             }
             if (itemNewImage) {
               currentImage = itemNewImage;
@@ -139,12 +143,12 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               img: currentImage,
             });
 
-            if (weaponSecondary.system.quantity > 1) {
-              log(`Update quantity item '${weaponSecondary.name}|${weaponSecondary.id}'`);
-              await weaponSecondary.update({ "system.quantity": weaponSecondary.system.quantity - 1 });
+            if (itemToCheck.system.quantity > 1) {
+              log(`Update quantity item '${itemToCheck.name}|${itemToCheck.id}'`);
+              await itemToCheck.update({ "system.quantity": itemToCheck.system.quantity - 1 });
             } else {
-              log(`Delete item '${weaponSecondary.name}|${weaponSecondary.id}'`);
-              await actor.deleteEmbeddedDocuments("Item", [weaponSecondary.id]);
+              log(`Delete item '${itemToCheck.name}|${itemToCheck.id}'`);
+              await actor.deleteEmbeddedDocuments("Item", [itemToCheck.id]);
             }
           },
         },
@@ -215,7 +219,7 @@ async function mainWeaponChosenDialogContent(mainChosenWeapon) {
   return content;
 }
 
-async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, weaponsSecondary) {
+async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, weaponsSecondary, itemImage) {
   if (secondaryWeapon) {
     //if a secondary is already provided do the dialog rerendering
     let secondaryDialogContent = `
@@ -226,7 +230,9 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
             <label for="type">Bonus selected:</label>
             <div class="form-fields"><center style="width: 40px">
             <div class="secondaryWeaponImages"><a class="secondaryWeaponImg" id="${secondaryWeapon.id}">
-                <img height="36" src="${secondaryWeapon?.img}" title="${secondaryWeapon.name}" id="${secondaryWeapon.id}"/></a></div>
+                <img height="36" src="${secondaryWeapon?.img ?? itemImage ?? "icons/svg/aura.svg"}" title="${
+      secondaryWeapon.name
+    }" id="${secondaryWeapon.id}"/></a></div>
             </center></div>
             </div>
             </form>
@@ -262,7 +268,11 @@ function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
   // gather the available weapons.
   //let weaponsInitial = actor.itemTypes.weapon.filter((weapon) => !!weapon.getRollData().item.quantity);
   let weaponsInitial = actor.itemTypes[itemTypeToCheck]?.filter((weapon) => {
-    return (!!weapon.getRollData().item.quantity || weapon.item.quantity > 0) && isItemBeaverCrafted(weapon);
+    return (
+      (!!weapon.getRollData().item.quantity || weapon.item.quantity > 0) &&
+      isItemLinked(weapon) &&
+      isItemBeaverCrafted(weapon)
+    );
   });
 
   function plainComparing(a, b) {
