@@ -8,6 +8,7 @@ import {
   setPriceToZeroIfObjectIsNotCreatedByGM,
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
+import { ItemLinkTreeManager } from "./item-link-tree-manager.js";
 import { warn } from "./lib/lib.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
@@ -92,6 +93,14 @@ export const readyHooks = () => {
   //    Hooks.on("dnd5e.preUseItem", (item, config, options) => {
 
   //    });
+
+  Hooks.on("item-link-tree.postAddLeafToItem", async (item, itemAdded) => {
+    await ItemLinkTreeManager.manageAddLeafToItem(item, itemAdded);
+  });
+
+  Hooks.on("item-link-tree.postRemoveLeafFromItem", async (item, itemRemoved) => {
+    await ItemLinkTreeManager.manageRemoveLeafFromItem(item, itemRemoved);
+  });
 };
 
 // /** spell launch dialog **/
@@ -124,14 +133,14 @@ export const readyHooks = () => {
 //   patchDAEPreUpdateActiveEffect(activeEffect, _config, _userId);
 // });
 
-Hooks.on("createActiveEffect", async (activeEffect, _config, _userId) => {
-  await patchDAECreateActiveEffect(activeEffect, _config, _userId);
-});
+// Hooks.on("createActiveEffect", async (activeEffect, _config, _userId) => {
+//   await patchDAECreateActiveEffect(activeEffect, _config, _userId);
+// });
 
-Hooks.on("deleteActiveEffect", async (activeEffect, _config, _userId) => {
-  await patchDAEDeleteActiveEffect(activeEffect, _config, _userId);
-});
+// Hooks.on("deleteActiveEffect", async (activeEffect, _config, _userId) => {
+//   await patchDAEDeleteActiveEffect(activeEffect, _config, _userId);
+// });
 
-Hooks.on("updateActiveEffect", async (activeEffect, _config, _userId) => {
-  await patchDAEUpdateActiveEffect(activeEffect, _config, _userId);
-});
+// Hooks.on("updateActiveEffect", async (activeEffect, _config, _userId) => {
+//   await patchDAEUpdateActiveEffect(activeEffect, _config, _userId);
+// });
