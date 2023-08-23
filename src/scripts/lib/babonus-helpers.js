@@ -1,6 +1,5 @@
 export class BabonusHelpers {
-
- static retrieveBonusesFromItem(baseItem) {
+  static retrieveBonusesFromItem(baseItem) {
     // returns a Collection of bonuses on the object.
     let bonusesInitial = game.modules.get("babonus").api.getCollection(baseItem);
     return bonusesInitial;

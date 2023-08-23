@@ -45,8 +45,15 @@ const addItem = async (actor, item, currentName, currentImage) => {
 // type: 'armor' | 'weapon'
 // target_bonus: number
 
-export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bonus, itemNewName, itemNewImage, itemNewPrefix ,itemNewSuffix) {
-
+export async function retrieveSuperiorItemAndReplaceOnActor(
+  gem,
+  type,
+  target_bonus,
+  itemNewName,
+  itemNewImage,
+  itemNewPrefix,
+  itemNewSuffix
+) {
   gem = getItem(gem);
   // Type checking
   if (!(gem instanceof CONFIG.Item.documentClass)) {
@@ -58,10 +65,10 @@ export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bo
     throw error(`${game.user.name} please at least select a actor`, true);
   }
 
-    // Type checking
-    if (!(actor instanceof CONFIG.Actor.documentClass)) {
-        throw error(`Invalid actor`, true);
-    }
+  // Type checking
+  if (!(actor instanceof CONFIG.Actor.documentClass)) {
+    throw error(`Invalid actor`, true);
+  }
 
   if (!(type in COMPENDIUM)) {
     throw error(`The macro was called with an invalid argument "type": ${type}`, true);
@@ -75,7 +82,7 @@ export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bo
 
   // ------------------------------------ //
   const compendiums = COMPENDIUM[type]?.map((pack) => {
-    return game.packs.contents.find((p) => p.metadata.label === pack)
+    return game.packs.contents.find((p) => p.metadata.label === pack);
   });
 
   // Asserting every compendium exists
@@ -93,15 +100,15 @@ export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bo
     .map((i) => {
       // MOD 4535992
       //const match = i.name.match(rgx);
-        if(!ItemLinkingHelpers.isItemLinked(i)) {
-            // warn(`The item ${i.name}|${i.uuid} is not linked`);
-            return false;
-        }
-        const baseItem = retrieveLinkedItem(i);
-        if(!baseItem) {
-            // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
-            return false;
-        }
+      if (!ItemLinkingHelpers.isItemLinked(i)) {
+        // warn(`The item ${i.name}|${i.uuid} is not linked`);
+        return false;
+      }
+      const baseItem = retrieveLinkedItem(i);
+      if (!baseItem) {
+        // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
+        return false;
+      }
       const match = baseItem.name.match(rgx);
       if (!match) {
         return;
@@ -113,22 +120,20 @@ export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bo
   const itemKeys = Object.keys(mappedItems);
 
   // ------------------------------------ //
-  const upgradeableItems = actor.items.contents.filter(
-    (i) => {
-        // MOD 4535992
-        //return itemKeys.includes(i.name) && i.getFlag("beavers-crafting", "status")
-        if(!ItemLinkingHelpers.isItemLinked(i)) {
-            // warn(`The item ${i.name}|${i.uuid} is not linked`);
-            return false;
-        }
-        const baseItem = retrieveLinkedItem(i);
-        if(!baseItem) {
-            // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
-            return false;
-        }
-        return itemKeys.includes(baseItem.name);
+  const upgradeableItems = actor.items.contents.filter((i) => {
+    // MOD 4535992
+    //return itemKeys.includes(i.name) && i.getFlag("beavers-crafting", "status")
+    if (!ItemLinkingHelpers.isItemLinked(i)) {
+      // warn(`The item ${i.name}|${i.uuid} is not linked`);
+      return false;
     }
-  );
+    const baseItem = retrieveLinkedItem(i);
+    if (!baseItem) {
+      // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
+      return false;
+    }
+    return itemKeys.includes(baseItem.name);
+  });
 
   if (upgradeableItems.length === 0) {
     throw error(`${actor.name} does not have any upgradeable ${type}`, true);
@@ -170,14 +175,14 @@ export async function retrieveSuperiorItemAndReplaceOnActor(gem, type, target_bo
         callback: async (html) => {
           const item = actor.items.get(html.find("#item")[0].value);
           if (!item) {
-            throw error(`Could not find the item to upgrade`,true);
+            throw error(`Could not find the item to upgrade`, true);
           }
           if (gem.system.quantity < 1 || gem.parent !== actor) {
-            throw error(`Could not find ${gem.name} to upgrade`,true);
+            throw error(`Could not find ${gem.name} to upgrade`, true);
           }
           const targetItem = mappedItems[item.name];
 
-          let currentName = manageNewName(weaponMain.name, itemNewName, itemNewPrefix ,itemNewSuffix);
+          let currentName = manageNewName(weaponMain.name, itemNewName, itemNewPrefix, itemNewSuffix);
           let currentImage = weaponMain.img;
           if (itemNewImage) {
             currentImage = itemNewImage;

@@ -57,7 +57,7 @@ export default class EffectDefinitions {
         this._c21,
         this._c22,
         this._c23,
-        this._c24
+        this._c24,
       ]
     );
   }

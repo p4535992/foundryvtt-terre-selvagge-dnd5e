@@ -3,7 +3,14 @@ import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { getItem, log, manageNewName, warn } from "./lib/lib";
 
-export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, itemNewName, itemNewImage, itemNewPrefix ,itemNewSuffix) {
+export async function retrieveAndApplyBonuses(
+  itemToCheck,
+  itemTypeToCheck,
+  itemNewName,
+  itemNewImage,
+  itemNewPrefix,
+  itemNewSuffix
+) {
   //   const [itemToCheck] = args;
   itemToCheck = getItem(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
@@ -85,7 +92,10 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               d.render(true);
             }
             if (target.nodeName == "IMG" && (secondaryWeaponID = target.getAttribute("id"))) {
-              let secondaryChosenWeapon = BabonusHelpers.retrieveBonusFromCollection(weaponsSecondary, secondaryWeaponID);
+              let secondaryChosenWeapon = BabonusHelpers.retrieveBonusFromCollection(
+                weaponsSecondary,
+                secondaryWeaponID
+              );
               let chosenSecondaryContent = d.data.content;
               let getMainWeaponId = $(chosenSecondaryContent).find(".mainWeaponImg").attr("id");
               let mainChosenWeapon = actor.items.get(getMainWeaponId);
@@ -132,8 +142,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
             }
             await BabonusHelpers.applyBonusToItem(weaponMain, weaponSecondary);
 
-
-            let currentName = manageNewName(weaponMain.name, itemNewName, itemNewPrefix ,itemNewSuffix);
+            let currentName = manageNewName(weaponMain.name, itemNewName, itemNewPrefix, itemNewSuffix);
             let currentImage = weaponMain.img;
             if (itemNewImage) {
               currentImage = itemNewImage;
@@ -285,5 +294,3 @@ function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
 
   return weaponsInitial;
 }
-
-

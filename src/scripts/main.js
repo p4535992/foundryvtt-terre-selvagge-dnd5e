@@ -112,9 +112,9 @@ export const readyHooks = () => {
     await ItemLinkTreeManager.managePostRemoveLeafFromItem(item, itemRemoved);
   });
 
-//   Hooks.on("renderTidy5eItemSheet", async (app, html, data) => {
+  //   Hooks.on("renderTidy5eItemSheet", async (app, html, data) => {
 
-//   });
+  //   });
 
   Object.keys(CONFIG.Item.sheetClasses.item).forEach((key) => {
     let sheet = key.split(".")[1];

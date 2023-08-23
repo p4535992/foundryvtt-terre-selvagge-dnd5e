@@ -188,74 +188,74 @@ export function isEmptyObject(obj) {
   return result;
 }
 
-export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix ,itemNewSuffix) {
-    let currentName = itemCurrentName;
-    if (itemNewName) {
-      currentName = itemNewName;
+export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix, itemNewSuffix) {
+  let currentName = itemCurrentName;
+  if (itemNewName) {
+    currentName = itemNewName;
+  }
+  if (itemNewPrefix) {
+    if (!currentName.startsWith(itemNewPrefix)) {
+      currentName = itemNewPrefix + currentName;
     }
-    if (itemNewPrefix) {
-        if(!currentName.startsWith(itemNewPrefix)) {
-            currentName = itemNewPrefix + currentName;
-        }
+  }
+  if (itemNewSuffix) {
+    if (!currentName.endsWith(itemNewSuffix)) {
+      currentName = currentName + itemNewSuffix;
     }
-    if (itemNewSuffix) {
-        if(!currentName.endsWith(itemNewSuffix)) {
-            currentName = currentName + itemNewSuffix;
-        }
-    }
-    return currentName;
+  }
+  return currentName;
 }
 
 export function checkIfYouCanAddMoreGemsToItem(item) {
-    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
-    const quantityOfGem = leafs.length ?? 0;
-    const rarity = item.system.rarity ?? "";
-    let canAddGem = false;
-    switch (rarity) {
-        case "common": {
-        if(quantityOfGem < 1) {
-            canAddGem = true;
-        }
-        break;
-        }
-        case "uncommon": {
-        if(quantityOfGem < 1) {
-            canAddGem = true;
-        }
-        break;
-        }
-        case "rare": {
-        if(quantityOfGem < 2) {
-            canAddGem = true;
-        }
-        break;
-        }
-        case "veryRare":
-        case "veryrare": {
-        if(quantityOfGem < 2) {
-            canAddGem = true;
-        }
-        break;
-        }
-        case "legendary": {
-        if(quantityOfGem < 3) {
-            canAddGem = true;
-        }
-        break;
-        }
-        case "artifact": {
-        if(quantityOfGem < 3) {
-            canAddGem = true;
-        }
-        break;
-        }
-        default: {
-        if(rarity) {
-            warn(`No quantity of gems is check for rarity '${rarity}'`)
-        }
-        canAddGem = false;
-        break;
-        }
+  const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+  const quantityOfGem = leafs.length ?? 0;
+  const rarity = item.system.rarity ?? "";
+  let canAddGem = false;
+  switch (rarity) {
+    case "common": {
+      if (quantityOfGem < 1) {
+        canAddGem = true;
+      }
+      break;
     }
-    return canAddGem;
+    case "uncommon": {
+      if (quantityOfGem < 1) {
+        canAddGem = true;
+      }
+      break;
+    }
+    case "rare": {
+      if (quantityOfGem < 2) {
+        canAddGem = true;
+      }
+      break;
+    }
+    case "veryRare":
+    case "veryrare": {
+      if (quantityOfGem < 2) {
+        canAddGem = true;
+      }
+      break;
+    }
+    case "legendary": {
+      if (quantityOfGem < 3) {
+        canAddGem = true;
+      }
+      break;
+    }
+    case "artifact": {
+      if (quantityOfGem < 3) {
+        canAddGem = true;
+      }
+      break;
+    }
+    default: {
+      if (rarity) {
+        warn(`No quantity of gems is check for rarity '${rarity}'`);
+      }
+      canAddGem = false;
+      break;
+    }
+  }
+  return canAddGem;
 }
