@@ -14,7 +14,7 @@ export class ItemLinkingHelpers {
       warn(`The item ${itemToCheck.name}|${itemToCheck.uuid} is not linked`);
       return;
     }
-    const baseItemUuid = i.getFlag("item-linking", "baseItem");
+    const baseItemUuid = itemToCheck.getFlag("item-linking", "baseItem");
     if (!baseItemUuid) {
       warn(`No baseItemUuid is been found for ${itemToCheck.name}|${itemToCheck.uuid}`);
       return;

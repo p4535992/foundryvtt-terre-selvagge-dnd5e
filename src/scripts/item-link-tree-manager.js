@@ -17,10 +17,12 @@ export class ItemLinkTreeManager {
       warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' linkato`, true);
       return false;
     }
-    const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
-    if (!isItemAddedLinked) {
-      warn(`Non puoi aggiungere la gemma perche' non e' linkata`, true);
-      return false;
+    if (!game.user.isGM) {
+      const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
+      if (!isItemAddedLinked) {
+        warn(`Non puoi aggiungere la gemma perche' non e' linkata`, true);
+        return false;
+      }
     }
     const isGemCanBeAdded = checkIfYouCanAddMoreGemsToItem(item);
     if (!isGemCanBeAdded) {
