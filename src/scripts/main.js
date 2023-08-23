@@ -94,12 +94,20 @@ export const readyHooks = () => {
 
   //    });
 
+  Hooks.on("item-link-tree.preAddLeafToItem", async (item, itemAdded) => {
+    await ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
+  });
+
+  Hooks.on("item-link-tree.preRemoveLeafFromItem", async (item, itemRemoved) => {
+    await ItemLinkTreeManager.managePreRemoveLeafFromItem(item, itemRemoved);
+  });
+
   Hooks.on("item-link-tree.postAddLeafToItem", async (item, itemAdded) => {
-    await ItemLinkTreeManager.manageAddLeafToItem(item, itemAdded);
+    await ItemLinkTreeManager.managePostAddLeafToItem(item, itemAdded);
   });
 
   Hooks.on("item-link-tree.postRemoveLeafFromItem", async (item, itemRemoved) => {
-    await ItemLinkTreeManager.manageRemoveLeafFromItem(item, itemRemoved);
+    await ItemLinkTreeManager.managePostRemoveLeafFromItem(item, itemRemoved);
   });
 };
 
@@ -110,16 +118,6 @@ export const readyHooks = () => {
 
 // Hooks.on("updateItem", Corruzione.calculateCorruzione);
 // Hooks.on("createItem", Corruzione.calculateCorruzione);
-
-// /**
-//  * Hook that is triggered after the CorruzioneSettingsForm has been rendered. This
-//  * sets the visiblity of the custom formula fields based on if the current
-//  * formula is a custom formula.
-//  */
-// Hooks.on("renderCorruzioneSettingsForm", (spellPointsForm, html, data) => {
-//   const isCustom = (data.isCustom || "").toString().toLowerCase() == "true";
-//   spellPointsForm.setCustomOnlyVisibility(isCustom);
-// });
 
 // Hooks.on("dnd5e.preItemUsageConsumption", (item, consume, options, update) => {
 //   Corruzione.castSpell(item, consume, options, update);

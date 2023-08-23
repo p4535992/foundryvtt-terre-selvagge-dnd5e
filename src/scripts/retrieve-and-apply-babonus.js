@@ -1,4 +1,4 @@
-import { BabonusHelpers } from "./lib/babonus-helper";
+import { BabonusHelpers } from "./lib/babonus-helpers";
 import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { getItem, log, manageNewName, warn } from "./lib/lib";

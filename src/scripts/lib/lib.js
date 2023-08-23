@@ -1,5 +1,6 @@
 import CONSTANTS from "../constants/constants.js";
 import SETTINGS from "../constants/settings.js";
+import { ItemLinkTreeHelpers } from "./item-link-tree-helpers.js";
 
 // =================================
 // Logger Utility
@@ -187,8 +188,6 @@ export function isEmptyObject(obj) {
   return result;
 }
 
-
-
 export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix ,itemNewSuffix) {
     let currentName = itemCurrentName;
     if (itemNewName) {
@@ -205,4 +204,58 @@ export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix ,itemN
         }
     }
     return currentName;
+}
+
+export function checkIfYouCanAddMoreGemsToItem(item) {
+    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+    const quantityOfGem = leafs.length ?? 0;
+    const rarity = item.system.rarity ?? "";
+    let canAddGem = false;
+    switch (rarity) {
+        case "common": {
+        if(quantityOfGem < 1) {
+            canAddGem = true;
+        }
+        break;
+        }
+        case "uncommon": {
+        if(quantityOfGem < 1) {
+            canAddGem = true;
+        }
+        break;
+        }
+        case "rare": {
+        if(quantityOfGem < 2) {
+            canAddGem = true;
+        }
+        break;
+        }
+        case "veryRare":
+        case "veryrare": {
+        if(quantityOfGem < 2) {
+            canAddGem = true;
+        }
+        break;
+        }
+        case "legendary": {
+        if(quantityOfGem < 3) {
+            canAddGem = true;
+        }
+        break;
+        }
+        case "artifact": {
+        if(quantityOfGem < 3) {
+            canAddGem = true;
+        }
+        break;
+        }
+        default: {
+        if(rarity) {
+            warn(`No quantity of gems is check for rarity '${rarity}'`)
+        }
+        canAddGem = false;
+        break;
+        }
+    }
+    return canAddGem;
 }

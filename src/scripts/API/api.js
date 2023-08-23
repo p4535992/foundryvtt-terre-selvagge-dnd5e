@@ -1,5 +1,5 @@
 import CONSTANTS from "../constants/constants.js";
-import { BabonusHelpers } from "../lib/babonus-helper.js";
+import { BabonusHelpers } from "../lib/babonus-helpers.js";
 import { error } from "../lib/lib.js";
 import { retrieveAndApplyBonuses } from "../retrieve-and-apply-babonus.js";
 import { retrieveSuperiorItemAndReplaceOnActor } from "../retrieve-superior-bymagus.js";
