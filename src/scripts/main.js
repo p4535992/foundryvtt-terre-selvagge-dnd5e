@@ -96,12 +96,14 @@ export const readyHooks = () => {
 
   //    });
 
-  Hooks.on("item-link-tree.preAddLeafToItem", async (item, itemAdded) => {
-    await ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
+  Hooks.on("item-link-tree.preAddLeafToItem", (item, itemAdded) => {
+    let isOkTmp = ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
+    return isOkTmp;
   });
 
-  Hooks.on("item-link-tree.preRemoveLeafFromItem", async (item, itemRemoved) => {
-    await ItemLinkTreeManager.managePreRemoveLeafFromItem(item, itemRemoved);
+  Hooks.on("item-link-tree.preRemoveLeafFromItem", (item, itemRemoved) => {
+    let isOkTmp = ItemLinkTreeManager.managePreRemoveLeafFromItem(item, itemRemoved);
+    return isOkTmp;
   });
 
   Hooks.on("item-link-tree.postAddLeafToItem", async (item, itemAdded) => {
@@ -116,19 +118,21 @@ export const readyHooks = () => {
 
   //   });
 
-  Object.keys(CONFIG.Item.sheetClasses.item).forEach((key) => {
-    let sheet = key.split(".")[1];
-    try {
-      Hooks.on("render" + sheet, (app, html, actorData) => {
-        log(`Launch render for ${"render" + sheet}`);
-        LockersHelpers.lockItemSheetQuantity(app, html, data);
-        LockersHelpers.lockItemSheetWeight(app, html, data);
-        LockersHelpers.lockItemSheetPrice(app, html, data);
-      });
-    } catch (e) {
-      error(`Error render for ${"render" + sheet}`);
-      throw error(e, true);
-    }
+  Object.keys(CONFIG.Item.sheetClasses).forEach((itemType) => {
+    Object.keys(CONFIG.Item.sheetClasses[itemType]).forEach((key) => {
+      let sheet = key.split(".")[1];
+      try {
+        Hooks.on("render" + sheet, (app, html, data) => {
+          log(`Launch render for ${"render" + sheet}`);
+          LockersHelpers.lockItemSheetQuantity(app, html, data);
+          LockersHelpers.lockItemSheetWeight(app, html, data);
+          LockersHelpers.lockItemSheetPrice(app, html, data);
+        });
+      } catch (e) {
+        error(`Error render for ${"render" + sheet}`);
+        throw error(e, true);
+      }
+    });
   });
 };
 

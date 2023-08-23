@@ -1,6 +1,8 @@
 export class ItemLinkTreeHelpers {
   static getCollection(item) {
-    return game.modules.get("item-link-tree").api.getCollection(item);
+    return game.modules.get("item-link-tree").api.getCollection({
+      item: item,
+    });
   }
 
   static getCollectionEffectAndBonus(item) {

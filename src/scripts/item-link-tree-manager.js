@@ -6,7 +6,7 @@ import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { checkIfYouCanAddMoreGemsToItem, log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
-  static async managePreAddLeafToItem(item, itemAdded) {
+  static managePreAddLeafToItem(item, itemAdded) {
     const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
     if (!isCrafted) {
       warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
@@ -29,16 +29,16 @@ export class ItemLinkTreeManager {
       return false;
     }
 
-    if (!game.user.isGM) {
-      const shouldAddLeaf = await Dialog.confirm({
-        title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.name`),
-        content: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.hint`),
-      });
+    // if (!game.user.isGM) {
+    //   const shouldAddLeaf = await Dialog.confirm({
+    //     title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.name`),
+    //     content: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.hint`),
+    //   });
 
-      if (!shouldAddLeaf) {
-        return false;
-      }
-    }
+    //   if (!shouldAddLeaf) {
+    //     return false;
+    //   }
+    // }
 
     return true;
   }
@@ -99,13 +99,14 @@ export class ItemLinkTreeManager {
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_DIAMOND, "").trim();
     currentName = currentName + " ";
     currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
+    currentName = currentName.trim();
 
     let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;
-    let currentDenomPrice = getProperty(item, `system.price.denom`) ?? "gp";
+    let currentDenomPrice = getProperty(item, `system.price.denomination`) ?? "gp";
     let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
 
     let priceValueToAdd = getProperty(itemAdded, `system.price.value`) ?? 0;
-    let priceDenomToAdd = getProperty(itemAdded, `system.price.denom`) ?? "gp";
+    let priceDenomToAdd = getProperty(itemAdded, `system.price.denomination`) ?? "gp";
     let priceValueToAddGp = ItemPriceHelpers.convertToGold(priceValueToAdd, priceDenomToAdd);
 
     let newCurrentValuePriceGp = currentValuePriceGp + priceValueToAddGp;
@@ -115,7 +116,7 @@ export class ItemLinkTreeManager {
     await item.update({
       name: currentName,
       "system.price.value": newCurrentValuePriceGp,
-      "system.price.denom": "gp",
+      "system.price.denomination": "gp",
     });
 
     if (itemAdded.actor instanceof CONFIG.Actor.documentClass) {
@@ -146,7 +147,7 @@ export class ItemLinkTreeManager {
     }
     if (customType === "effect" || customType === "effectAndBonus") {
       const effects = item.effects ?? [];
-      const effectsToRemove = itemAdded.effects ?? [];
+      const effectsToRemove = itemRemoved.effects ?? [];
       if (effectsToRemove.length > 0) {
         for (const effectToRemove of effectsToRemove) {
           for (const effect of effects) {
@@ -164,13 +165,14 @@ export class ItemLinkTreeManager {
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_DIAMOND, "").trim();
     currentName = currentName + " ";
     currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
+    currentName = currentName.trim();
 
     let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;
-    let currentDenomPrice = getProperty(item, `system.price.denom`) ?? "gp";
+    let currentDenomPrice = getProperty(item, `system.price.denomination`) ?? "gp";
     let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
 
     let priceValueToRemove = getProperty(itemRemoved, `system.price.value`) ?? 0;
-    let priceDenomToRemove = getProperty(itemRemoved, `system.price.denom`) ?? "gp";
+    let priceDenomToRemove = getProperty(itemRemoved, `system.price.denomination`) ?? "gp";
     let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove);
 
     let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
@@ -180,7 +182,7 @@ export class ItemLinkTreeManager {
     await item.update({
       name: currentName,
       "system.price.value": newCurrentValuePriceGp,
-      "system.price.denom": "gp",
+      "system.price.denomination": "gp",
     });
   }
 }
