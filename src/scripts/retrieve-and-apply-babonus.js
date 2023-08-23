@@ -1,6 +1,9 @@
-import { getItem, isItemBeaverCrafted, isItemLinked, log, warn } from "./lib/lib";
+import { BabonusHelpers } from "./lib/babonus-helper";
+import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
+import { ItemLinkingHelpers } from "./lib/item-linking-helper";
+import { getItem, log, manageNewName, warn } from "./lib/lib";
 
-export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, itemNewName, itemNewImage, itemNewSuffix) {
+export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, itemNewName, itemNewImage, itemNewPrefix ,itemNewSuffix) {
   //   const [itemToCheck] = args;
   itemToCheck = getItem(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
@@ -30,7 +33,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
   }
 
   const weaponsInitial = retrieveWeaponsFromActor(actor, itemTypeToCheck);
-  const weaponsSecondary = retrieveBonusesFromItem(baseItem);
+  const weaponsSecondary = BabonusHelpers.retrieveBonusesFromItem(baseItem);
 
   let content = initialDialogContent(weaponsInitial);
 
@@ -82,7 +85,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               d.render(true);
             }
             if (target.nodeName == "IMG" && (secondaryWeaponID = target.getAttribute("id"))) {
-              let secondaryChosenWeapon = retrieveBonusFromCollection(weaponsSecondary, secondaryWeaponID);
+              let secondaryChosenWeapon = BabonusHelpers.retrieveBonusFromCollection(weaponsSecondary, secondaryWeaponID);
               let chosenSecondaryContent = d.data.content;
               let getMainWeaponId = $(chosenSecondaryContent).find(".mainWeaponImg").attr("id");
               let mainChosenWeapon = actor.items.get(getMainWeaponId);
@@ -114,7 +117,7 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
 
             const weaponSecondaryId = html[0].querySelector(".secondaryWeaponImg")?.id;
             if (weaponSecondaryId) {
-              weaponSecondary = retrieveBonusFromCollection(weaponsSecondary, weaponSecondaryId);
+              weaponSecondary = BabonusHelpers.retrieveBonusFromCollection(weaponsSecondary, weaponSecondaryId);
             }
             // const results = [weaponMain, weaponSecondary];
             // resolve(results);
@@ -127,14 +130,11 @@ export async function retrieveAndApplyBonuses(itemToCheck, itemTypeToCheck, item
               warn(`${game.user.name} you didn't choose any bonus for you main hand (loadout aborted) :(`, true);
               return;
             }
-            await applyBonusToItem(weaponMain, weaponSecondary);
-            let currentName = weaponMain.name;
+            await BabonusHelpers.applyBonusToItem(weaponMain, weaponSecondary);
+
+
+            let currentName = manageNewName(weaponMain.name, itemNewName, itemNewPrefix ,itemNewSuffix);
             let currentImage = weaponMain.img;
-            if (itemNewName) {
-              currentName = itemNewSuffix ? itemNewName + " " + itemNewSuffix : itemNewName;
-            } else {
-              currentName = itemNewSuffix ? currentName + " " + itemNewSuffix : currentName;
-            }
             if (itemNewImage) {
               currentImage = itemNewImage;
             }
@@ -190,7 +190,7 @@ function initialDialogContent(weapons) {
   let content = `
       <p>Choose weapon to boost.</p>
       <hr>
-      <form>  
+      <form>
       <div class="form-group">
       <label for="type">Weapons available:</label>
         <div class="form-fields"><center>
@@ -207,7 +207,7 @@ async function mainWeaponChosenDialogContent(mainChosenWeapon) {
   let content = `
     <p>Selected main hand weapon.</p>
     <hr>
-    <form>  
+    <form>
     <div class="form-group">
     <label for="type">Weapon Selected:</label>
       <div class="form-fields"><center style="width: 40px">
@@ -225,7 +225,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
     let secondaryDialogContent = `
             <p>Choose your off hand item.</p>
             <hr>
-            <form>  
+            <form>
             <div class="form-group">
             <label for="type">Bonus selected:</label>
             <div class="form-fields"><center style="width: 40px">
@@ -249,7 +249,7 @@ async function getSecondaryDialogContent(mainWeapon, content, secondaryWeapon, w
   let secondaryDialogContent = `
       <p>Choose your bonus.</p>
       <hr>
-      <form>  
+      <form>
         <div class="form-group">
         <label for="type">Bonus available:</label>
           <div class="form-fields"><center><a class="secondaryWeaponImg">
@@ -270,8 +270,8 @@ function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
   let weaponsInitial = actor.itemTypes[itemTypeToCheck]?.filter((weapon) => {
     return (
       (!!weapon.getRollData().item.quantity || weapon.item.quantity > 0) &&
-      isItemLinked(weapon) &&
-      isItemBeaverCrafted(weapon)
+      ItemLinkingHelpers.isItemLinked(weapon) &&
+      BeaverCraftingHelpers.isItemBeaverCrafted(weapon)
     );
   });
 
@@ -286,28 +286,4 @@ function retrieveWeaponsFromActor(actor, itemTypeToCheck) {
   return weaponsInitial;
 }
 
-function retrieveBonusesFromItem(baseItem) {
-  // returns a Collection of bonuses on the object.
-  let bonusesInitial = game.modules.get("babonus").api.getCollection(baseItem);
-  return bonusesInitial;
-}
 
-function retrieveBonusFromCollection(collection, id) {
-  // returns a Collection of bonuses on the object.
-  let bonusesInitial = collection.get(id);
-  return bonusesInitial;
-}
-
-async function applyBonusToItem(item, bonus) {
-  // returns a Collection of bonuses on the object.
-  const itemWithBonus = await game.modules.get("babonus").api.embedBabonus(item, bonus);
-  return itemWithBonus;
-}
-
-export async function clearBabonusFromItem(itemToCheck) {
-  itemToCheck = getItem(itemToCheck);
-  const collection = retrieveBonusesFromItem(itemToCheck);
-  for (const bonus of collection) {
-    await game.modules.get("babonus").api.deleteBonus(itemToCheck, bonus.id);
-  }
-}

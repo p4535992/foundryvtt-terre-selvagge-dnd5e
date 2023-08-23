@@ -35,17 +35,29 @@ export default class EffectDefinitions {
     return (
       this._corruzione ?? [
         this._c1,
-        // this._c2,
-        // this._c3,
-        // this._c4,
-        // this._c5,
-        // this._c6,
-        // this._c7,
-        // this._c8,
-        // this._c9,
-        // this._c10,
-        // this._c11,
-        // this._c12
+        this._c2,
+        this._c3,
+        this._c4,
+        this._c5,
+        this._c6,
+        this._c7,
+        this._c8,
+        this._c9,
+        this._c10,
+        this._c11,
+        this._c12,
+        this._c13,
+        this._c14,
+        this._c15,
+        this._c16,
+        this._c17,
+        this._c18,
+        this._c19,
+        this._c20,
+        this._c21,
+        this._c22,
+        this._c23,
+        this._c24
       ]
     );
   }

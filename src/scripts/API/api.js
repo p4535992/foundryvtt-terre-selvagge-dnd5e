@@ -1,6 +1,7 @@
 import CONSTANTS from "../constants/constants.js";
+import { BabonusHelpers } from "../lib/babonus-helper.js";
 import { error } from "../lib/lib.js";
-import { clearBabonusFromItem, retrieveAndApplyBonuses } from "../retrieve-and-apply-babonus.js";
+import { retrieveAndApplyBonuses } from "../retrieve-and-apply-babonus.js";
 import { retrieveSuperiorItemAndReplaceOnActor } from "../retrieve-superior-bymagus.js";
 
 const API = {
@@ -19,6 +20,7 @@ const API = {
       inAttributes.type,
       inAttributes.name,
       inAttributes.image,
+      inAttributes.prefix,
       inAttributes.suffix
     );
   },
@@ -37,14 +39,17 @@ const API = {
     }
 
     retrieveSuperiorItemAndReplaceOnActor(
-      inAttributes.actor,
-      inAttributes.gem,
+      inAttributes.item, // gem
       inAttributes.type,
-      inAttributes.target_bonus
+      inAttributes.target_bonus,
+      inAttributes.name,
+      inAttributes.image,
+      inAttributes.prefix,
+      inAttributes.suffix
     );
   },
 
-  clearBabonusFromItem(inAttributes) {
+  deleteAllBonusFromItem(inAttributes) {
     // if (!Array.isArray(inAttributes)) {
     //   throw error("retrieveAndApplyBonuses| inAttributes must be of type array");
     // }
@@ -52,7 +57,7 @@ const API = {
     if (typeof inAttributes !== "object") {
       throw error("retrieveAndApplyBonuses | inAttributes must be of type object");
     }
-    return clearBabonusFromItem(inAttributes.item);
+    return BabonusHelpers.deleteAllBonusFromItem(inAttributes.item);
   },
 };
 
