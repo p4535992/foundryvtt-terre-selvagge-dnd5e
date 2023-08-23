@@ -61,5 +61,7 @@
         "add": "Add Class Feature Type Color"
       }
     }
-  }
+  },
+  "ts-corruzione-dnd5e.dialog.warning.areyousuretoadd.name": "Are you sure you want to add the object ?",
+  "ts-corruzione-dnd5e.dialog.warning.areyousuretoadd.hint": "The object (usually a gem) will be destroyed when the operation is completed, so be careful adventurer."
 }

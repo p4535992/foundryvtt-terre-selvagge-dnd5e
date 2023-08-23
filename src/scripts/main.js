@@ -9,7 +9,8 @@ import {
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { ItemLinkTreeManager } from "./item-link-tree-manager.js";
-import { warn } from "./lib/lib.js";
+import { warn, error, log } from "./lib/lib.js";
+import { LockersHelpers } from "./lib/locker-helpers.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
@@ -46,7 +47,8 @@ export const setupHooks = async () => {
 
 export const readyHooks = () => {
   readyHooksRarityColors();
-  printMacroWithoutAuthor();
+  // RIMOSSA HA FATTO IL SUO LAVORO  printMacroWithoutAuthor();
+
   //// Hooks.on("updateActor", (actor, updates, data) => {
   ////   Corruzione.calculateCorruzione(actor, updates, data);
   //// });
@@ -108,6 +110,25 @@ export const readyHooks = () => {
 
   Hooks.on("item-link-tree.postRemoveLeafFromItem", async (item, itemRemoved) => {
     await ItemLinkTreeManager.managePostRemoveLeafFromItem(item, itemRemoved);
+  });
+
+//   Hooks.on("renderTidy5eItemSheet", async (app, html, data) => {
+
+//   });
+
+  Object.keys(CONFIG.Item.sheetClasses.item).forEach((key) => {
+    let sheet = key.split(".")[1];
+    try {
+      Hooks.on("render" + sheet, (app, html, actorData) => {
+        log(`Launch render for ${"render" + sheet}`);
+        LockersHelpers.lockItemSheetQuantity(app, html, data);
+        LockersHelpers.lockItemSheetWeight(app, html, data);
+        LockersHelpers.lockItemSheetPrice(app, html, data);
+      });
+    } catch (e) {
+      error(`Error render for ${"render" + sheet}`);
+      throw error(e, true);
+    }
   });
 };
 

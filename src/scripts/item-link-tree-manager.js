@@ -1,11 +1,48 @@
 import CONSTANTS from "./constants/constants";
+import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
+import { ItemPriceHelpers } from "./lib/item-price-helpers";
 import { ItemLinkTreeHelpers } from "./lib/item-link-tree-helpers";
+import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { checkIfYouCanAddMoreGemsToItem, log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
 
     static async managePreAddLeafToItem(item, itemAdded) {
-        return checkIfYouCanAddMoreGemsToItem(item);
+        const isCrafted =  BeaverCraftingHelpers.isItemBeaverCrafted(item);
+        if(!isCrafted) {
+            warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
+            return false;
+        }
+        const isItemLinked =  ItemLinkingHelpers.isItemLinked(item);
+        if(!isItemLinked) {
+            warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' linkato`, true);
+            return false;
+        }
+        const isItemAddedLinked =  ItemLinkingHelpers.isItemLinked(itemAdded);
+        if(!isItemAddedLinked) {
+            warn(`Non puoi aggiungere la gemma perche' non e' linkata`, true);
+            return false;
+        }
+        const isGemCanBeAdded = checkIfYouCanAddMoreGemsToItem(item);
+        if(!isGemCanBeAdded) {
+            warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non puo' contenere altre gemme!`, true);
+            warn(`Hai raggiunto il numero massimo di gemme per l'arma '${item.name}'`, true);
+            return false;
+        }
+
+        if(!game.user.isGM) {
+            const shouldAddLeaf =
+                await Dialog.confirm({
+                    title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.name`),
+                    content: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialog.warning.areyousuretoadd.hint`)
+                });
+
+            if (!shouldAddLeaf) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
       static async managePreRemoveLeafFromItem(item, itemRemoved) {
@@ -37,7 +74,26 @@ export class ItemLinkTreeManager {
       }
     }
     if (customType === "effect" || customType === "effectAndBonus") {
-
+        const effects = item.effects ?? [];
+        const effectsToAdd = itemAdded.effects ?? [];
+        if(effectsToAdd.length > 0) {
+            for (const effectToAdd of effectsToAdd) {
+                let foundedEffect = false;
+                for (const effect of effects) {
+                    if (effect.name === effectToAdd.name) {
+                        foundedEffect = true;
+                        break;
+                    }
+                }
+                if (!foundedEffect) {
+                    log(`Aggiunto effect '${effectToAdd.name}'`, true);
+                    const effectData = effectToAdd.toObject();
+                    setProperty(effectData, `origin`, item.uuid);
+                    setProperty(effectData, `flags.core.sourceId`, item.uuid);
+                    await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
+                }
+            }
+        }
     }
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
@@ -46,14 +102,30 @@ export class ItemLinkTreeManager {
     currentName = currentName + " ";
     currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
 
-    let currentPrice = getProperty(item, `system.price.value`) ?? 0;
-    let priceValueToAdd = getProperty(itemAdded, `system.price.value`) ?? 0;
-    currentPrice = currentPrice + priceValueToAdd;
+    let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;
+    let currentDenomPrice = getProperty(item, `system.price.denom`) ?? "gp";
+    let currentValuePriceGp =  ItemPriceHelpers.convertToGold(currentValuePrice,currentDenomPrice);
 
+    let priceValueToAdd = getProperty(itemAdded, `system.price.value`) ?? 0;
+    let priceDenomToAdd = getProperty(itemAdded, `system.price.denom`) ?? "gp";
+    let priceValueToAddGp = ItemPriceHelpers.convertToGold(priceValueToAdd, priceDenomToAdd);
+
+    let newCurrentValuePriceGp = currentValuePriceGp + priceValueToAddGp;
+    if(newCurrentValuePriceGp < 0) {
+        newCurrentValuePriceGp = 0;
+    }
     await item.update({
         "name": currentName,
-        "system.price.value": currentPrice
+        "system.price.value": newCurrentValuePriceGp,
+        "system.price.denom": "gp"
     });
+
+
+    if(itemAdded.actor instanceof CONFIG.Actor.documentClass) {
+        const actor = itemAdded.actor;
+        log(`Rimosso item '${itemAdded.name}'`, true);
+        await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
+    }
   }
 
   static async managePostRemoveLeafFromItem(item, itemRemoved) {
@@ -76,7 +148,18 @@ export class ItemLinkTreeManager {
       }
     }
     if (customType === "effect" || customType === "effectAndBonus") {
-
+        const effects = item.effects ?? [];
+        const effectsToRemove = itemAdded.effects ?? [];
+        if(effectsToRemove.length >  0) {
+            for (const effectToRemove of effectsToRemove) {
+                for (const effect of effects) {
+                    if (effect.name === effectToRemove.name) {
+                        log(`Rimosso effect '${effect.name}'`, true);
+                        await item.deleteEmbeddedDocuments("ActiveEffect", [effect.id]);
+                    }
+                }
+            }
+        }
     }
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
@@ -85,13 +168,22 @@ export class ItemLinkTreeManager {
     currentName = currentName + " ";
     currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
 
-    let currentPrice = getProperty(item, `system.price.value`) ?? 0;
-    let priceValueToRemove = getProperty(itemRemoved, `system.price.value`) ?? 0;
-    currentPrice = currentPrice - priceValueToRemove;
+    let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;
+    let currentDenomPrice = getProperty(item, `system.price.denom`) ?? "gp";
+    let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
 
+    let priceValueToRemove = getProperty(itemRemoved, `system.price.value`) ?? 0;
+    let priceDenomToRemove = getProperty(itemRemoved, `system.price.denom`) ?? "gp";
+    let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove)
+
+    let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
+    if(newCurrentValuePriceGp < 0) {
+        newCurrentValuePriceGp = 0;
+    }
     await item.update({
         "name": currentName,
-        "system.price.value": currentPrice
+        "system.price.value": newCurrentValuePriceGp,
+        "system.price.denom": "gp"
     });
   }
 }
