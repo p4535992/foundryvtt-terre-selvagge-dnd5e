@@ -55,7 +55,7 @@ export class ItemLinkTreeManager {
     if (customType === "bonus" || customType === "effectAndBonus") {
       const bonuses = game.modules.get("babonus").api.getCollection(item) ?? [];
       const bonusesToAdd = game.modules.get("babonus").api.getCollection(itemAdded) ?? [];
-      if (bonusesToAdd.length > 0) {
+      if (bonusesToAdd.size > 0) {
         for (const bonusToAdd of bonusesToAdd) {
           let foundedBonus = false;
           for (const bonus of bonuses) {
@@ -74,7 +74,7 @@ export class ItemLinkTreeManager {
     if (customType === "effect" || customType === "effectAndBonus") {
       const effects = item.effects ?? [];
       const effectsToAdd = itemAdded.effects ?? [];
-      if (effectsToAdd.length > 0) {
+      if (effectsToAdd.size > 0) {
         for (const effectToAdd of effectsToAdd) {
           let foundedEffect = false;
           for (const effect of effects) {
@@ -134,7 +134,7 @@ export class ItemLinkTreeManager {
     if (customType === "bonus" || customType === "effectAndBonus") {
       const bonuses = game.modules.get("babonus").api.getCollection(item) ?? [];
       const bonusesToRemove = game.modules.get("babonus").api.getCollection(itemRemoved) ?? [];
-      if (bonusesToRemove.length > 0) {
+      if (bonusesToRemove.size > 0) {
         for (const bonusToRemove of bonusesToRemove) {
           for (const bonus of bonuses) {
             if (bonus.name === bonusToRemove.name) {
@@ -148,7 +148,7 @@ export class ItemLinkTreeManager {
     if (customType === "effect" || customType === "effectAndBonus") {
       const effects = item.effects ?? [];
       const effectsToRemove = itemRemoved.effects ?? [];
-      if (effectsToRemove.length > 0) {
+      if (effectsToRemove.size > 0) {
         for (const effectToRemove of effectsToRemove) {
           for (const effect of effects) {
             if (effect.name === effectToRemove.name) {
