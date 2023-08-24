@@ -12,6 +12,14 @@ export class ItemLinkTreeManager {
       warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
       return false;
     }
+    const quantityItem = item.system.quantity;
+    if (quantityItem !== 1) {
+      warn(
+        `Non puoi aggiungere la gemma perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
+        true
+      );
+      return false;
+    }
     const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
     if (!isItemLinked) {
       warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' linkato`, true);
@@ -21,6 +29,11 @@ export class ItemLinkTreeManager {
       const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
       if (!isItemAddedLinked) {
         warn(`Non puoi aggiungere la gemma perche' non e' linkata`, true);
+        return false;
+      }
+      const quantityItemAdded = itemAdded.system.quantity;
+      if (quantityItemAdded < 1) {
+        warn(`Non puoi aggiungere la gemma perche' la quantita' e' uguale < 1`, true);
         return false;
       }
     }
@@ -50,6 +63,7 @@ export class ItemLinkTreeManager {
   }
 
   static async managePostAddLeafToItem(item, itemAdded) {
+    const actor = item.actor;
     const customType = getProperty(itemAdded, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemAdded, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemAdded, `flags.item-link-tree.suffix`) ?? "";
@@ -74,12 +88,13 @@ export class ItemLinkTreeManager {
       }
     }
     if (customType === "effect" || customType === "effectAndBonus") {
-      const effects = item.effects ?? [];
+      const itemEffects = item.effects ?? [];
+      const actorEffects = actor.effects ?? [];
       const effectsToAdd = itemAdded.effects ?? [];
       if (effectsToAdd.size > 0) {
         for (const effectToAdd of effectsToAdd) {
           let foundedEffect = false;
-          for (const effect of effects) {
+          for (const effect of itemEffects) {
             if (effect.name === effectToAdd.name) {
               foundedEffect = true;
               break;
@@ -126,9 +141,28 @@ export class ItemLinkTreeManager {
       log(`Rimosso item '${itemAdded.name}'`, true);
       await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
     }
+
+    if (DAE && actor) {
+      const itemEffects = item.effects ?? [];
+      const actorEffects = actor.effects ?? [];
+      const idsEffectActorToRemove = [];
+      for (const effectToRemove of itemEffects) {
+        for (const effect of actorEffects) {
+          if (effect.name === effectToRemove.name) {
+            log(`Rimosso effect from actor '${effect.name}'`, true);
+            idsEffectActorToRemove.push(effect.id);
+          }
+        }
+      }
+      if (idsEffectActorToRemove.length > 0) {
+        await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
+      }
+      await DAE.fixTransferEffects(actor);
+    }
   }
 
   static async managePostRemoveLeafFromItem(item, itemRemoved) {
+    const actor = item.actor;
     const customType = getProperty(itemRemoved, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemRemoved, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemRemoved, `flags.item-link-tree.suffix`) ?? "";
@@ -148,17 +182,53 @@ export class ItemLinkTreeManager {
       }
     }
     if (customType === "effect" || customType === "effectAndBonus") {
-      const effects = item.effects ?? [];
+      const itemEffects = item.effects ?? [];
+      const actorEffects = actor.effects ?? [];
       const effectsToRemove = itemRemoved.effects ?? [];
       if (effectsToRemove.size > 0) {
+        // TODO miglorare questo pezzo di codice
+        // if (DAE) {
+        //   for (const effectToRemove of effectsToRemove) {
+        //     for (const effect of effects) {
+        //       if (effect.name === effectToRemove.name) {
+        //         log(`Rimosso effect '${effect.name}'`, true);
+        //         let uuidItem = item.uuid;
+        //         let origin = effect.origin;
+        //         let ignore = [];
+        //         let deleteEffects = [];
+        //         let removeSequencer = true;
+        //         await DAE.deleteActiveEffect(uuidItem, origin, ignore, deleteEffects, removeSequencer);
+        //       }
+        //     }
+        //   }
+        // } else {
+        const idsEffectItemToRemove = [];
         for (const effectToRemove of effectsToRemove) {
-          for (const effect of effects) {
+          for (const effect of itemEffects) {
             if (effect.name === effectToRemove.name) {
-              log(`Rimosso effect '${effect.name}'`, true);
-              await item.deleteEmbeddedDocuments("ActiveEffect", [effect.id]);
+              log(`Rimosso effect from item '${effect.name}'`, true);
+              idsEffectItemToRemove.push(effect.id);
             }
           }
         }
+        if (idsEffectItemToRemove.length > 0) {
+          await item.deleteEmbeddedDocuments("ActiveEffect", idsEffectItemToRemove);
+        }
+
+        const idsEffectActorToRemove = [];
+        for (const effectToRemove of effectsToRemove) {
+          for (const effect of actorEffects) {
+            if (effect.name === effectToRemove.name) {
+              log(`Rimosso effect from actor '${effect.name}'`, true);
+              idsEffectActorToRemove.push(effect.id);
+            }
+          }
+        }
+        if (idsEffectActorToRemove.length > 0) {
+          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
+        }
+
+        // }
       }
     }
 
