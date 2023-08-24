@@ -106,8 +106,8 @@ export class Corruzione {
       case "dnd5e.Tidy5eSheet": {
         const htmlPrimaryResource = html.find(".attributes").find(".resource")[0];
         // Set css on corruzione
-        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
-          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        if (!htmlPrimaryResource.classList.contains("terre-selvagge-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("terre-selvagge-dnd5e-resource");
         }
         if (!game.user.isGM) {
           const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");
@@ -120,8 +120,8 @@ export class Corruzione {
       case "dnd5e.CompactBeyond5eSheet": {
         const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
         // Set css on corruzione
-        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
-          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        if (!htmlPrimaryResource.classList.contains("terre-selvagge-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("terre-selvagge-dnd5e-resource");
         }
         if (!game.user.isGM) {
           const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");
@@ -134,8 +134,8 @@ export class Corruzione {
       default: {
         const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
         // Set css on corruzione
-        if (!htmlPrimaryResource.classList.contains("ts-corruzione-dnd5e-resource")) {
-          htmlPrimaryResource.classList.add("ts-corruzione-dnd5e-resource");
+        if (!htmlPrimaryResource.classList.contains("terre-selvagge-dnd5e-resource")) {
+          htmlPrimaryResource.classList.add("terre-selvagge-dnd5e-resource");
         }
         if (!game.user.isGM) {
           const inputs = htmlPrimaryResource.querySelectorAll("input[type='text']");

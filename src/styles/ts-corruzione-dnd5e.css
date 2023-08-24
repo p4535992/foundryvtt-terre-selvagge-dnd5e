@@ -1,18 +1,18 @@
 /* resource corruzione */
 
-.attributes .resource.ts-corruzione-dnd5e-resource {
-  background-image: url(/modules/ts-corruzione-dnd5e/assets/images/background_corruzione.jpg);
+.attributes .resource.terre-selvagge-dnd5e-resource {
+  background-image: url(/modules/terre-selvagge-dnd5e/assets/images/background_corruzione.jpg);
   background-attachment: inherit;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.attributes .resource.ts-corruzione-dnd5e-resource input[type="text"],
-.attributes .resource.ts-corruzione-dnd5e-resource span.sep {
+.attributes .resource.terre-selvagge-dnd5e-resource input[type="text"],
+.attributes .resource.terre-selvagge-dnd5e-resource span.sep {
   color: antiquewhite;
 }
 
-.attributes .attribute.resource.ts-corruzione-dnd5e-resource .recharge {
+.attributes .attribute.resource.terre-selvagge-dnd5e-resource .recharge {
   display: none !important;
 }
 
@@ -45,9 +45,9 @@
 */
 
 .item.linked div h4::after {
-  content: url("/modules/ts-corruzione-dnd5e/assets/images/item-color-linking/TS.png");
+  content: url("/modules/terre-selvagge-dnd5e/assets/images/item-color-linking/TS.png");
 }
 
 .item.linked.broken-link div h4::after {
-  content: url("/modules/ts-corruzione-dnd5e/assets/images/item-color-linking/TS2.png");
+  content: url("/modules/terre-selvagge-dnd5e/assets/images/item-color-linking/TS2.png");
 }

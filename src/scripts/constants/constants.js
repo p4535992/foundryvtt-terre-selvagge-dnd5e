@@ -1,6 +1,6 @@
 const CONSTANTS = {
-  MODULE_ID: "ts-corruzione-dnd5e",
-  PATH: `modules/ts-corruzione-dnd5e/`,
+  MODULE_ID: "terre-selvagge-dnd5e",
+  PATH: `modules/terre-selvagge-dnd5e/`,
   RESOURCE_CORRUZIONE: {
     LABEL: "Corruzione",
     MAX: 12,

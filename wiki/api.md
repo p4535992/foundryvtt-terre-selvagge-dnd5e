@@ -1,4 +1,4 @@
-The api is reachable from the variable `game.modules.get('ts-corruzione-dnd5e').api` or from the socket libary `socketLib` on the variable `game.modules.get('ts-corruzione-dnd5e').socket` if present and active.
+The api is reachable from the variable `game.modules.get('terre-selvagge-dnd5e').api` or from the socket libary `socketLib` on the variable `game.modules.get('terre-selvagge-dnd5e').socket` if present and active.
 
 #### retrieveAndApplyBonuses({item: uuid|Item, type:string, name?:string, image?:string, prefix?:string, suffix?:string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
@@ -19,7 +19,7 @@ In pratica applica un bonus di babonus all'item scelto.
 **Example**:
 
 ```
-game.modules.get('ts-corruzione-dnd5e').api.retrieveAndApplyBonuses({
+game.modules.get('terre-selvagge-dnd5e').api.retrieveAndApplyBonuses({
     item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5",
     type: "weapon"
 })
@@ -55,7 +55,7 @@ const COMPENDIUM = {
 **Example**:
 
 ```
-game.modules.get('ts-corruzione-dnd5e').api.retrieveSuperiorItemAndReplaceOnActor({
+game.modules.get('terre-selvagge-dnd5e').api.retrieveSuperiorItemAndReplaceOnActor({
     item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5",
     type: "weapon",
     target_bonus: 3
@@ -78,7 +78,7 @@ Rimuovi tutti i bonus dall'oggetto selezionato
 **Example**:
 
 ```
-game.modules.get('ts-corruzione-dnd5e').api.deleteAllBonusFromItem({
+game.modules.get('terre-selvagge-dnd5e').api.deleteAllBonusFromItem({
     item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5"
 })
 

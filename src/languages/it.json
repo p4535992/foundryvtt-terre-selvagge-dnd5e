@@ -1,16 +1,16 @@
 {
-  "ts-corruzione-dnd5e.setting.formulaCraftingToolNoProf.name": "Formula negativa per il crafting senza competenza",
-  "ts-corruzione-dnd5e.setting.formulaCraftingToolNoProf.hint": "Si tratta di una formula per applicare un effetto negativo allo strumento per fare qualcosa senza competenza. es. -2, o -1d4",
+  "terre-selvagge-dnd5e.setting.formulaCraftingToolNoProf.name": "Formula negativa per il crafting senza competenza",
+  "terre-selvagge-dnd5e.setting.formulaCraftingToolNoProf.hint": "Si tratta di una formula per applicare un effetto negativo allo strumento per fare qualcosa senza competenza. es. -2, o -1d4",
 
-  "ts-corruzione-dnd5e.setting.reset.name": "Reset settings to default",
-  "ts-corruzione-dnd5e.setting.reset.label": "Reset Settings To Default",
-  "ts-corruzione-dnd5e.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
-  "ts-corruzione-dnd5e.setting.debug.name": "Enable debugging",
-  "ts-corruzione-dnd5e.setting.debug.label": "Prints debug messages to the console",
-  "ts-corruzione-dnd5e.setting.debug.hint": " ",
+  "terre-selvagge-dnd5e.setting.reset.name": "Reset settings to default",
+  "terre-selvagge-dnd5e.setting.reset.label": "Reset Settings To Default",
+  "terre-selvagge-dnd5e.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
+  "terre-selvagge-dnd5e.setting.debug.name": "Enable debugging",
+  "terre-selvagge-dnd5e.setting.debug.label": "Prints debug messages to the console",
+  "terre-selvagge-dnd5e.setting.debug.hint": " ",
 
-  "ts-corruzione-dnd5e.dialogs.resetsettings.title": "Reset Module Settings",
-  "ts-corruzione-dnd5e.dialogs.resetsettings.content": "Are you sure you want to reset all of the module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
-  "ts-corruzione-dnd5e.dialogs.resetsettings.confirm": "Ripristino delle impostazioni del modulo",
-  "ts-corruzione-dnd5e.dialogs.resetsettings.cancel": "Annulla"
+  "terre-selvagge-dnd5e.dialogs.resetsettings.title": "Reset Module Settings",
+  "terre-selvagge-dnd5e.dialogs.resetsettings.content": "Are you sure you want to reset all of the module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
+  "terre-selvagge-dnd5e.dialogs.resetsettings.confirm": "Ripristino delle impostazioni del modulo",
+  "terre-selvagge-dnd5e.dialogs.resetsettings.cancel": "Annulla"
 }
