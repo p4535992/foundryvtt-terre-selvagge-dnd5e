@@ -7,29 +7,29 @@ import { checkIfYouCanAddMoreGemsToItem, log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
   static managePreAddLeafToItem(item, itemAdded) {
-    // const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
-    // if (!isCrafted) {
-    //   warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
-    //   return false;
-    // }
-    // const quantityItem = item.system.quantity;
-    // if (quantityItem !== 1) {
-    //   warn(
-    //     `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
-    //     true
-    //   );
-    //   return false;
-    // }
-    // const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
-    // if (!isItemLinked) {
-    //   warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non e' linkato`, true);
-    //   return false;
-    // }
-    // const isItemLeaf = ItemLinkTreeHelpers.isItemLeaf(item);
-    // if (isItemLeaf) {
-    //   warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' una gemma/foglia`, true);
-    //   return false;
-    // }
+    const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
+    if (!isCrafted) {
+      warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
+      return false;
+    }
+    const quantityItem = item.system.quantity;
+    if (quantityItem !== 1) {
+      warn(
+        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
+        true
+      );
+      return false;
+    }
+    const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
+    if (!isItemLinked) {
+      warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non e' linkato`, true);
+      return false;
+    }
+    const isItemLeaf = ItemLinkTreeHelpers.isItemLeaf(item);
+    if (isItemLeaf) {
+      warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' una gemma/foglia`, true);
+      return false;
+    }
 
     const isFilterByItemTypeOk = ItemLinkTreeHelpers.isFilterByItemTypeOk(itemAdded, item.type);
     if (!isFilterByItemTypeOk) {

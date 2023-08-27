@@ -9,7 +9,9 @@ import {
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { ItemLinkTreeManager } from "./item-link-tree-manager.js";
+import { CleanerSheetTitleBarHelpers } from "./lib/cleaner-sheet-title-bar-helpers.js";
 import { CssHelpers } from "./lib/css-helpers.js";
+import { CustomCharacterSheetSectionsHelpers } from "./lib/custom-character-sheet-sections-helpers.js";
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
@@ -49,6 +51,18 @@ export const setupHooks = async () => {
 export const readyHooks = () => {
   readyHooksRarityColors();
   CssHelpers.applyGMStyle();
+  CleanerSheetTitleBarHelpers.registerCleanerSheetTitleBarHandler();
+  libWrapper.register(
+    CONSTANTS.MODULE_ID,
+    "CONFIG.Actor.sheetClasses.character['dnd5e.ActorSheet5eCharacter'].cls.prototype.getData",
+    CustomCharacterSheetSectionsHelpers.customSectionGetData,
+    "WRAPPER"
+  );
+
+  Hooks.on("renderActorSheet5eCharacter", (app, html, appData) => {
+    CustomCharacterSheetSectionsHelpers.renderActorSheet5eCharacterHandler(app, html, appData);
+  });
+
   // RIMOSSA HA FATTO IL SUO LAVORO  printMacroWithoutAuthor();
 
   //// Hooks.on("updateActor", (actor, updates, data) => {

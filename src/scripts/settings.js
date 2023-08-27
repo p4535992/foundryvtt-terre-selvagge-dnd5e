@@ -99,6 +99,23 @@ export const registerSettings = function () {
     type: RarityColorsApp,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "hideEmpty", {
+    name: "Hide Empty Sections",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "collapse-navbars", {
+    name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.collapse-navbars.name`),
+    hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.collapse-navbars.hint`),
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+
   // ========================================================================
   game.settings.register(CONSTANTS.MODULE_ID, "debug", {
     name: `${CONSTANTS.MODULE_ID}.setting.debug.name`,
