@@ -9,6 +9,7 @@ import {
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { ItemLinkTreeManager } from "./item-link-tree-manager.js";
+import { CssHelpers } from "./lib/css-helpers.js";
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
@@ -47,6 +48,7 @@ export const setupHooks = async () => {
 
 export const readyHooks = () => {
   readyHooksRarityColors();
+  CssHelpers.applyGMStyle();
   // RIMOSSA HA FATTO IL SUO LAVORO  printMacroWithoutAuthor();
 
   //// Hooks.on("updateActor", (actor, updates, data) => {

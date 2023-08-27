@@ -1,0 +1,514 @@
+/*--- toglie la possibilita ai pg di aggiungere tool proficiencies, immunities, vulnerabilities etc.. ---*/
+.trait-selector {
+  display: none;
+}
+.dnd5e.sheet.actor.character.cb5es #context-menu {
+  width: 200px;
+}
+/*--- chat sidebar grafica ---*/
+.chat-message {
+  background-color: transparent;
+  background-image: none;
+  border-image-source: url(/modules/rpg-styled-ui/ui/img/gui/ui-board-parchment.png);
+  border-image-repeat: repeat;
+  border-image-slice: 120 fill;
+  border-image-width: 20px;
+  border-color: transparent !important;
+  border-width: 4px;
+  margin: 0.2rem 0.5rem;
+  padding: 0.5rem 1rem;
+  filter: sepia(20%);
+}
+.chat-message.blind {
+  border-image-source: url(/modules/rpg-styled-ui/ui/img/gui/ui-board-parchment-purple.png);
+}
+.chat-message.whisper {
+  border-image-source: url(/modules/rpg-styled-ui/ui/img/gui/ui-board-parchment-purple.png);
+}
+
+/*--- End Chat Grafica ---*/
+
+/*--- Nascondere pulsanti inutili e context menu sulla scheda pg ---*/
+
+a.header-button.control.chris-premades,
+a.header-button.control.tit-menu__btn-open--sheet,
+a.ddb-open-url,
+a.header-button.control.configure-token,
+a.revert-warpgate,
+a.open-actor-effect,
+a.header-button.control.pop__btn-open,
+a.configure-sheet {
+  /* display: none !important; */
+  display: none;
+}
+
+/*--- end Nascondere pulsanti inutili ---*/
+
+/*--- grafica tabelle ---*/
+table {
+  filter: drop-shadow(2px 0px 6px gray) !important;
+  border-collapse: collapse;
+  margin-right: 0px;
+  background: url(/modules/terre-selvagge-dnd5e/assets/images/style/dmkal_parchment_paper_texture_background_square_07681844-9a33-488a-8282-1f5e68654c9b.png?width=671&height=671)
+    repeat !important;
+  border: 1px solid #555 !important;
+}
+table td {
+  border: 1px solid #555 !important;
+  padding-left: 1rem;
+  font-size: 110%;
+  backdrop-filter: grayscale(20%);
+  color: black !important;
+  text-align: center;
+}
+table th {
+  background-color: #777 !important;
+  background: url(ui/denim-light.png) repeat;
+  color: white !important;
+  font-family: "History", sans-serif;
+  font-size: 130%;
+  text-shadow: 1px 2px 2px black;
+  border: 1px solid #666 !important;
+}
+/*---  end grafica tabelle ---*/
+/*--- world explorer slider ---*/
+#world-explorer-opacity-adjuster .window-content {
+  margin: 0px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+/*--- Pulsante header restore wildshape ---*/
+a.header-button.control.restore-transformation::before {
+  content: "";
+}
+a.header-button.control.restore-transformation:after {
+  z-index: -1;
+  content: " WildShape Back";
+  text-align: center;
+  white-space: normal; /* Allow text to wrap to the next line */
+  line-height: 4.5;
+  text-decoration: underline;
+  display: block;
+  position: absolute;
+  top: -45px;
+  left: 320px;
+  width: 200px;
+  height: 42px;
+  background-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/test.png); /* Replace with your image URL */
+  background-size: cover; /* Adjust as needed */
+  background-repeat: no-repeat; /* Adjust as needed */
+  border-radius: 9px 9px 0px 0px !important;
+  transition: background-position 0.2s;
+}
+/*--- end Pulsante header restore wildshap ---*/
+
+/*--- modifica immagine profile scheda  ---*/
+
+.dnd5e.sheet.actor.character.cb5es .sheet-header .profile {
+  border-right: 1px solid #333;
+  border: 1px solid #333;
+  /* Gradient Mask */
+  -webkit-mask-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/Untitled_design_1.png);
+  mask-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/Untitled_design_1.png);
+  -webkit-mask-mode: no-repeat;
+  mask-mode: no-repeat;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+#settings button,
+#sidebar .directory .action-buttons button {
+  z-index: 18;
+  color: var(--color-text-light-highlight);
+  font-family: "Kurale", serif;
+  line-height: 17px;
+  position: relative;
+  background: rgba(0, 0, 0, 0.1);
+  background-size: cover;
+  border: 1px solid #332a1f;
+  box-shadow: 0px 0px 0px 1px #675241;
+  transition: all 0.2s;
+}
+.fa-caret-right {
+  background-image: url(/modules/ui/img/icons/inout.png) !important;
+  width: 100%;
+  height: 100%;
+  display: inline-block !important;
+  background-position: center !important;
+  background-size: 20px 15px !important;
+  background-repeat: no-repeat;
+  content: "";
+  text-align: center;
+}
+i.fa-caret-left::before,
+i.fa-caret-right::before {
+  content: "";
+}
+.fa-caret-left {
+  background-image: url(/modules/ui/img/icons/inout.png) !important;
+  width: 100%;
+  height: 100%;
+  display: inline-block !important;
+  background-position: center !important;
+  background-size: 20px 15px !important;
+  background-repeat: no-repeat;
+  content: "";
+  text-align: center;
+  vertical-align: top;
+}
+#chat-form textarea {
+  background: rgb(48 47 47 / 77%) !important;
+  border-image: url(/modules/ui/img/chat-controls-border.png) 4 repeat;
+  border-image-width: 3px;
+  border-image-outset: 3px 2px 2px 2px;
+  color: white;
+}
+#chat-log {
+  background: rgb(48 47 47 / 77%) !important;
+  border-image: url(/modules/ui/img/chat-controls-border.png) 4 repeat;
+  border-image-width: 4px;
+  border-image-outset: 0px 0px 0px 0px;
+  animation: fadein 2s;
+  -moz-animation: fadein 2s;
+  /* Firefox */
+  -webkit-animation: fadein 2s;
+  /* Safari and Chrome */
+  -o-animation: fadein 2s;
+  /* Opera */
+}
+/*--- BARRA MACRO ---*/
+#hotbar {
+  margin-left: 1rem;
+  height: 70px;
+}
+
+/* Custom CSS */
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@600;700&display=swap");
+body {
+  font-family: "Crimson Text", serif;
+}
+/*--- FINESTRE ---*/
+.app {
+  padding: 4px;
+  background-color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-radius: 0;
+  border-style: solid;
+}
+/*-- finestra minimizzata --*/
+.window-app .window-header a {
+  background: none;
+}
+.window-app.minimized {
+  padding: 1rem 0;
+  background-color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-style: solid;
+}
+.window-app.minimized .window-header {
+  border: none;
+  margin: -14px 12px 0 0;
+  padding: 0 1rem;
+  overflow: hidden;
+  box-shadow: none;
+}
+/*-- header finestre --*/
+.window-app .window-header {
+  overflow: hidden;
+  line-height: 2rem;
+  padding: 0 1rem;
+  height: 2.2rem;
+  border-bottom: 2px solid #f29e3e;
+  box-shadow: 0px 10px 0px 0px #221c1b;
+  z-index: 1;
+}
+/*-- content finestre --*/
+.window-app .window-content {
+  margin: 10px;
+  border-radius: 8px 8px 8px 8px;
+}
+
+.window-app .window-resizable-handle {
+  right: 5px;
+  bottom: 5px;
+}
+/*--- BARRA LATERALE SINISTRA ---*/
+/*-- Grandezza Icone --*/
+#controls ol.control-tools.main-controls li,
+#controls ol.control-tools.sub-controls li {
+  font-size: 1rem;
+}
+/*-- Grandezza Icone --*/
+#controls ol.control-tools > li {
+  background-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/pulsante-control-tools.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  color: #29201c;
+}
+/*-- Icone Hover/Active --*/
+#controls ol.control-tools > li.active,
+#controls ol.control-tools > li:hover {
+  border: 0;
+  color: #ffead7;
+}
+/*-- Icone Toggle --*/
+#controls ol.control-tools > li.toggle {
+  background-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/pulsante-control-tools.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 0;
+  color: #29201c;
+}
+#controls ol.control-tools > li.toggle.active,
+#controls ol.control-tools > li.toggle:hover {
+  background: none;
+  background-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/pulsante-control-tools.webp);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 0;
+  color: #ffead7;
+}
+/*-- Lista Giocatori --*/
+#ui-left #players {
+  cursor: pointer;
+  visibility: visible;
+  max-height: 400px;
+  overflow-x: scroll;
+  min-width: 190px;
+}
+
+#players {
+  padding: 0.4rem;
+  background-color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-style: solid;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+#players h3 {
+  background-color: #221c1b;
+  opacity: 0.8;
+  border-style: solid;
+  width: 12rem;
+  text-align: center;
+  border-width: 0px;
+  position: fixed;
+  padding: 2px 12px;
+  font-size: 15px;
+  overflow: visible;
+  margin-top: -1.7rem;
+  margin-left: -0.4rem;
+  border-top-right-radius: 1rem;
+}
+/*--- BARRA MACRO ---*/
+
+#hotbar #macro-list#hotbar #bar-controls {
+  background: none;
+  border: 0;
+  box-shadow: 0;
+}
+
+#hotbar #hotbar-directory-controls {
+  background-color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-style: solid;
+}
+
+#hotbar #action-bar {
+  margin-left: 0.5rem;
+  padding: 0.4rem 2rem 0.4rem 0.4rem;
+  background-color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-style: solid;
+  z-index: -1;
+}
+#hotbar #macro-list {
+  border: 0;
+}
+#hotbar .macro,
+#hotbar .macro img {
+  border-width: 1px;
+  border-color: #c9c7b8;
+  border-radius: 8px;
+  box-shadow: 0;
+}
+/*--- NAVIGAZIONE MAPPE ---*/
+#navigation .monks-scene-navigation .scene-list {
+  gap: 0.2rem;
+  text-transform: uppercase;
+  height: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #221c1b;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-radius: 0;
+  border-style: solid;
+}
+#navigation .monks-scene-navigation .scene-list li {
+  text-align: center;
+}
+#navigation .monks-scene-navigation:not(:first-child) .scene-list {
+  margin-top: -1.3rem;
+}
+.monks-scene-navigation + .monks-scene-navigation {
+  padding-top: 1.2rem;
+}
+#navigation .monks-scene-navigation .scene-list > li.nav-item a {
+  padding: 1rem;
+  height: 100%;
+  line-height: 0.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #221c1b;
+  background-color: #221c1b;
+  color: #ffead7;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-radius: 0;
+  border-style: solid;
+}
+.sidebar-tab .folder .folder-header {
+  background-image: none !important;
+  text-align: left !important;
+  padding-top: 15px !important;
+  padding-bottom: 10px !important;
+  padding-left: 23px !important;
+  color: #ffffff;
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-radius: 0;
+  filter: sepia(20%) grayscale(50%);
+}
+#controls ol.control-tools.sub-controls li .fas {
+  font-size: 1rem;
+}
+#navigation .monks-scene-navigation .scene-list > li.view a {
+  background-color: #f09c3b;
+  color: #221c1b;
+}
+#navigation .monks-scene-navigation .scene-list > li.active a {
+  color: #221c1b;
+  background-color: #ffead7;
+  box-shadow: 0 0 10px #f09c3b;
+}
+#navigation .monks-scene-navigation .scene-list > li.nav-item.folder a {
+  border-top: 1px;
+  border-bottom: 1px;
+  filter: drop-shadow(2px 2px 4px #f5f5d0);
+  padding: 0.6rem 1.5rem 1.5rem 1.5rem;
+}
+#navigation.background .monks-scene-navigation .scene-list > li.folder.expanded a {
+  text-align: center !important;
+  /*position:relative;*/
+  filter: sepia(90%);
+  background-position: center !important;
+  background-size: 100% 54px !important;
+  background-repeat: no-repeat !important;
+  padding: 0.6rem 1.5rem 1.5rem 1.5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px black;
+  margin: 0;
+}
+#navigation .monks-scene-navigation .scene-list > li.nav-item ul.scene-players {
+  top: 0.1rem;
+}
+#navigation.background .monks-scene-navigation .scene-list {
+  background-color: transparent;
+  border-width: 0px;
+  padding: 4px;
+}
+body.change-windows:not(.system-forbidden-lands) .window-app > header {
+  overflow: hidden;
+  line-height: 2rem;
+  padding: 0 1rem;
+  height: 2.2rem;
+  background-color: #221c1b;
+  border: none;
+  border-bottom: 2px solid #f29e3e;
+  box-shadow: 0px 10px 0px 0px #221c1b;
+  z-index: 1;
+}
+body.change-windows:not(.system-forbidden-lands) .window-app:not(.image-popout) {
+  background-color: #221c1b;
+  background-image: none;
+}
+.app {
+  background-image: none !important;
+}
+
+.dnd5e.sheet.actor.character.cb5es {
+  min-width: 915px;
+}
+
+.monks-scene-navigation #context-menu {
+  background: url(/modules/terre-selvagge-dnd5e/assets/images/style/dmkal_parchment_paper_texture_background_square_07681844-9a33-488a-8282-1f5e68654c9b.png?width=671&height=671)
+    repeat !important;
+  color: black !important;
+  font-size: 75% !important;
+  border-image-slice: 16 16 16 16 !important;
+  border-image-width: 20px 20px 20px 20px !important;
+  border-image-repeat: stretch stretch !important;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp) !important;
+}
+.monks-scene-navigation #context-menu li.context-item {
+  text-align: left;
+  line-height: 26px;
+}
+/*--- modifica  a plutonium per rimuovere select options non accettate ---*/
+
+body.change-windows #context-menu {
+  background: url(/modules/terre-selvagge-dnd5e/assets/images/style/dmkal_parchment_paper_texture_background_square_07681844-9a33-488a-8282-1f5e68654c9b.png?width=671&height=671)
+    repeat !important;
+  color: black !important;
+  font-size: 110%;
+  border-image-slice: 16 16 16 16 !important;
+  border-image-width: 20px 20px 20px 20px !important;
+  border-image-repeat: stretch stretch !important;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp) !important;
+  box-shadow: 2px 2px 12px black;
+}
+.quick-insert-app .search-editable-input {
+  color: beige !important;
+  background: black !important;
+  border-image-slice: 16 16 16 16 !important;
+  border-image-width: 20px 20px 20px 20px !important;
+  border-image-repeat: stretch stretch !important;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp) !important;
+  box-shadow: 2px 2px 12px black;
+  padding-left: 6px;
+}
+.quick-insert-result {
+  max-height: calc(40vh);
+  overflow-y: auto;
+  background: ivory;
+  color: black;
+}
+.directory .directory-item.folder .context {
+  z-index: 2;
+}

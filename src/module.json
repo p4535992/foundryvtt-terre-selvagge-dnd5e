@@ -57,7 +57,7 @@
     }
   ],
   "esmodules": ["module.js"],
-  "styles": ["styles/terre-selvagge-dnd5e.css"],
+  "styles": ["styles/terre-selvagge-dnd5e.css", "styles/terre-selvagge-dnd5e-player-ui.css"],
   "compatibility": {
     "minimum": 11,
     "verified": 11,

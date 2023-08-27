@@ -12,4 +12,25 @@ export class ItemLinkTreeHelpers {
     });
     return leafsFilter;
   }
+
+  static isItemLeaf(itemToCheck) {
+    const isLeaf = itemToCheck.getFlag("item-link-tree", "isLeaf");
+    if (isLeaf) {
+      return true;
+    }
+    return false;
+  }
+
+  static isFilterByItemTypeOk(itemToCheck, itemType) {
+    const filterItemType = itemToCheck.getFlag("item-link-tree", "filterItemType");
+    if (filterItemType && itemType) {
+      const filterItemTypeArr = filterItemType.split(",") ?? [];
+      if (filterItemTypeArr.length > 0 && filterItemTypeArr.includes(itemType)) {
+        return true;
+      }
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

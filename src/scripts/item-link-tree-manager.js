@@ -7,39 +7,57 @@ import { checkIfYouCanAddMoreGemsToItem, log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
   static managePreAddLeafToItem(item, itemAdded) {
-    const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
-    if (!isCrafted) {
-      warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
-      return false;
-    }
-    const quantityItem = item.system.quantity;
-    if (quantityItem !== 1) {
+    // const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
+    // if (!isCrafted) {
+    //   warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
+    //   return false;
+    // }
+    // const quantityItem = item.system.quantity;
+    // if (quantityItem !== 1) {
+    //   warn(
+    //     `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
+    //     true
+    //   );
+    //   return false;
+    // }
+    // const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
+    // if (!isItemLinked) {
+    //   warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non e' linkato`, true);
+    //   return false;
+    // }
+    // const isItemLeaf = ItemLinkTreeHelpers.isItemLeaf(item);
+    // if (isItemLeaf) {
+    //   warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' una gemma/foglia`, true);
+    //   return false;
+    // }
+
+    const isFilterByItemTypeOk = ItemLinkTreeHelpers.isFilterByItemTypeOk(itemAdded, item.type);
+    if (!isFilterByItemTypeOk) {
       warn(
-        `Non puoi aggiungere la gemma perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
+        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' un tipo non supportato '${item.type}'`,
         true
       );
       return false;
     }
-    const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
-    if (!isItemLinked) {
-      warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' linkato`, true);
-      return false;
-    }
+
     if (!game.user.isGM) {
       const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
       if (!isItemAddedLinked) {
-        warn(`Non puoi aggiungere la gemma perche' non e' linkata`, true);
+        warn(`Non puoi aggiungere la gemma/foglia perche' non e' linkata`, true);
         return false;
       }
       const quantityItemAdded = itemAdded.system.quantity;
       if (quantityItemAdded < 1) {
-        warn(`Non puoi aggiungere la gemma perche' la quantita' e' uguale < 1`, true);
+        warn(`Non puoi aggiungere la gemma/foglia perche' la quantita' e' uguale < 1`, true);
         return false;
       }
     }
     const isGemCanBeAdded = checkIfYouCanAddMoreGemsToItem(item);
     if (!isGemCanBeAdded) {
-      warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non puo' contenere altre gemme!`, true);
+      warn(
+        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non puo' contenere altre gemme/foglie!`,
+        true
+      );
       warn(`Hai raggiunto il numero massimo di gemme per l'arma '${item.name}'`, true);
       return false;
     }
@@ -64,6 +82,9 @@ export class ItemLinkTreeManager {
 
   static async managePostAddLeafToItem(item, itemAdded) {
     const actor = item.actor;
+    if (!actor) {
+      return;
+    }
     const customType = getProperty(itemAdded, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemAdded, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemAdded, `flags.item-link-tree.suffix`) ?? "";
@@ -92,6 +113,7 @@ export class ItemLinkTreeManager {
       const actorEffects = actor.effects ?? [];
       const effectsToAdd = itemAdded.effects ?? [];
       if (effectsToAdd.size > 0) {
+        const effectDatas = [];
         for (const effectToAdd of effectsToAdd) {
           let foundedEffect = false;
           for (const effect of itemEffects) {
@@ -105,8 +127,12 @@ export class ItemLinkTreeManager {
             const effectData = effectToAdd.toObject();
             setProperty(effectData, `origin`, item.uuid);
             setProperty(effectData, `flags.core.sourceId`, item.uuid);
-            await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
+            effectDatas.push(effectData);
+            //await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
           }
+        }
+        if (effectDatas.length > 0) {
+          await item.createEmbeddedDocuments("ActiveEffect", effectDatas);
         }
       }
     }
@@ -137,9 +163,13 @@ export class ItemLinkTreeManager {
     });
 
     if (itemAdded.actor instanceof CONFIG.Actor.documentClass) {
-      const actor = itemAdded.actor;
-      log(`Rimosso item '${itemAdded.name}'`, true);
-      await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
+      if (itemAdded.system.quantity > 1) {
+        log(`Update quantity item '${itemAdded.name}|${itemAdded.id}'`);
+        await itemAdded.update({ "system.quantity": itemAdded.system.quantity - 1 });
+      } else {
+        log(`Delete item '${itemAdded.name}|${itemAdded.id}'`);
+        await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
+      }
     }
 
     if (DAE && actor) {
@@ -148,7 +178,7 @@ export class ItemLinkTreeManager {
       const idsEffectActorToRemove = [];
       for (const effectToRemove of itemEffects) {
         for (const effect of actorEffects) {
-          if (effect.name === effectToRemove.name) {
+          if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
             log(`Rimosso effect from actor '${effect.name}'`, true);
             idsEffectActorToRemove.push(effect.id);
           }
@@ -163,6 +193,9 @@ export class ItemLinkTreeManager {
 
   static async managePostRemoveLeafFromItem(item, itemRemoved) {
     const actor = item.actor;
+    if (!actor) {
+      return;
+    }
     const customType = getProperty(itemRemoved, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemRemoved, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemRemoved, `flags.item-link-tree.suffix`) ?? "";
@@ -206,6 +239,7 @@ export class ItemLinkTreeManager {
         for (const effectToRemove of effectsToRemove) {
           for (const effect of itemEffects) {
             if (effect.name === effectToRemove.name) {
+              // Non funziona  && effect.origin === itemRemoved.uuid
               log(`Rimosso effect from item '${effect.name}'`, true);
               idsEffectItemToRemove.push(effect.id);
             }
@@ -218,7 +252,7 @@ export class ItemLinkTreeManager {
         const idsEffectActorToRemove = [];
         for (const effectToRemove of effectsToRemove) {
           for (const effect of actorEffects) {
-            if (effect.name === effectToRemove.name) {
+            if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
               log(`Rimosso effect from actor '${effect.name}'`, true);
               idsEffectActorToRemove.push(effect.id);
             }
