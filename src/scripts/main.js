@@ -14,7 +14,7 @@ import { CssHelpers } from "./lib/css-helpers.js";
 import { CustomCharacterSheetSectionsHelpers } from "./lib/custom-character-sheet-sections-helpers.js";
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
-import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./patch-dae.js";
+import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./old/patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export let invPlusActive = false;

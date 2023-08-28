@@ -139,9 +139,10 @@ export class ItemLinkTreeManager {
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
 
-    let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_DIAMOND, "").trim();
+    let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();
+    currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE_OLD, "").trim();
     currentName = currentName + " ";
-    currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
+    currentName += CONSTANTS.SYMBOL_UPGRADE.repeat(leafs.length);
     currentName = currentName.trim();
 
     let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;
@@ -268,9 +269,10 @@ export class ItemLinkTreeManager {
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
 
-    let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_DIAMOND, "").trim();
+    let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();
+    currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE_OLD, "").trim();
     currentName = currentName + " ";
-    currentName += CONSTANTS.SYMBOL_DIAMOND.repeat(leafs.length);
+    currentName += CONSTANTS.SYMBOL_UPGRADE.repeat(leafs.length);
     currentName = currentName.trim();
 
     let currentValuePrice = getProperty(item, `system.price.value`) ?? 0;

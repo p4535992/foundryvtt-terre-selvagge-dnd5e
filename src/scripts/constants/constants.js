@@ -40,7 +40,8 @@ const CONSTANTS = {
     },
     SIZES_ORDERED: ["tiny", "sm", "med", "lg", "huge", "grg"],
   },
-  SYMBOL_DIAMOND: "💎",
+  SYMBOL_UPGRADE_OLD: "💎",
+  SYMBOL_UPGRADE: "✮",
 };
 
 CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_ID}/`;

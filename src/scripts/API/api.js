@@ -1,8 +1,8 @@
 import CONSTANTS from "../constants/constants.js";
 import { BabonusHelpers } from "../lib/babonus-helpers.js";
 import { error } from "../lib/lib.js";
-import { retrieveAndApplyBonuses } from "../retrieve-and-apply-babonus.js";
-import { retrieveSuperiorItemAndReplaceOnActor } from "../retrieve-superior-bymagus.js";
+import { retrieveAndApplyBonuses } from "../old/retrieve-and-apply-babonus.js";
+import { retrieveSuperiorItemAndReplaceOnActor } from "../old/retrieve-superior-bymagus.js";
 
 const API = {
   // TODO

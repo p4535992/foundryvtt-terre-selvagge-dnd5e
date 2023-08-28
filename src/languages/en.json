@@ -15,7 +15,7 @@
   "terre-selvagge-dnd5e.setting.enableBackgroundColorInsteadText.hint": "Color the Backgrounds Items in the sidebar and the inventory instead the text",
 
   "terre-selvagge-dnd5e.setting.collapse-navbars.name": "Compact Navbars ?",
-  "terre-selvagge-dnd5e.setting.collapse-navbars.hint":  "If enabled, nav bars are compacted on token config sheet.",
+  "terre-selvagge-dnd5e.setting.collapse-navbars.hint": "If enabled, nav bars are compacted on token config sheet.",
 
   "terre-selvagge-dnd5e.setting.reset.name": "Reset settings to default",
   "terre-selvagge-dnd5e.setting.reset.label": "Reset Settings To Default",
