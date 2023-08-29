@@ -106,3 +106,11 @@ export function patchForNoteWithMacroWheelModule(note, hover) {
   // in questo modo posso usare macrowheel di theripper con le note e non solo con  i tokens
   ui.lastNoteHovered = note;
 }
+
+export function patchStrangeEditableItem(actorSheet, html, data) {
+  html.find($(".item-list .item")).attr("contenteditable", "false");
+  // let items = html.find($(".item-list .item"));
+  // for (let itemElement of items) {
+  //   //
+  // }
+}

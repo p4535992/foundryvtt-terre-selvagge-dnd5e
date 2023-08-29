@@ -6,6 +6,7 @@ import {
   applyCustomRuleForCraftingItemsWithoutProficiency,
   enableNoteOnCanvasInit,
   patchForNoteWithMacroWheelModule,
+  patchStrangeEditableItem,
   printMacroWithoutAuthor,
   setPriceToZeroIfObjectIsNotCreatedByGM,
 } from "./custom.js";
@@ -74,6 +75,7 @@ export const readyHooks = () => {
   Hooks.on("renderActorSheet5e", (app, html, data) => {
     Corruzione.managePrimaryResourceCorruzione(app, html, data);
     setItemLinkingColor(app, html, data);
+    patchStrangeEditableItem(app, html, data);
   });
 
   Hooks.on("preCreateItem", (doc, createData, options, user) => {
