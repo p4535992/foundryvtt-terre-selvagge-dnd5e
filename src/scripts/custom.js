@@ -96,3 +96,13 @@ export function printMacroWithoutAuthor() {
     }
   });
 }
+
+export function enableNoteOnCanvasInit() {
+  game.settings.set("core", "notesDisplayToggle", true);
+}
+
+export function patchForNoteWithMacroWheelModule(note, hover) {
+  // I n pratica salva in una variabile l ultima nota con cui sei passato sopra con il mouse
+  // in questo modo posso usare macrowheel di theripper con le note e non solo con  i tokens
+  ui.lastNoteHovered = note;
+}

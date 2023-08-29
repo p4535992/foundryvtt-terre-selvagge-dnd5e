@@ -4,6 +4,8 @@ import CONSTANTS from "./constants/constants.js";
 import { Corruzione } from "./corruzione.js";
 import {
   applyCustomRuleForCraftingItemsWithoutProficiency,
+  enableNoteOnCanvasInit,
+  patchForNoteWithMacroWheelModule,
   printMacroWithoutAuthor,
   setPriceToZeroIfObjectIsNotCreatedByGM,
 } from "./custom.js";
@@ -149,6 +151,14 @@ export const readyHooks = () => {
         throw error(e, true);
       }
     });
+  });
+
+  Hooks.on("canvasInit", function () {
+    enableNoteOnCanvasInit();
+  });
+
+  Hooks.on("hoverNote", (note, hover) => {
+    patchForNoteWithMacroWheelModule(note, hover);
   });
 };
 
