@@ -7,6 +7,9 @@ export class ItemLinkTreeHelpers {
 
   static getCollectionEffectAndBonus(item) {
     const leafs = ItemLinkTreeHelpers.getCollection(item);
+    if (leafs?.length <= 0) {
+      return [];
+    }
     const leafsFilter = leafs.filter((leaf) => {
       return leaf.customLink === "bonus" || leaf.customLink === "effect" || leaf.customLink === "effectAndBonus";
     });

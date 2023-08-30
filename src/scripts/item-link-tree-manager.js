@@ -40,6 +40,18 @@ export class ItemLinkTreeManager {
       return false;
     }
 
+    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item) ?? [];
+    for (const leaf of leafs) {
+      const itemLeaf = fromUuidSync(leaf.uuid);
+      if (itemLeaf && itemLeaf.name === itemAdded.name) {
+        warn(
+          `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a gia' una gemma/foglia di quel tipo`,
+          true
+        );
+        return false;
+      }
+    }
+
     if (!game.user.isGM) {
       const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
       if (!isItemAddedLinked) {
