@@ -17,6 +17,7 @@ import { CssHelpers } from "./lib/css-helpers.js";
 import { CustomCharacterSheetSectionsHelpers } from "./lib/custom-character-sheet-sections-helpers.js";
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
+import { ScrollHelpers } from "./lib/scroll-helpers.js";
 import { patchDAECreateActiveEffect, patchDAEDeleteActiveEffect, patchDAEUpdateActiveEffect } from "./old/patch-dae.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
@@ -90,6 +91,10 @@ export const readyHooks = () => {
     applyCustomRuleForCraftingItemsWithoutProficiency(actor, itemData, type);
   });
 
+  Hooks.on("dnd5e.getItemContextOptions", (item, options) => {
+    ScrollHelpers.createScrollContextVoice(item, options);
+  });
+
   //   /**
   //  * A hook event that fires when an item is used, after the measured template has been created if one is needed.
   //  * @function dnd5e.useItem
@@ -161,6 +166,10 @@ export const readyHooks = () => {
 
   Hooks.on("hoverNote", (note, hover) => {
     patchForNoteWithMacroWheelModule(note, hover);
+  });
+
+  Hooks.on("dnd5e.createScrollFromSpell", (spell, spellScrollData) => {
+    ScrollHelpers.doNotCreateASpellScrollIfYouAreNotGMV2(spell, spellScrollData);
   });
 };
 

@@ -84,3 +84,94 @@ game.modules.get('terre-selvagge-dnd5e').api.deleteAllBonusFromItem({
 
 ```
 
+#### setItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+
+Rendi un'oggetto "beaver craftato" aggiungendo i flags appositi , "created" se il flag è assente "updated" se gia' presente con il valore "created"
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.setItemAsBeaverCrafted({
+    item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5"
+})
+
+```
+
+```
+
+#### unsetItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+
+Rimuovi i flags del "beaver craftato" rendendo l'oggetto craftato non craftato
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.unsetItemAsBeaverCrafted({
+    item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5"
+})
+
+```
+
+#### createScroll({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+
+Crea uno scroll con valori predefiniti a partire da un'item.
+I valori predefiniti sono:
+
+- timeToken = "Time Coin";
+- label = "Scribe Scroll";
+- feats = [{ name: "", price: 0.5 }];
+- spellComponents =  { "Arcane Sword": { h: ["Miniature Platinum Sword (250 gp)"] }, Augury: { h: ["Specially Marked Tokens (25 gp)"] ... }
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.createScroll({
+    item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5"
+})
+
+```
+
+#### createScrollWithParams({item: uuid|Item, spellComponents: Object, feats: Object, label: string, timeToken:string}):void ⇒ <code>Promise&lt;void&gt;</code>
+
+Crea uno scroll con valori espliciti a partire da un'item.
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+
+TODO
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.createScrollWithParams({
+    item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5",
+    timeToken: "Time Coin",
+    label: "Scribe Scroll",
+    feats: [{ name: "", price: 0.5 }],
+    spellComponents:  { "Arcane Sword": { h: ["Miniature Platinum Sword (250 gp)"] }, Augury: { h: ["Specially Marked Tokens (25 gp)"] ... }
+})
+```
