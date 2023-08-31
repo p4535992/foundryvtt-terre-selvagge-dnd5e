@@ -101,9 +101,6 @@ Rendi un'oggetto "beaver craftato" aggiungendo i flags appositi , "created" se i
 game.modules.get('terre-selvagge-dnd5e').api.setItemAsBeaverCrafted({
     item: "Actor.7bm6EK8jnopnGRS4.Item.kowQq6PhIxid2ei5"
 })
-
-```
-
 ```
 
 #### unsetItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
