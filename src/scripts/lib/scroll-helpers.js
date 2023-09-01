@@ -3,7 +3,6 @@ import { error, warn, log, getItem, info } from "./lib";
 
 // The ID of the Components Compendium
 const TIME_TOKEN = "Time Coin";
-
 const LABEL = "Crea Scroll";
 
 //const FEATS = [{ name: 'spellscriber', price: 0.5 },{ name: 'master scriber', price: 0.5 },{ name: 'etc', price: 0.5 }];
