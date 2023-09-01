@@ -34,7 +34,7 @@ const SPELL_COMPONENTS = {
 	'Circle of Death': { h: ['Crushed Black Pearl Powder (500 gp)'] },
 	Clairvoyance: { h: [['Glass Eye (100 gp)', 'Jewelled Horn (100 gp)']] },
 	Contingency: { h: ['Statuette (1500 gp)'] },
-    Chromatic Orb: { h: ['Diamond (50 gp)'] },
+    'Chromatic Orb': { h: ['Diamond (50 gp)'] },
 	'Create Undead': { h: ['Black Onyx (150 gp)'] },
 	'Find the Path': { h: ['Divinatory Bones (100 gp)'] },
 	Forbiddance: { h: ['Powdered Ruby (1,000 gp)'] },
