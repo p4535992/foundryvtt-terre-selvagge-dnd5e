@@ -16,7 +16,7 @@
 
 ### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
 
-A personal module for manage a custom resource called "Corruzione"
+A personal module for manage a custom resource called "Corruzione" and other settings of Terre Selvagge, italian West Marches
 
 ## Installation
 
