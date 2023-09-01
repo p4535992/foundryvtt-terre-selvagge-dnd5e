@@ -4,10 +4,10 @@ import { error, warn, log, getItem, info } from "./lib";
 // The ID of the Components Compendium
 const TIME_TOKEN = "Time Coin";
 
-const LABEL = "Scribe Scroll";
+const LABEL = "Crea Scroll";
 
 //const FEATS = [{ name: 'spellscriber', price: 0.5 },{ name: 'master scriber', price: 0.5 },{ name: 'etc', price: 0.5 }];
-const FEATS = [{ name: "", price: 0.5 }];
+const FEATS = [{ name: "Master Scrivener", price: 0.5 }];
 
 // ------------------------------------ //
 // const COMPONENTS_COMPENDIUM = 'MC5e.MC5e';
