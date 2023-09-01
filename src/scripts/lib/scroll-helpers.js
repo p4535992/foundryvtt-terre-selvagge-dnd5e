@@ -27,83 +27,90 @@ const LEVELS_COST = {
   9: { gp: 250000, time: 48 },
 };
 
-// ------------------------------------ //
+// ------------------------------------ //+
+
+// "h" means "have"... components you must have with you but are not consumed
+// "c" means "consume"... component you must have and are consumed
+// All items inside the Arrays are considered in the category, and if you have an array inside the array, like in the Clairvoyance example
+// Clairvoyance: { h: [['Glass Eye (100 gp)', 'Jewelled Horn (100 gp)']] },
+// Array inside an array = anyone of those components
+// you can have glass Eye OR Jewelled Horn
 const SPELL_COMPONENTS = {
-	'Arcane Sword': { h: ['Miniature Platinum Sword (250 gp)'] },
-	Augury: { h: ['Specially Marked Tokens (25 gp)'] },
-	'Circle of Death': { h: ['Crushed Black Pearl Powder (500 gp)'] },
-	Clairvoyance: { h: [['Glass Eye (100 gp)', 'Jewelled Horn (100 gp)']] },
-	Contingency: { h: ['Statuette (1500 gp)'] },
-    'Chromatic Orb': { h: ['Diamond (50 gp)'] },
-	'Create Undead': { h: ['Black Onyx (150 gp)'] },
-	'Find the Path': { h: ['Divinatory Bones (100 gp)'] },
-	Forbiddance: { h: ['Powdered Ruby (1,000 gp)'] },
-	Forcecage: { h: [['Ruby Dust (1,500 gp)', 'Powdered Ruby (1,500 gp)']] },
-    //Imprisonment ???
-    'Infernal Calling': { h: ['Ruby (999 gp)'] },
-	Gate: { h: ['Diamond (5,000 gp)'] },
-	'Holy Aura': { h: ['Tiny Reliquary (1,000 gp)'] },
-	Identify: { h: ['White Pearl (100 gp)'] },
-	'Instant Summons': { h: ['Sapphire (1,000 gp)'] },
-	'Magic Jar': { h: ['Golden Reliquary (500 gp)'] },
-	'Magnificent Mansion': {
-		h: ['Miniature Ivory Portal (5 gp)', 'Piece of polished marble (5 gp)', 'Tiny Silver Spoon (5 gp)'],
-	},
-	'Plane Shift': { h: ['Forked Metal Rod (250 gp)'] },
-	'Programmed Illusion': { h: ['Jade Dust (25 gp)'] },
-    'Project Image': { h: ['Small Self-Replica (5 gp)'] },
-	Scrying: { h: ['Crystal Ball (1,000 gp)'] },
-	'Secret Chest': { h: ['Exquisite Chest (5,000 gp)'] },
-    'Shadow of Moil': { h: ['Undead eyeball in a gem (150 gp)'] },
-    'Soul Cage': { h: ['Tiny Silver Cage (100 gp)'] },
-	Shapechange: { h: ['Jade Circlet (1500 gp)'] },
-    'Summon Beast': { h: ['Gilded Acorn (200 gp)'] },
-    'Summon Aberration': { h: ['Platinum-inlaid Vial (400 gp)'] },
-    'Summon Celestial': { h: ['Golden Reliquary (500 gp)'] },
-    'Summon Fey': { h: ['Gilded Flower (300 gp)'] },
-    'Summon Construct': { h: ['Ornate Lockbox (400 gp)'] },
-    'Summon Elemental': { h: ['Gold-inlaid Vial (400 gp)'] },
-    'Summon Fiend': { h: ['Humanoid Blood in Ruby Vial (600 gp)'] },
-    'Summon Shadowspawn': { h: ['Tears inside a gem (300 gp)'] },
-    'Summon Undead': { h: ['Gilded Skull (300 gp)'] },
-    "Tasha's Otherworldly Guise": { h: ['Outer Planes Engraving (500 gp)'] },
-    'Temple of the Gods': { h: ['Holy Symbol'] },
-	'Warding Bond': { h: ['Platinum Ring (50 gp)'] },
-	'Guards and Wards': { c: ['Charcoal (10 gp)'] },
-	'Arcane Lock': { c: ['Gold Dust (25 gp)'] },
-	'Astral Projection': { c: ['Jacinth (1,000 gp)', 'Ornate Carved Silver Bar (100 gp)'] },
-	Awaken: { c: ['Agate (1,000 gp)'] },
-    Ceremony: { c: ['Powdered Silver (25 gp)'] },
-	Clone: { c: ['Diamond (1,000 gp)'] },
-	'Continual Flame': { c: ['Ruby Dust (50gp)'] },
-    'Create Homunculus': { c: ['Jewel-encrusted Dagger (1,000 gp)'] },
-    Dawn: { c: ['Sunburst Pendant (100 gp)'] },
-	Divination: { c: ['Incense (25 gp)'] }, 
-	'Find Familiar': { c: ['Charcoal (10 gp)'] },
-	'Glyph of Warding': { c: ['Powdered Diamond Dust (200 gp)'] },
-	'Greater Restoration': { c: ['Diamond Dust (100 gp)'] },
-	Hallow: { c: ['Herbs, Oil, & Incense (1,000 gp)'] },
-	"Heroes' Feast": { c: ['Gem-Encrusted Bowl (1,000 gp)'] },
-	'Illusory Script': { c: ['Lead-based Ink (10 gp)'] },
-    Invulnerability: { c: ['Piece of Adamantine (500 gp)'] },
-	'Legend Lore': { c: ['Incense (250 gp)'], h: [{ i: 'Ivory Strip (50 gp)', qtd: 4 }] },
-    "Leomund's Secret Chest": { c: ['Exquisite Chest (5,000 gp)', 'Tiny Replica Chest (50 gp)'] },
-	'Magic Circle': { c: ['Powdered Silver & Iron (100 gp)'] },
-	'Magic Mouth': { c: ['Jade Dust (10 gp)'] },
-    'Magic Fortress': { c: ['Diamond (500 gp)'] },
-	Nondetection: { c: ['Diamond Dust (25 gp)'] },
-	'Planar Binding': { c: ['Jewel (1,000 gp)'] },
-	'Raise Dead': { c: ['Diamond (500 gp)'] },
-	Reincarnate: { c: ['Rare Oils & Ungents (1,000 gp)'] },
-	Resurrection: { c: ['Diamond (1,000 gp)'] },
-	Revivify: { c: ['Diamond (300 gp)'] },
-	Sequester: { c: ['Powdered Gem Dusts (5,000 gp)'] },
-	Simulacrum: { c: ['Powdered Ruby (1,500 gp)'] },
-	Stoneskin: { c: ['Diamond Dust (100 gp)'] },
-	Symbol: { c: ['Powdered Diamond & Opal (1,000 gp)'] },
-	'Teleportation Circle': { c: ['Gem-infused rare inks (50 gp)'] },
-	'True Resurrection': { c: ['Diamonds (25,0000 gp)'] },
-	'True Seeing': { c: ['Eye Ointment (25 gp)'] },
+  "Arcane Sword": { h: ["Miniature Platinum Sword (250 gp)"] },
+  Augury: { h: ["Specially Marked Tokens (25 gp)"] },
+  "Circle of Death": { h: ["Crushed Black Pearl Powder (500 gp)"] },
+  Clairvoyance: { h: [["Glass Eye (100 gp)", "Jewelled Horn (100 gp)"]] },
+  Contingency: { h: ["Statuette (1500 gp)"] },
+  "Chromatic Orb": { h: ["Diamond (50 gp)"] },
+  "Create Undead": { h: ["Black Onyx (150 gp)"] },
+  "Find the Path": { h: ["Divinatory Bones (100 gp)"] },
+  Forbiddance: { h: ["Powdered Ruby (1,000 gp)"] },
+  Forcecage: { h: [["Ruby Dust (1,500 gp)", "Powdered Ruby (1,500 gp)"]] },
+  //Imprisonment ???
+  "Infernal Calling": { h: ["Ruby (999 gp)"] },
+  Gate: { h: ["Diamond (5,000 gp)"] },
+  "Holy Aura": { h: ["Tiny Reliquary (1,000 gp)"] },
+  Identify: { h: ["White Pearl (100 gp)"] },
+  "Instant Summons": { h: ["Sapphire (1,000 gp)"] },
+  "Magic Jar": { h: ["Golden Reliquary (500 gp)"] },
+  "Magnificent Mansion": {
+    h: ["Miniature Ivory Portal (5 gp)", "Piece of polished marble (5 gp)", "Tiny Silver Spoon (5 gp)"],
+  },
+  "Plane Shift": { h: ["Forked Metal Rod (250 gp)"] },
+  "Programmed Illusion": { h: ["Jade Dust (25 gp)"] },
+  "Project Image": { h: ["Small Self-Replica (5 gp)"] },
+  Scrying: { h: ["Crystal Ball (1,000 gp)"] },
+  "Secret Chest": { h: ["Exquisite Chest (5,000 gp)"] },
+  "Shadow of Moil": { h: ["Undead eyeball in a gem (150 gp)"] },
+  "Soul Cage": { h: ["Tiny Silver Cage (100 gp)"] },
+  Shapechange: { h: ["Jade Circlet (1500 gp)"] },
+  "Summon Beast": { h: ["Gilded Acorn (200 gp)"] },
+  "Summon Aberration": { h: ["Platinum-inlaid Vial (400 gp)"] },
+  "Summon Celestial": { h: ["Golden Reliquary (500 gp)"] },
+  "Summon Fey": { h: ["Gilded Flower (300 gp)"] },
+  "Summon Construct": { h: ["Ornate Lockbox (400 gp)"] },
+  "Summon Elemental": { h: ["Gold-inlaid Vial (400 gp)"] },
+  "Summon Fiend": { h: ["Humanoid Blood in Ruby Vial (600 gp)"] },
+  "Summon Shadowspawn": { h: ["Tears inside a gem (300 gp)"] },
+  "Summon Undead": { h: ["Gilded Skull (300 gp)"] },
+  "Tasha's Otherworldly Guise": { h: ["Outer Planes Engraving (500 gp)"] },
+  "Temple of the Gods": { h: ["Holy Symbol"] },
+  "Warding Bond": { h: ["Platinum Ring (50 gp)"] },
+  "Guards and Wards": { c: ["Charcoal (10 gp)"] },
+  "Arcane Lock": { c: ["Gold Dust (25 gp)"] },
+  "Astral Projection": { c: ["Jacinth (1,000 gp)", "Ornate Carved Silver Bar (100 gp)"] },
+  Awaken: { c: ["Agate (1,000 gp)"] },
+  Ceremony: { c: ["Powdered Silver (25 gp)"] },
+  Clone: { c: ["Diamond (1,000 gp)"] },
+  "Continual Flame": { c: ["Ruby Dust (50gp)"] },
+  "Create Homunculus": { c: ["Jewel-encrusted Dagger (1,000 gp)"] },
+  Dawn: { c: ["Sunburst Pendant (100 gp)"] },
+  Divination: { c: ["Incense (25 gp)"] },
+  "Find Familiar": { c: ["Charcoal (10 gp)"] },
+  "Glyph of Warding": { c: ["Powdered Diamond Dust (200 gp)"] },
+  "Greater Restoration": { c: ["Diamond Dust (100 gp)"] },
+  Hallow: { c: ["Herbs, Oil, & Incense (1,000 gp)"] },
+  "Heroes' Feast": { c: ["Gem-Encrusted Bowl (1,000 gp)"] },
+  "Illusory Script": { c: ["Lead-based Ink (10 gp)"] },
+  Invulnerability: { c: ["Piece of Adamantine (500 gp)"] },
+  "Legend Lore": { c: ["Incense (250 gp)"], h: [{ i: "Ivory Strip (50 gp)", qtd: 4 }] },
+  "Leomund's Secret Chest": { c: ["Exquisite Chest (5,000 gp)", "Tiny Replica Chest (50 gp)"] },
+  "Magic Circle": { c: ["Powdered Silver & Iron (100 gp)"] },
+  "Magic Mouth": { c: ["Jade Dust (10 gp)"] },
+  "Magic Fortress": { c: ["Diamond (500 gp)"] },
+  Nondetection: { c: ["Diamond Dust (25 gp)"] },
+  "Planar Binding": { c: ["Jewel (1,000 gp)"] },
+  "Raise Dead": { c: ["Diamond (500 gp)"] },
+  Reincarnate: { c: ["Rare Oils & Ungents (1,000 gp)"] },
+  Resurrection: { c: ["Diamond (1,000 gp)"] },
+  Revivify: { c: ["Diamond (300 gp)"] },
+  Sequester: { c: ["Powdered Gem Dusts (5,000 gp)"] },
+  Simulacrum: { c: ["Powdered Ruby (1,500 gp)"] },
+  Stoneskin: { c: ["Diamond Dust (100 gp)"] },
+  Symbol: { c: ["Powdered Diamond & Opal (1,000 gp)"] },
+  "Teleportation Circle": { c: ["Gem-infused rare inks (50 gp)"] },
+  "True Resurrection": { c: ["Diamonds (25,0000 gp)"] },
+  "True Seeing": { c: ["Eye Ointment (25 gp)"] },
 };
 
 export class ScrollHelpers {
@@ -439,23 +446,25 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
   if (!game.user.isGM) {
     await spendCoin(actor, gp); // Automatically checks for GP
     await spendTime(actor, time, TIME_TOKEN);
-  } else {
-    info(`Il gamemaster ignora i controlli sul prezzo e sul consumo dei time token`, true);
-  }
-  // Removing consumable items from Actor
-  for (const consumable of consumables) {
-    await removeConsumables(consumable);
-  }
-
-  // Spending Spell Slot
-  if (currentSpellLevel.level !== 0) {
-    if (currentSpellLevel.pact) {
-      await actor.update({ "system.spells.pact.value": currentSpellLevel.value - 1 });
-    } else {
-      await actor.update({
-        [`system.spells.spell${currentSpellLevel.level}.value`]: currentSpellLevel.value - 1,
-      });
+    // Removing consumable items from Actor
+    for (const consumable of consumables) {
+      await removeConsumables(consumable);
     }
+    // Spending Spell Slot
+    if (currentSpellLevel.level !== 0) {
+      if (currentSpellLevel.pact) {
+        await actor.update({ "system.spells.pact.value": currentSpellLevel.value - 1 });
+      } else {
+        await actor.update({
+          [`system.spells.spell${currentSpellLevel.level}.value`]: currentSpellLevel.value - 1,
+        });
+      }
+    }
+  } else {
+    info(
+      `Il gamemaster ignora i controlli sul prezzo,sul consumo dei time token, sui consumable e sugli spell slot`,
+      true
+    );
   }
 
   // Creating Spell Scroll
