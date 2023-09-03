@@ -201,7 +201,8 @@ export class ScrollHelpers {
     //  * @param {object} spellScrollData    The final item data used to make the scroll.
     //  */
     // Hooks.callAll("dnd5e.createScrollFromSpell", spell, spellScrollData);
-    return new this(spellScrollData);
+    // return new this(spellScrollData);
+    return spellScrollData;
   }
 
   static doNotCreateASpellScrollIfYouAreNotGMV2(spell, spellScrollData) {
