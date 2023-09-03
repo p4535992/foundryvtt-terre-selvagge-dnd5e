@@ -461,11 +461,16 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
 
 /**
  * @href https://stackoverflow.com/questions/19799777/how-to-add-transparency-information-to-a-hex-color-code
+ * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
  */
-export function convertHexColorToRGBAColorString(color, alpha = 0.25) {
-  // const rgb = Color.from(color);
+export function convertHexColorToRGBAColorString(colorHex, alpha = 0.25) {
+  // const rgb = Color.from(colorHex);
   // return "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alpha + ")";
-  return `${color}${Math.floor(alpha * 255)
-    .toString(16)
-    .padStart(2, "0")}`;
+  if (colorHex.length > 7) {
+    return colorHex;
+  } else {
+    return `${colorHex}${Math.floor(alpha * 255)
+      .toString(16)
+      .padStart(2, "0")}`;
+  }
 }
