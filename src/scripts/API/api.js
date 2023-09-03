@@ -1,6 +1,7 @@
 import CONSTANTS from "../constants/constants.js";
 import { BabonusHelpers } from "../lib/babonus-helpers.js";
 import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers.js";
+import { HarvesterHelpers } from "../lib/harvester-helpers.js";
 import { error } from "../lib/lib.js";
 import { ScrollHelpers } from "../lib/scroll-helpers.js";
 import { retrieveAndApplyBonuses } from "../old/retrieve-and-apply-babonus.js";
@@ -110,6 +111,10 @@ const API = {
       inAttributes.label,
       inAttributes.timeToken
     );
+  },
+
+  async updateHarvesterQuantityByRegEx(packToExportKey) {
+    return await HarvesterHelpers.updateHarvesterQuantityByRegEx(packToExportKey);
   },
 };
 
