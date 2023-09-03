@@ -303,7 +303,16 @@ function getActorSpellLevels(actor) {
     return { value: v.value, level };
   });
 
-  return levels.filter((l) => l.value).sort((a, b) => a.level - b.level);
+  if (game.user.isGM) {
+    return levels
+      .map((l) => {
+        l.value = 1;
+        return l;
+      })
+      .sort((a, b) => a.level - b.level);
+  } else {
+    return levels.filter((l) => l.value).sort((a, b) => a.level - b.level);
+  }
 }
 
 async function spendCoin(actor, gp) {
@@ -321,7 +330,7 @@ async function spendCoin(actor, gp) {
     gp -= amount / c.conversion;
   }
 
-  if (gp > 0) {
+  if (gp > 0 && !game.user.isGM) {
     const msg = "Not enough gold coins to spend, or amount is indivisible";
     throw new error(msg, true);
   }
@@ -361,7 +370,7 @@ async function removeConsumables({ items, qtd }) {
 async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKEN) {
   if (!(item.name in SPELL_COMPONENTS)) {
     const { consumed, cost } = item.system.materials;
-    if (consumed && cost) {
+    if (consumed && cost && !game.user.isGM) {
       const msg = "Components not registered for this spell";
       throw new error(item + ", " + msg, true);
     }
@@ -429,7 +438,7 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
   const spellLevels = isCantrip ? [{ value: null, level: 0 }] : getActorSpellLevels(actor);
   let currentSpellLevel;
 
-  if (!spellLevels.find((s) => s.level >= item.system.level)) {
+  if (!spellLevels.find((s) => s.level >= item.system.level) && !game.user.isGM) {
     ui.notifications.error(`You don't have enough spell slots available to scribe the scroll`);
     return;
   }
@@ -528,12 +537,12 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
   const gp = cost.find((c) => c.type === "gp").qtd;
   const time = cost.find((c) => c.type === "time").qtd;
 
-  if (totalTime(actor, TIME_TOKEN) < time) {
-    throw error(`Not enough ${TIME_TOKEN}`, true);
-  }
-
   // Spending GP and Time Coins
   if (!game.user.isGM) {
+    if (totalTime(actor, TIME_TOKEN) < time) {
+      throw error(`Not enough ${TIME_TOKEN}`, true);
+    }
+
     await spendCoin(actor, gp); // Automatically checks for GP
     await spendTime(actor, time, TIME_TOKEN);
     // Removing consumable items from Actor
