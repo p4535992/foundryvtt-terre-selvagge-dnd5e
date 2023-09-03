@@ -122,7 +122,7 @@ export class ScrollHelpers {
    */
   static async createScrollFromSpell(spell, options = {}) {
     // Get spell data
-    const itemData = spell instanceof Item5e ? spell.toObject() : spell;
+    const itemData = spell instanceof Item ? spell.toObject() : spell;
     let {
       actionType,
       description,
