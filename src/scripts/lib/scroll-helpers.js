@@ -114,6 +114,96 @@ const SPELL_COMPONENTS = {
 };
 
 export class ScrollHelpers {
+  /**
+   * Create a consumable spell scroll Item from a spell Item.
+   * @param {Item5e|object} spell     The spell or item data to be made into a scroll
+   * @param {object} [options]        Additional options that modify the created scroll
+   * @returns {Item5e}                The created scroll consumable item
+   */
+  static async createScrollFromSpell(spell, options = {}) {
+    // Get spell data
+    const itemData = spell instanceof Item5e ? spell.toObject() : spell;
+    let {
+      actionType,
+      description,
+      source,
+      activation,
+      duration,
+      target,
+      range,
+      damage,
+      formula,
+      save,
+      level,
+      attackBonus,
+      ability,
+      components,
+    } = itemData.system;
+
+    // Get scroll data
+    const scrollUuid = `Compendium.${CONFIG.DND5E.sourcePacks.ITEMS}.${CONFIG.DND5E.spellScrollIds[level]}`;
+    const scrollItem = await fromUuid(scrollUuid);
+    const scrollData = scrollItem.toObject();
+    delete scrollData._id;
+
+    // Split the scroll description into an intro paragraph and the remaining details
+    const scrollDescription = scrollData.system.description.value;
+    const pdel = "</p>";
+    const scrollIntroEnd = scrollDescription.indexOf(pdel);
+    const scrollIntro = scrollDescription.slice(0, scrollIntroEnd + pdel.length);
+    const scrollDetails = scrollDescription.slice(scrollIntroEnd + pdel.length);
+
+    // Create a composite description from the scroll description and the spell details
+    const desc =
+      scrollIntro +
+      `<hr><h3>${itemData.name} (${game.i18n.format("DND5E.LevelNumber", { level })})</h3>` +
+      (components.concentration ? `<p><em>${game.i18n.localize("DND5E.ScrollRequiresConcentration")}</em></p>` : "") +
+      `<hr>${description.value}<hr>` +
+      `<h3>${game.i18n.localize("DND5E.ScrollDetails")}</h3><hr>${scrollDetails}`;
+
+    // Used a fixed attack modifier and saving throw according to the level of spell scroll.
+    if (["mwak", "rwak", "msak", "rsak"].includes(actionType)) {
+      attackBonus = scrollData.system.attackBonus;
+      ability = "none";
+    }
+    if (save.ability) {
+      save.scaling = "flat";
+      save.dc = scrollData.system.save.dc;
+    }
+
+    // Create the spell scroll data
+    const spellScrollData = foundry.utils.mergeObject(scrollData, {
+      name: `${game.i18n.localize("DND5E.SpellScroll")}: ${itemData.name}`,
+      img: itemData.img,
+      system: {
+        description: { value: desc.trim() },
+        source,
+        actionType,
+        activation,
+        duration,
+        target,
+        range,
+        damage,
+        formula,
+        save,
+        level,
+        attackBonus,
+        ability,
+      },
+    });
+    foundry.utils.mergeObject(spellScrollData, options);
+
+    // /**
+    //  * A hook event that fires after the item data for a scroll is created but before the item is returned.
+    //  * @function dnd5e.createScrollFromSpell
+    //  * @memberof hookEvents
+    //  * @param {Item5e|object} spell       The spell or item data to be made into a scroll.
+    //  * @param {object} spellScrollData    The final item data used to make the scroll.
+    //  */
+    // Hooks.callAll("dnd5e.createScrollFromSpell", spell, spellScrollData);
+    return new this(spellScrollData);
+  }
+
   static doNotCreateASpellScrollIfYouAreNotGMV2(spell, spellScrollData) {
     if (!game.user.isGM) {
       error(`Non puoi inserire una spell qui`, true);
@@ -301,7 +391,7 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
     const maxItem = ~~(items.qtd / qtd);
     max = Math.min(max, maxItem);
 
-    if (maxItem < 1) {
+    if (maxItem < 1 && !game.user.isGM) {
       const msg = `Lacking material component: ${c}`;
       throw new error(msg, true);
     }
@@ -479,7 +569,8 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
   }
 
   setProperty(data, `flags.beavers-crafting.status`, `created`);
-  const scroll = await CONFIG.Item.documentClass.createScrollFromSpell(data);
+  // const scroll = await CONFIG.Item.documentClass.createScrollFromSpell(data);
+  const scroll = await ScrollHelpers.createScrollFromSpell(data);
   const docs = await actor.createEmbeddedDocuments("Item", [scroll]);
   if (docs?.length > 0) {
     await BeaverCraftingHelpers.setItemAsBeaverCrafted(docs[0]);
