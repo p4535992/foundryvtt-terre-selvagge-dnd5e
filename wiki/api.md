@@ -172,3 +172,13 @@ game.modules.get('terre-selvagge-dnd5e').api.createScrollWithParams({
     spellComponents:  { "Arcane Sword": { h: ["Miniature Platinum Sword (250 gp)"] }, Augury: { h: ["Specially Marked Tokens (25 gp)"] ... }
 })
 ```
+
+### Altri esempi
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.giveTimeCoins("Pool", 1, "Compendium.world.prodottifiniti.Item.kRCfy16NbjWDmmZN");
+```
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.updateHarvesterQuantityByRegExOnFolder("Folder.kRCfy16NbjWDmmZN");
+```

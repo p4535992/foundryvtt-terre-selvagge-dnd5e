@@ -4,6 +4,7 @@ import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers.js";
 import { HarvesterHelpers } from "../lib/harvester-helpers.js";
 import { error } from "../lib/lib.js";
 import { ScrollHelpers } from "../lib/scroll-helpers.js";
+import { TimeCoinsHelpers } from "../lib/time-coins-helpers.js";
 import { retrieveAndApplyBonuses } from "../old/retrieve-and-apply-babonus.js";
 import { retrieveSuperiorItemAndReplaceOnActor } from "../old/retrieve-superior-bymagus.js";
 
@@ -115,6 +116,14 @@ const API = {
 
   async updateHarvesterQuantityByRegEx(packToExportKey) {
     return await HarvesterHelpers.updateHarvesterQuantityByRegEx(packToExportKey);
+  },
+
+  async updateHarvesterQuantityByRegExOnFolder(uuidFolder) {
+    return await HarvesterHelpers.updateHarvesterQuantityByRegExOnFolder(uuidFolder);
+  },
+
+  async giveTimeCoins(actorFoldername, addQuantita, uuidCompendium) {
+    return await TimeCoinsHelpers.giveTimeCoins();
   },
 };
 
