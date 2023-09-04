@@ -123,7 +123,7 @@ const API = {
   },
 
   async giveTimeCoins(actorFoldername, addQuantita, uuidCompendium) {
-    return await TimeCoinsHelpers.giveTimeCoins();
+    return await TimeCoinsHelpers.giveTimeCoins(actorFoldername, addQuantita, uuidCompendium);
   },
 };
 
