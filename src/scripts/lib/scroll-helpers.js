@@ -6,7 +6,7 @@ const TIME_TOKEN = "Time Coin";
 const LABEL = "Crea Scroll";
 
 //const FEATS = [{ name: 'spellscriber', price: 0.5 },{ name: 'master scriber', price: 0.5 },{ name: 'etc', price: 0.5 }];
-const FEATS = [{ name: "Master Scrivener", price: 0.5 }];
+const FEATS = [{ name: "Master Scrivener", price: 0.5 },{ name: 'studioarcanista', price: 0.5 }];
 
 // ------------------------------------ //
 // const COMPONENTS_COMPENDIUM = 'MC5e.MC5e';
