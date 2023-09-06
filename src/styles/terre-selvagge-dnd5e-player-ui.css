@@ -59,14 +59,11 @@
 
 /*--- End Chat Grafica ---*/
 /*--- Nascondere pulsanti inutili e context menu sulla scheda pg ---*/
-a.header-button.control.chris-premades,
 a.header-button.control.tit-menu__btn-open--sheet,
 a.ddb-open-url,
 a.header-button.control.configure-token,
 a.revert-warpgate,
-a.open-actor-effect,
-a.header-button.control.pop__btn-open,
-a.configure-sheet {
+a.header-button.control.pop__btn-open {
   /* display: none !important; */
   display: none;
 }
