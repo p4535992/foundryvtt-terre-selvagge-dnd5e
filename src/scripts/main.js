@@ -151,6 +151,23 @@ export const readyHooks = () => {
           LockersHelpers.lockItemSheetQuantity(app, html, data);
           LockersHelpers.lockItemSheetWeight(app, html, data);
           LockersHelpers.lockItemSheetPrice(app, html, data);
+          LockersHelpers.lockItemSheetEquippedForLeaf(app, html, data);
+        });
+      } catch (e) {
+        error(`Error render for ${"render" + sheet}`);
+        throw error(e, true);
+      }
+    });
+  });
+
+  Object.keys(CONFIG.Actor.sheetClasses).forEach((itemType) => {
+    Object.keys(CONFIG.Actor.sheetClasses[itemType]).forEach((key) => {
+      let sheet = key.split(".")[1];
+      try {
+        Hooks.on("render" + sheet, (app, html, data) => {
+          log(`Launch render for ${"render" + sheet}`);
+          LockersHelpers.lockActorSheetQuantity(app, html, data);
+          LockersHelpers.lockActorSheetEquipped(app, html, data);
         });
       } catch (e) {
         error(`Error render for ${"render" + sheet}`);
