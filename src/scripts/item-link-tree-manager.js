@@ -185,22 +185,24 @@ export class ItemLinkTreeManager {
       }
     }
 
-    if (DAE && actor) {
-      const itemEffects = item.effects ?? [];
-      const actorEffects = actor.effects ?? [];
-      const idsEffectActorToRemove = [];
-      for (const effectToRemove of itemEffects) {
-        for (const effect of actorEffects) {
-          if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
-            log(`Rimosso effect from actor '${effect.name}'`, true);
-            idsEffectActorToRemove.push(effect.id);
+    if (game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
+      if (DAE && actor) {
+        const itemEffects = item.effects ?? [];
+        const actorEffects = actor.effects ?? [];
+        const idsEffectActorToRemove = [];
+        for (const effectToRemove of itemEffects) {
+          for (const effect of actorEffects) {
+            if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
+              log(`Rimosso effect from actor '${effect.name}'`, true);
+              idsEffectActorToRemove.push(effect.id);
+            }
           }
         }
+        if (idsEffectActorToRemove.length > 0) {
+          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
+        }
+        await DAE.fixTransferEffects(actor);
       }
-      if (idsEffectActorToRemove.length > 0) {
-        await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
-      }
-      await DAE.fixTransferEffects(actor);
     }
   }
 
