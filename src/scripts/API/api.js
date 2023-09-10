@@ -2,6 +2,7 @@ import CONSTANTS from "../constants/constants.js";
 import { BabonusHelpers } from "../lib/babonus-helpers.js";
 import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers.js";
 import { HarvesterHelpers } from "../lib/harvester-helpers.js";
+import { IncomeHelpers } from "../lib/income-helpers.js";
 import { error } from "../lib/lib.js";
 import { ScrollHelpers } from "../lib/scroll-helpers.js";
 import { TimeCoinsHelpers } from "../lib/time-coins-helpers.js";
@@ -124,6 +125,17 @@ const API = {
 
   async giveTimeCoins(actorFoldername, addQuantita, uuidCompendium) {
     return await TimeCoinsHelpers.giveTimeCoins(actorFoldername, addQuantita, uuidCompendium);
+  },
+
+  async retrieveDetailsIncomeForActor(inAttributes) {
+    // if (!Array.isArray(inAttributes)) {
+    //   throw error("retrieveDetailsIncomeForActor | inAttributes must be of type array");
+    // }
+    // const [uuidOrItem] = inAttributes;
+    if (typeof inAttributes !== "object") {
+      throw error("retrieveDetailsIncomeForActor | inAttributes must be of type object");
+    }
+    return await IncomeHelpers.retrieveDetailsIncomeForActor(inAttributes.uuid);
   },
 };
 

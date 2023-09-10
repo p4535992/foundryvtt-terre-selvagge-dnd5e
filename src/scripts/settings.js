@@ -116,6 +116,15 @@ export const registerSettings = function () {
     default: false,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "specificFolderJournalPersonsIncome", {
+    name: `Seleziona la cartella dei journal attori per il calcolo dell'income`,
+    hint: `Inserisci l'uuid della cartella dei journal di partenza contenente i journal delle persone`,
+    scope: "world",
+    type: String,
+    default: "",
+    config: true,
+  });
+
   // ========================================================================
   game.settings.register(CONSTANTS.MODULE_ID, "debug", {
     name: `${CONSTANTS.MODULE_ID}.setting.debug.name`,
