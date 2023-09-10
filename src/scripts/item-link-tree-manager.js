@@ -3,7 +3,7 @@ import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 import { ItemPriceHelpers } from "./lib/item-price-helpers";
 import { ItemLinkTreeHelpers } from "./lib/item-link-tree-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
-import { checkIfYouCanAddMoreGemsToItem, log, warn } from "./lib/lib";
+import { log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
   static managePreAddLeafToItem(item, itemAdded) {
@@ -64,7 +64,7 @@ export class ItemLinkTreeManager {
         return false;
       }
     }
-    const isGemCanBeAdded = checkIfYouCanAddMoreGemsToItem(item);
+    const isGemCanBeAdded = ItemLinkTreeManager.checkIfYouCanAddMoreGemsToItem(item);
     if (!isGemCanBeAdded) {
       warn(
         `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non puo' contenere altre gemme/foglie!`,
@@ -306,5 +306,59 @@ export class ItemLinkTreeManager {
       "system.price.value": newCurrentValuePriceGp,
       "system.price.denomination": "gp",
     });
+  }
+
+  static checkIfYouCanAddMoreGemsToItem(item) {
+    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+    const quantityOfGem = leafs.length ?? 0;
+    const rarity = item.system.rarity ?? "";
+    let canAddGem = false;
+    switch (rarity) {
+      case "common": {
+        if (quantityOfGem < 1) {
+          canAddGem = true;
+        }
+        break;
+      }
+      case "uncommon": {
+        if (quantityOfGem < 1) {
+          canAddGem = true;
+        }
+        break;
+      }
+      case "rare": {
+        if (quantityOfGem < 2) {
+          canAddGem = true;
+        }
+        break;
+      }
+      case "veryRare":
+      case "veryrare": {
+        if (quantityOfGem < 2) {
+          canAddGem = true;
+        }
+        break;
+      }
+      case "legendary": {
+        if (quantityOfGem < 3) {
+          canAddGem = true;
+        }
+        break;
+      }
+      case "artifact": {
+        if (quantityOfGem < 3) {
+          canAddGem = true;
+        }
+        break;
+      }
+      default: {
+        if (rarity) {
+          warn(`No quantity of gems is check for rarity '${rarity}'`);
+        }
+        canAddGem = false;
+        break;
+      }
+    }
+    return canAddGem;
   }
 }

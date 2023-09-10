@@ -94,6 +94,12 @@
         "type": "module",
         "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
         "compatibility": {}
+      },
+      {
+        "id": "lazy-money",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/p4535992/foundryvtt-lazymoney-dnd5e/master/src/module.json",
+        "compatibility": {}
       }
     ],
     "conflicts": []

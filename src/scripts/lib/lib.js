@@ -176,6 +176,10 @@ export function getUuid(target) {
   return document?.uuid ?? false;
 }
 
+export function is_real_number(inNumber) {
+  return !isNaN(inNumber) && typeof inNumber === "number" && isFinite(inNumber);
+}
+
 export function isEmptyObject(obj) {
   // because Object.keys(new Date()).length === 0;
   // we have to do some additional check
@@ -186,6 +190,24 @@ export function isEmptyObject(obj) {
     obj && // null and undefined check
     Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
   return result;
+}
+
+export function is_lazy_number(inNumber) {
+  const isSign =
+    String(inNumber).startsWith(LazyMoneyHelpers.signCase.add) ||
+    String(inNumber).startsWith(LazyMoneyHelpers.signCase.subtract) ||
+    String(inNumber).startsWith(LazyMoneyHelpers.signCase.equals) ||
+    String(inNumber).startsWith(LazyMoneyHelpers.signCase.default);
+  if (isSign) {
+    const withoutFirst = String(inNumber).slice(1);
+    return is_real_number(withoutFirst);
+  } else {
+    return true;
+  }
+}
+
+export function isLessThanOneIsOne(inNumber) {
+  return inNumber < 1 ? 1 : inNumber;
 }
 
 export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix, itemNewSuffix) {
@@ -204,58 +226,4 @@ export function manageNewName(itemCurrentName, itemNewName, itemNewPrefix, itemN
     }
   }
   return currentName;
-}
-
-export function checkIfYouCanAddMoreGemsToItem(item) {
-  const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
-  const quantityOfGem = leafs.length ?? 0;
-  const rarity = item.system.rarity ?? "";
-  let canAddGem = false;
-  switch (rarity) {
-    case "common": {
-      if (quantityOfGem < 1) {
-        canAddGem = true;
-      }
-      break;
-    }
-    case "uncommon": {
-      if (quantityOfGem < 1) {
-        canAddGem = true;
-      }
-      break;
-    }
-    case "rare": {
-      if (quantityOfGem < 2) {
-        canAddGem = true;
-      }
-      break;
-    }
-    case "veryRare":
-    case "veryrare": {
-      if (quantityOfGem < 2) {
-        canAddGem = true;
-      }
-      break;
-    }
-    case "legendary": {
-      if (quantityOfGem < 3) {
-        canAddGem = true;
-      }
-      break;
-    }
-    case "artifact": {
-      if (quantityOfGem < 3) {
-        canAddGem = true;
-      }
-      break;
-    }
-    default: {
-      if (rarity) {
-        warn(`No quantity of gems is check for rarity '${rarity}'`);
-      }
-      canAddGem = false;
-      break;
-    }
-  }
-  return canAddGem;
 }
