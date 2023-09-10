@@ -385,7 +385,7 @@ export class IncomeHelpers {
       let finalWarn = `<tr>
             <td colspan="${
               total_header + 1
-            }" style="color:green; font-weight: bold; border-top:1px solid #000;">${"Il giocatore e' in attivo"}</td>
+            }" style="color:green; font-weight: bold; border-bottom:1px solid #000; border-top:1px solid #000;">${"Il giocatore e' in attivo"}</td>
         </tr>`;
 
       return_value = return_value + finalWarn;
@@ -409,6 +409,8 @@ export class IncomeHelpers {
         ${actor.uuid}</td>
     </tr>
     `;
+
+    return_value = return_value + applyWarn;
 
     return_value = return_value + `</table>`;
 

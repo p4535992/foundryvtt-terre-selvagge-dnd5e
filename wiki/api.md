@@ -182,3 +182,7 @@ game.modules.get('terre-selvagge-dnd5e').api.giveTimeCoins("Pool", 1, "Compendiu
 ```
 game.modules.get('terre-selvagge-dnd5e').api.updateHarvesterQuantityByRegExOnFolder("Folder.kRCfy16NbjWDmmZN");
 ```
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.retrieveDetailsIncomeForActor({uuid: "Actor.yYmgTUEKN2or5YKe"})
+```
