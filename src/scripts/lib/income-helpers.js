@@ -43,6 +43,9 @@ export class IncomeHelpers {
         break;
       }
     }
+
+    await IncomeHelpers.prepareChatCard(actorUuid, resultObj[actorUuid]);
+
     return resultObj;
   }
 
@@ -198,6 +201,31 @@ export class IncomeHelpers {
     };
   }
 
+  static async calculateTotalFromDetails(details) {
+    let totalIncome = 0;
+    for (const place of details) {
+      let namePlace = place.name;
+      let customIncome = place.customIncome;
+
+      totalIncome = totalIncome + customIncome;
+
+      let placeIncome = place.income;
+      let placeUpkeep = place.upkeep;
+
+      totalIncome = totalIncome + placeIncome;
+      totalIncome = totalIncome + placeUpkeep;
+
+      for (const worker of place.workers) {
+        const workerName = worker.name;
+        const workerCosto = worker.costo;
+
+        totalIncome = totalIncome + costo;
+      }
+    }
+
+    return totalIncome;
+  }
+
   /*
   [
     {
@@ -243,7 +271,7 @@ export class IncomeHelpers {
     }
 ]
 */
-  static async prepareChatCard(actorP) {
+  static async prepareChatCard(actorP, details) {
     function colorSetter(number, low, high) {
       if (number <= low) return `color:red`;
       if (number >= high) return `color:green`;
@@ -259,9 +287,13 @@ export class IncomeHelpers {
       warn(`18 No actor is present for the reference '${actorP}'`, true);
       return;
     }
+    if (!details) {
+      warn(`19 No details is present for the reference '${actorP}'`, true);
+      return;
+    }
 
-    const detailsForActor = IncomeHelpers.retrieveDetailsIncomeForActor(actorUuid);
-    const details = detailsForActor[actor.uuid];
+    // const detailsForActor = IncomeHelpers.retrieveDetailsIncomeForActor(actor.uuid);
+    // const details = detailsForActor[actor.uuid];
 
     let statString = `Calcolo dell'income`;
     let total_header = 5; // Place + CustomIncome + Worker + Income + Cost
@@ -283,7 +315,7 @@ export class IncomeHelpers {
         <th style ="border-left:1px solid #000">Total</th>
     </tr>`;
 
-    let return_value = ``;
+    let return_value = content;
 
     for (const place of details) {
       let namePlace = place.name;
@@ -299,8 +331,8 @@ export class IncomeHelpers {
 
       return_value = return_value + rowOnlyPlaceCustomIncome;
 
-      let placeIncome = place.income;
-      let placeUpkeep = place.upkeep;
+      let placeIncome = place.details.income;
+      let placeUpkeep = place.details.upkeep;
 
       let rowOnlyPlace = `<tr>
             <td>${namePlace}</td>
@@ -313,7 +345,7 @@ export class IncomeHelpers {
 
       return_value = return_value + rowOnlyPlace;
 
-      for (const worker of place.workers) {
+      for (const worker of place.details.workers) {
         const workerName = worker.name;
         const workerCosto = worker.costo;
 
@@ -330,14 +362,22 @@ export class IncomeHelpers {
       }
     }
 
-    const totalIncome = 0;
+    const totalIncome = IncomeHelpers.calculateTotalFromDetails(details);
 
     let finalSum = `<tr>
         <td colspan="${total_header}" style="border-top:1px solid #000;"> Sum : </td>
         <td style="border-left:1px solid #000; border-top:1px solid #000;">${totalIncome}</td>
-      
     </tr>`;
 
-    ChatMessage.create({ content });
+    return_value = return_value + finalSum;
+    return_value = return_value + `</table>`;
+
+    let chatData = {
+      user: game.user.id,
+      speaker: ChatMessage.getSpeaker(),
+      whisper: game.users.filter((u) => u.isGM).map((u) => u.id),
+      content: return_value,
+    };
+    ChatMessage.create(chatData, {});
   }
 }
