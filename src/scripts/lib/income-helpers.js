@@ -1,4 +1,5 @@
 import CONSTANTS from "../constants/constants";
+import { ItemPriceHelpers } from "./item-price-helpers";
 import { error, warn, log, getItem, info, is_lazy_number, stringIsUuid } from "./lib";
 
 export class IncomeHelpers {
@@ -209,17 +210,17 @@ export class IncomeHelpers {
 
       totalIncome = totalIncome + customIncome;
 
-      let placeIncome = place.income;
-      let placeUpkeep = place.upkeep;
+      let placeIncome = place.details.income;
+      let placeUpkeep = 0 - place.details.upkeep;
 
       totalIncome = totalIncome + placeIncome;
       totalIncome = totalIncome + placeUpkeep;
 
-      for (const worker of place.workers) {
+      for (const worker of place.details.workers) {
         const workerName = worker.name;
-        const workerCosto = worker.costo;
+        const workerCosto = 0 - worker.costo;
 
-        totalIncome = totalIncome + costo;
+        totalIncome = totalIncome + workerCosto;
       }
     }
 
@@ -273,8 +274,8 @@ export class IncomeHelpers {
 */
   static async prepareChatCard(actorP, details) {
     function colorSetter(number, low, high) {
-      if (number <= low) return `color:red`;
-      if (number >= high) return `color:green`;
+      if (number <= low) return `color:red;`;
+      if (number >= high) return `color:green;`;
       return ``;
     }
 
@@ -295,20 +296,20 @@ export class IncomeHelpers {
     // const detailsForActor = IncomeHelpers.retrieveDetailsIncomeForActor(actor.uuid);
     // const details = detailsForActor[actor.uuid];
 
+    let actorGp = ItemPriceHelpers.retrieveAllCurrencyOfActorInGP(actor);
     let statString = `Calcolo dell'income`;
-    let total_header = 5; // Place + CustomIncome + Worker + Income + Cost
+    let total_header = 4; // Place + Worker + Income + Cost
 
     let content = `
     <table style="text-align:center">
     <tr>
-        <th colspan="${total_header + 1}">Actor: ${actor.name}</th>
+        <th colspan="${total_header + 1}">Actor: ${actor.name} (Total gold: ${actorGp})</th>
     </tr>
     <tr style="border-bottom:1px solid #000">
         <th colspan="${total_header + 1}">${statString}</th>
     </tr>
     <tr style="border-bottom:1px solid #000">
         <th>Place</th>
-        <th>Custom Income</th>
         <th>Worker</th>
         <th>Income</th>
         <th>Cost</th>
@@ -322,54 +323,93 @@ export class IncomeHelpers {
       let customIncome = place.customIncome;
       let rowOnlyPlaceCustomIncome = `<tr>
             <td>${namePlace}</td>
+            <td>${actor.name}</td>
             <td style="${colorSetter(customIncome, 0, 0)}">${customIncome}</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td style="${colorSetter(customIncome, 0, 0)}">${customIncome}</td>
+            <td style="${colorSetter(customIncome, 0, 0)} border-left:1px solid #000;">${customIncome}</td>
         </tr>`;
 
       return_value = return_value + rowOnlyPlaceCustomIncome;
 
       let placeIncome = place.details.income;
-      let placeUpkeep = place.details.upkeep;
+      let placeUpkeep = 0 - place.details.upkeep;
 
       let rowOnlyPlace = `<tr>
             <td>${namePlace}</td>
             <td></td>
-            <td></td>
             <td style="${colorSetter(placeIncome, 0, 0)}">${placeIncome}</td>
             <td style="${colorSetter(placeUpkeep, 0, 0)}">${placeUpkeep}</td>
-            <td style="${colorSetter(placeIncome - placeUpkeep, 0, 0)}">${placeIncome - placeUpkeep}</td>
+            <td style="${colorSetter(placeIncome - placeUpkeep, 0, 0)} border-left:1px solid #000;">${
+        placeIncome + placeUpkeep
+      }</td>
         </tr>`;
 
       return_value = return_value + rowOnlyPlace;
 
       for (const worker of place.details.workers) {
         const workerName = worker.name;
-        const workerCosto = worker.costo;
+        const workerCosto = 0 - worker.costo;
 
         let rowOnlyWorker = `<tr>
                 <td>${namePlace}</td>
-                <td></td>
                 <td>${workerName}</td>
                 <td></td>
                 <td style="${colorSetter(workerCosto, 0, 0)}">${workerCosto}</td>
-                <td style="${colorSetter(workerCosto, 0, 0)}">${workerCosto}</td>
+                <td style="${colorSetter(workerCosto, 0, 0)} border-left:1px solid #000;">${workerCosto}</td>
             </tr>`;
 
         return_value = return_value + rowOnlyWorker;
       }
+
+      let separatorRow = `<tr style="border-bottom:1px solid #000"><td></td></tr>`;
+      return_value = return_value + separatorRow;
     }
 
-    const totalIncome = IncomeHelpers.calculateTotalFromDetails(details);
+    const totalIncome = await IncomeHelpers.calculateTotalFromDetails(details);
 
     let finalSum = `<tr>
         <td colspan="${total_header}" style="border-top:1px solid #000;"> Sum : </td>
-        <td style="border-left:1px solid #000; border-top:1px solid #000;">${totalIncome}</td>
+        <td style="${colorSetter(
+          totalIncome,
+          0,
+          0
+        )} border-left:1px solid #000; border-top:1px solid #000;">${totalIncome}</td>
     </tr>`;
 
     return_value = return_value + finalSum;
+
+    let isInActive = totalIncome >= 0;
+    let isPoor = totalIncome < 0 ? actorGp < totalIncome : false;
+
+    if (isInActive) {
+      let finalWarn = `<tr>
+            <td colspan="${
+              total_header + 1
+            }" style="color:green; font-weight: bold; border-top:1px solid #000;">${"Il giocatore e' in attivo"}</td>
+        </tr>`;
+
+      return_value = return_value + finalWarn;
+    } else {
+      let finalWarn = `<tr>
+            <td colspan="${total_header + 1}" style="${
+        isPoor ? "color:red;" : "color:green;"
+      } font-weight: bold; border-top:1px solid #000;">${
+        isPoor ? "Il giocatore non ha abbastanza soldi" : "Il giocatore ha abbastanza soldi"
+      }</td>
+        </tr>`;
+
+      return_value = return_value + finalWarn;
+    }
+
+    let applyWarn = `
+    <tr><td colspan="${total_header + 1}" style="font-weight: bold;">
+        ${"Inserisci l'uuid sul dialogo della macro di appliccazione se tutto ti torna:"}</td>
+    </tr>
+    <tr><td colspan="${total_header + 1}" style="font-weight: bold; border-bottom:1px solid #000;">
+        ${actor.uuid}</td>
+    </tr>
+    `;
+
     return_value = return_value + `</table>`;
 
     let chatData = {

@@ -64,4 +64,21 @@ export class ItemPriceHelpers {
       copper: copper,
     };
   }
+
+  static retrieveAllCurrencyOfActorInGP(actor) {
+    let copper = actor.system.currency.cp ?? 0;
+    let silver = actor.system.currency.sp ?? 0;
+    let gold = actor.system.currency.gp ?? 0;
+    let electrum = actor.system.currency.ep ?? 0;
+    let platinum = actor.system.currency.pp ?? 0;
+
+    let totalGP = 0;
+    totalGP += copper / 100;
+    totalGP += silver / 10;
+    totalGP += gold;
+    totalGP += electrum / 2;
+    totalGP += platinum * 10;
+
+    return totalGP;
+  }
 }
