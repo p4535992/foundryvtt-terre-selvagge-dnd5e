@@ -13,6 +13,8 @@ export class IncomeHelpers {
       const journalPersonType = e.type ? e.type : getProperty(e, `flags.monks-enhanced-journal.pagetype`);
       return journalPersonType === "person";
     });
+
+    const resultObj = {};
     for (const voice of persons) {
       const journalPerson = stringIsUuid(voice) ? await fromUuid(voice) : await fromUuid(voice.uuid);
       const journalPersonType = journalPerson.type
@@ -37,9 +39,11 @@ export class IncomeHelpers {
       if (actorJ.uuid === actorUuid) {
         const details = await IncomeHelpers.calculateIncomeForAPlayerJournalActor(journalPerson);
         log(`100 Details:` + JSON.stringify(details));
+        resultObj[actorJ.uuid] = details;
         break;
       }
     }
+    return resultObj;
   }
 
   static async calculateIncomeForAllPlayerJournalActor() {
@@ -110,6 +114,7 @@ export class IncomeHelpers {
         uuid: placeJRel.uuid,
         customIncome: incomeCustomPlaceJ,
         details: details,
+        actor: actorJ.uuid,
       });
     }
 
@@ -191,5 +196,148 @@ export class IncomeHelpers {
       upkeep: upkeepPlaceJ,
       workers: arrWorkersRelActor,
     };
+  }
+
+  /*
+  [
+    {
+        "name": "Scuola",
+        "id": "UQibzl5E4XrZpWdx",
+        "uuid": "JournalEntry.UQibzl5E4XrZpWdx",
+        "customIncome": -40,
+        "details": {
+            "name": "Scuola",
+            "id": "UQibzl5E4XrZpWdx",
+            "uuid": "JournalEntry.UQibzl5E4XrZpWdx",
+            "income": 0,
+            "upkeep": 0,
+            "workers": [
+                {
+                    "name": "Jia, Insegnante",
+                    "id": "jnRZjl4XljYLSKui",
+                    "uuid": "JournalEntry.jnRZjl4XljYLSKui",
+                    "costo": 30
+                },
+                {
+                    "name": "Lydia, Insegnante",
+                    "id": "Y4X3skMFXh2wUKKZ",
+                    "uuid": "JournalEntry.Y4X3skMFXh2wUKKZ",
+                    "costo": 30
+                }
+            ]
+        }
+    },
+    {
+        "name": "Boutique",
+        "id": "CbPeeyPQlI5iK9Hv",
+        "uuid": "JournalEntry.CbPeeyPQlI5iK9Hv",
+        "customIncome": -10,
+        "details": {
+            "name": "Boutique",
+            "id": "CbPeeyPQlI5iK9Hv",
+            "uuid": "JournalEntry.CbPeeyPQlI5iK9Hv",
+            "income": 225,
+            "upkeep": 0,
+            "workers": []
+        }
+    }
+]
+*/
+  static async prepareChatCard(actorP) {
+    function colorSetter(number, low, high) {
+      if (number <= low) return `color:red`;
+      if (number >= high) return `color:green`;
+      return ``;
+    }
+
+    function average(nums) {
+      return nums.reduce((a, b) => a + b) / nums.length;
+    }
+
+    const actor = stringIsUuid(actorP.uuid ? actorP.uuid : actorP) ? await fromUuid(actorP) : actorP;
+    if (!actor) {
+      warn(`18 No actor is present for the reference '${actorP}'`, true);
+      return;
+    }
+
+    const detailsForActor = IncomeHelpers.retrieveDetailsIncomeForActor(actorUuid);
+    const details = detailsForActor[actor.uuid];
+
+    let statString = `Calcolo dell'income`;
+    let total_header = 5; // Place + CustomIncome + Worker + Income + Cost
+
+    let content = `
+    <table style="text-align:center">
+    <tr>
+        <th colspan="${total_header + 1}">Actor: ${actor.name}</th>
+    </tr>
+    <tr style="border-bottom:1px solid #000">
+        <th colspan="${total_header + 1}">${statString}</th>
+    </tr>
+    <tr style="border-bottom:1px solid #000">
+        <th>Place</th>
+        <th>Custom Income</th>
+        <th>Worker</th>
+        <th>Income</th>
+        <th>Cost</th>
+        <th style ="border-left:1px solid #000">Total</th>
+    </tr>`;
+
+    let return_value = ``;
+
+    for (const place of details) {
+      let namePlace = place.name;
+      let customIncome = place.customIncome;
+      let rowOnlyPlaceCustomIncome = `<tr>
+            <td>${namePlace}</td>
+            <td style="${colorSetter(customIncome, 0, 0)}">${customIncome}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="${colorSetter(customIncome, 0, 0)}">${customIncome}</td>
+        </tr>`;
+
+      return_value = return_value + rowOnlyPlaceCustomIncome;
+
+      let placeIncome = place.income;
+      let placeUpkeep = place.upkeep;
+
+      let rowOnlyPlace = `<tr>
+            <td>${namePlace}</td>
+            <td></td>
+            <td></td>
+            <td style="${colorSetter(placeIncome, 0, 0)}">${placeIncome}</td>
+            <td style="${colorSetter(placeUpkeep, 0, 0)}">${placeUpkeep}</td>
+            <td style="${colorSetter(placeIncome - placeUpkeep, 0, 0)}">${placeIncome - placeUpkeep}</td>
+        </tr>`;
+
+      return_value = return_value + rowOnlyPlace;
+
+      for (const worker of place.workers) {
+        const workerName = worker.name;
+        const workerCosto = worker.costo;
+
+        let rowOnlyWorker = `<tr>
+                <td>${namePlace}</td>
+                <td></td>
+                <td>${workerName}</td>
+                <td></td>
+                <td style="${colorSetter(workerCosto, 0, 0)}">${workerCosto}</td>
+                <td style="${colorSetter(workerCosto, 0, 0)}">${workerCosto}</td>
+            </tr>`;
+
+        return_value = return_value + rowOnlyWorker;
+      }
+    }
+
+    const totalIncome = 0;
+
+    let finalSum = `<tr>
+        <td colspan="${total_header}" style="border-top:1px solid #000;"> Sum : </td>
+        <td style="border-left:1px solid #000; border-top:1px solid #000;">${totalIncome}</td>
+      
+    </tr>`;
+
+    ChatMessage.create({ content });
   }
 }
