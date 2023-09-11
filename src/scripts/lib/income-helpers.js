@@ -98,6 +98,36 @@ export class IncomeHelpers {
       warn(`08 No actor is present for the reference '${journalPerson}'`, true);
       return;
     }
+
+    // START RECUPERO BANCA
+    const bancaPersonJ = getProperty(actorJournalPage, `flags.monks-enhanced-journal.relationships`)?.filter((e) => {
+      const bancaPersonType = e.type ? e.type : getProperty(e, `flags.monks-enhanced-journal.pagetype`);
+      return bancaPersonType === "person" && String(e.relationship)?.toLowerCase() === "banca";
+    });
+    if (!bancaPersonJ) {
+      warn(`09 No journal person for banca page is been found it for the reference '${actorJournalPage}'`, true);
+      return;
+    }
+    const bancaPages = bancaPersonJ.pages;
+    // MJE TYPE ARE ONE ONLY PAGE JOURNAL
+    const actorBancaJournalPage = await fromUuid(bancaPages.contents[0].uuid);
+    if (!actorBancaJournalPage) {
+      warn(`09 No journal person page for banca  is been found it for the reference '${bancaPersonJ}'`, true);
+      return;
+    }
+    const actorBancaJ = getProperty(actorBancaJournalPage, `flags.monks-enhanced-journal.actor`);
+    if (!actorBancaJ) {
+      warn(`09 No actor banca is present for the reference '${actorBancaJournalPage}'`, true);
+      return;
+    }
+
+    const actorBanca = await fromUuid(actorBancaJ.uuid);
+    if (!actorBanca) {
+      warn(`09 No actor banca is present for the reference '${actorBancaJ}'`, true);
+      return;
+    }
+    // END RECUPERO BANCA
+
     const placesJ = getProperty(actorJournalPage, `flags.monks-enhanced-journal.relationships`)?.filter((e) => {
       const journalPlaceType = e.type ? e.type : getProperty(e, `flags.monks-enhanced-journal.pagetype`);
       return journalPlaceType === "place";
@@ -119,6 +149,7 @@ export class IncomeHelpers {
         customIncome: incomeCustomPlaceJ,
         details: details,
         actor: actorJ.uuid,
+        actorBanca: actorBanca.uuid,
       });
     }
 
@@ -234,6 +265,7 @@ export class IncomeHelpers {
         "id": "UQibzl5E4XrZpWdx",
         "uuid": "JournalEntry.UQibzl5E4XrZpWdx",
         "customIncome": -40,
+        "actorBanca": "Actor.tyerueve23"
         "details": {
             "name": "Scuola",
             "id": "UQibzl5E4XrZpWdx",
@@ -288,6 +320,13 @@ export class IncomeHelpers {
       warn(`18 No actor is present for the reference '${actorP}'`, true);
       return;
     }
+    const actorBanca = stringIsUuid(details.actorBanca.uuid ? details.actorBanca.uuid : details.actorBanca)
+      ? await fromUuid(details.actorBanca)
+      : details.actorBanca;
+    if (!actorBanca) {
+      warn(`18 No actor banca is present for the reference '${details.actorBanca}'`, true);
+      return;
+    }
     if (!details) {
       warn(`19 No details is present for the reference '${actorP}'`, true);
       return;
@@ -296,14 +335,17 @@ export class IncomeHelpers {
     // const detailsForActor = IncomeHelpers.retrieveDetailsIncomeForActor(actor.uuid);
     // const details = detailsForActor[actor.uuid];
 
-    let actorGp = ItemPriceHelpers.retrieveAllCurrencyOfActorInGP(actor);
+    let actorBancaGp = ItemPriceHelpers.retrieveAllCurrencyOfActorInGP(actorBanca);
     let statString = `Calcolo dell'income`;
     let total_header = 4; // Place + Worker + Income + Cost
 
     let content = `
     <table style="text-align:center">
     <tr>
-        <th colspan="${total_header + 1}">Actor: ${actor.name} (Total gold: ${actorGp})</th>
+        <th colspan="${total_header + 1}">Actor: ${actor.name} (Banca: ${actorBanca.name})</th>
+    </tr>
+    <tr>
+      <th colspan="${total_header + 1}">Total gold on banca: ${actorBancaGp})</th>
     </tr>
     <tr style="border-bottom:1px solid #000">
         <th colspan="${total_header + 1}">${statString}</th>
@@ -379,7 +421,7 @@ export class IncomeHelpers {
     return_value = return_value + finalSum;
 
     let isInActive = totalIncome >= 0;
-    let isPoor = totalIncome < 0 ? actorGp < totalIncome : false;
+    let isPoor = totalIncome < 0 ? actorBancaGp < totalIncome : false;
 
     if (isInActive) {
       let finalWarn = `<tr>
@@ -401,16 +443,16 @@ export class IncomeHelpers {
       return_value = return_value + finalWarn;
     }
 
-    let applyWarn = `
-    <tr><td colspan="${total_header + 1}" style="font-weight: bold;">
-        ${"Inserisci l'uuid sul dialogo della macro di appliccazione se tutto ti torna:"}</td>
-    </tr>
-    <tr><td colspan="${total_header + 1}" style="font-weight: bold; border-bottom:1px solid #000;">
-        ${actor.uuid}</td>
-    </tr>
-    `;
+    // let applyWarn = `
+    // <tr><td colspan="${total_header + 1}" style="font-weight: bold;">
+    //     ${"Inserisci l'uuid dell'attore sul dialogo della macro di applicazione se tutto ti torna"}</td>
+    // </tr>
+    // <tr><td colspan="${total_header + 1}" style="font-weight: bold; border-bottom:1px solid #000;">
+    //     ${actor.uuid}</td>
+    // </tr>
+    // `;
 
-    return_value = return_value + applyWarn;
+    // return_value = return_value + applyWarn;
 
     return_value = return_value + `</table>`;
 
@@ -421,5 +463,26 @@ export class IncomeHelpers {
       content: return_value,
     };
     ChatMessage.create(chatData, {});
+
+    const shouldApplyTheCurrencyUpdated = await Dialog.confirm({
+      title: `Ti torna tutto ? Sei sicuro di voler applicare la differenza  ?`,
+      content: `Sei sicuro di voler togliere i soldi alla banca '${actorBanca.name}' collegata all'attore '${actor.name}', se i soldi in banca saranno inferiori alle spese la sottrazzione si fermera' ad avere 0 currency`,
+    });
+
+    if (shouldApplyTheCurrencyUpdated) {
+      if (totalIncome < 0) {
+        game.modules.get("lazymoney").api.subtractCurrency({
+          actor: actorBanca.uuid,
+          currencyValue: totalIncome,
+          currencyDenom: "gp",
+        });
+      } else {
+        game.modules.get("lazymoney").api.addCurrency({
+          actor: actorBanca.uuid,
+          currencyValue: totalIncome,
+          currencyDenom: "gp",
+        });
+      }
+    }
   }
 }

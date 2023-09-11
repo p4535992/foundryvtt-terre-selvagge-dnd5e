@@ -64,13 +64,6 @@ export class HarvesterHelpers {
           "system.weight": Math.round(i.system.weight / num),
         });
         return newItem;
-        //   return {
-        //     _id: i.id,
-        //     name: newName.trim(),
-        //     "system.quantity": num,
-        //     "system.price.value": Math.round(i.system.price.value / num),
-        //     "system.weight": Math.round(i.system.weight/num)
-        //   };
       }, []);
 
     // Foundry has some problem ....
@@ -82,14 +75,12 @@ export class HarvesterHelpers {
         error("[" + i + "] Update: " + chunk[0].name, true);
       } else {
         await Item.updateDocuments(chunk);
-        // info("[" + i + "] Update: " + chunk[0].name, true);
       }
     }
-    // await Item.createDocuments(updates, { pack: packToExportKey });
     warn("COMPLETATO AGIORNAMENTO");
   }
 
-  static async updateHarvesterQuantityByRegEx(packToExportKey) {
+  static async updateHarvesterQuantityByRegExOnCompendium(packToExportKey) {
     function containsNumbers(str) {
       return /\d/.test(str);
     }
@@ -116,20 +107,12 @@ export class HarvesterHelpers {
         var newName = arrNames?.length > 0 ? arrNames[0] : nameTmp;
 
         var newItem = mergeObject(i, {
-          // _id: i.id,
           name: newName.trim(),
           "system.quantity": num,
           "system.price.value": Math.round(i.system.price.value / num),
           "system.weight": Math.round(i.system.weight / num),
         });
         return newItem;
-        //   return {
-        //     _id: i.id,
-        //     name: newName.trim(),
-        //     "system.quantity": num,
-        //     "system.price.value": Math.round(i.system.price.value / num),
-        //     "system.weight": Math.round(i.system.weight/num)
-        //   };
       }, []);
 
     // Foundry has some problem ....
@@ -140,12 +123,9 @@ export class HarvesterHelpers {
       if (containsNumbers(chunk[0].name)) {
         error("[" + i + "] Update: " + chunk[0].name, true);
       } else {
-        //   await Item.createDocuments(chunk, { pack: packToExportKey });
         await Item.updateDocuments(chunk, { pack: packToExportKey });
-        // info("[" + i + "] Update: " + chunk[0].name, true);
       }
     }
-    // await Item.createDocuments(updates, { pack: packToExportKey });
     warn("COMPLETATO AGIORNAMENTO");
   }
 }
