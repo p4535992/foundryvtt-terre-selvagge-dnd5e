@@ -57,17 +57,6 @@
   border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/rpg-styled-ui/ui/img/gui/ui-board-parchment-purple.png);
 }
 
-/*--- End Chat Grafica ---*/
-/*--- Nascondere pulsanti inutili e context menu sulla scheda pg ---*/
-a.header-button.control.tit-menu__btn-open--sheet,
-a.ddb-open-url,
-a.header-button.control.configure-token,
-a.revert-warpgate,
-a.header-button.control.pop__btn-open {
-  /* display: none !important; */
-  display: none;
-}
-
 #world-explorer-opacity-adjuster .window-content {
   margin: 0px;
   overflow: hidden;
@@ -97,20 +86,6 @@ a.header-button.control.restore-transformation:after {
   background-repeat: no-repeat; /* Adjust as needed */
   border-radius: 9px 9px 0px 0px !important;
   transition: background-position 0.2s;
-}
-
-/*--- end Pulsante header restore wildshap ---*/
-/*--- modifica immagine profile scheda  ---*/
-.dnd5e.sheet.actor.character.cb5es .sheet-header .profile {
-  border-right: 1px solid #333;
-  border: 1px solid #333;
-  /* Gradient Mask */
-  -webkit-mask-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/Untitled_design_1.png);
-  mask-image: url(/modules/terre-selvagge-dnd5e/assets/images/style/Untitled_design_1.png);
-  -webkit-mask-mode: no-repeat;
-  mask-mode: no-repeat;
-  -webkit-mask-size: cover;
-  mask-size: cover;
 }
 
 #settings button,
