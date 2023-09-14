@@ -115,16 +115,34 @@ const API = {
     );
   },
 
+  /** @deprecated */
   async updateHarvesterQuantityByRegEx(packToExportKey) {
     return await HarvesterHelpers.updateHarvesterQuantityByRegEx(packToExportKey);
   },
 
+  /** @deprecated */
   async updateHarvesterQuantityByRegExOnFolder(uuidFolder) {
     return await HarvesterHelpers.updateHarvesterQuantityByRegExOnFolder(uuidFolder);
   },
 
-  async giveTimeCoins(actorFoldername, addQuantita, uuidCompendium) {
-    return await TimeCoinsHelpers.giveTimeCoins(actorFoldername, addQuantita, uuidCompendium);
+  /** @deprecated */
+  async giveTimeCoins(actorFoldername, addQuantita, uuidItemTimeCoinOnCompendium) {
+    return await TimeCoinsHelpers.giveTimeCoins(actorFoldername, addQuantita, uuidItemTimeCoinOnCompendium);
+  },
+
+  async giveTimeCoinsv2(inAttributes) {
+    // if (!Array.isArray(inAttributes)) {
+    //   throw error("giveTimeCoinsv2 | inAttributes must be of type array");
+    // }
+    // const [uuidOrItem] = inAttributes;
+    if (typeof inAttributes !== "object") {
+      throw error("giveTimeCoinsv2 | inAttributes must be of type object");
+    }
+    return await TimeCoinsHelpers.giveTimeCoins(
+      inAttributes.actorFoldername,
+      inAttributes.addQuantita,
+      inAttributes.uuidItemTimeCoinOnCompendium
+    );
   },
 
   async retrieveDetailsIncomeForActor(inAttributes) {

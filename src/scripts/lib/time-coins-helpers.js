@@ -4,10 +4,10 @@ export class TimeCoinsHelpers {
   // ADD_QTD = 1;
   // TIME_COIN_DATA = (await fromUuid('Compendium.world.prodottifiniti.Item.kRCfy16NbjWDmmZN'))?.toObject();
 
-  static async giveTimeCoins(actorFoldername, addQuantita, uuidCompendium) {
+  static async giveTimeCoins(actorFoldername, addQuantita, uuidItemTimeCoinOnCompendium) {
     const ACTOR_FOLDERS = [actorFoldername] ?? ["Pool"];
     const ADD_QTD = addQuantita ?? 1;
-    const TIME_COIN_DATA = (await fromUuid(uuidCompendium))?.toObject();
+    const TIME_COIN_DATA = (await fromUuid(uuidItemTimeCoinOnCompendium))?.toObject();
     // ------------------------------------ //
     if (!TIME_COIN_DATA) {
       ui.notifications.error("Could not find Time Coin data");

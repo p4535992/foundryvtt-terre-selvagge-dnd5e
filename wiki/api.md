@@ -9,7 +9,7 @@ In pratica applica un bonus di babonus all'item scelto.
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 | type | <code>string</code> | The type of the item to choose (background,backpack,base,class,consumable,equipment,feat,loot,spell,subclass,tool,weapon) | |
 | name | <code>string</code> | OPTIONAL: The new name of the item | |
 | image | <code>string</code> | OPTIONAL: The path to the new image of the item | |
@@ -35,7 +35,7 @@ Una macro che sostituisce ad esempio Longsword +1, to Longsword +2
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 | type | <code>string</code> | The type of the item to choose (armor,weapon) | The type is linked to a compendium check the map below|
 | target_bonus | <code>number</code> | The target bonus, if you want upgrade a +1 item use the value 2, if you want to upgrade a item +2 use 3 | Remember the name checked during the retrieve of the weapon is the one of the linked item on the compendium not the name on the current item |
 | name | <code>string</code> | OPTIONAL: The new name of the item | |
@@ -72,7 +72,7 @@ Rimuovi tutti i bonus dall'oggetto selezionato
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 
 
 **Example**:
@@ -92,7 +92,7 @@ Rendi un'oggetto "beaver craftato" aggiungendo i flags appositi , "created" se i
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 
 
 **Example**:
@@ -111,7 +111,7 @@ Rimuovi i flags del "beaver craftato" rendendo l'oggetto craftato non craftato
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 
 
 **Example**:
@@ -137,7 +137,7 @@ I valori predefiniti sono:
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 
 
 **Example**:
@@ -157,9 +157,7 @@ Crea uno scroll con valori espliciti a partire da un'item.
 
 | Param | Type | Description | Note |
 | --- | --- | --- | --- |
-| item | <code>uuid of the item or item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
-
-TODO
+| item | <code>string or Item</code> | The uuid of the item or the item object himself | If you use the module 'Item Macro' the variable value is 'item' |
 
 **Example**:
 
@@ -173,15 +171,31 @@ game.modules.get('terre-selvagge-dnd5e').api.createScrollWithParams({
 })
 ```
 
+#### giveTimeCoinsv2({actorFoldername: string, addQuantita: number, uuidItemTimeCoinOnCompendium: string}):void ⇒ <code>Promise&lt;void&gt;</code>
+
+Dai delle time coins a tutti gli attori della cartella con il nome specifico
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| actorFoldername | <code>string</code> | The name of the folder actors |
+| addQuantita | <code>number</code> | The number of time coins to give |
+| uuidItemTimeCoinOnCompendium | <code>string</code> | uuid of the item "Time Coin" compendium |
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.giveTimeCoinsv2({
+    actorFoldername: "Personaggi",
+    addQuantita: 2,
+    uuidItemTimeCoinOnCompendium: "Compendium.Item.vzuycscsyu"
+})
+```
+
+TODO da finire la documentazione....
+
 ### Altri esempi
-
-```
-game.modules.get('terre-selvagge-dnd5e').api.giveTimeCoins("Pool", 1, "Compendium.world.prodottifiniti.Item.kRCfy16NbjWDmmZN");
-```
-
-```
-game.modules.get('terre-selvagge-dnd5e').api.updateHarvesterQuantityByRegExOnFolder("Folder.kRCfy16NbjWDmmZN");
-```
 
 ```
 game.modules.get('terre-selvagge-dnd5e').api.retrieveDetailsIncomeForActor({uuid: "Actor.yYmgTUEKN2or5YKe"})
