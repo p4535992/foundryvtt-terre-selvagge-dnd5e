@@ -155,6 +155,10 @@ const API = {
     }
     return await IncomeHelpers.retrieveDetailsIncomeForActor(inAttributes.uuid);
   },
+
+  async retrieveDetailsIncomeForAllActorOnFolder() {
+    return await IncomeHelpers.retrieveDetailsIncomeForAllActorOnFolder();
+  },
 };
 
 export default API;

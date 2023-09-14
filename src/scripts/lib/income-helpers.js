@@ -45,12 +45,12 @@ export class IncomeHelpers {
       }
     }
 
-    await IncomeHelpers.prepareChatCard(actorUuid, resultObj[actorUuid]);
+    await IncomeHelpers.prepareChatCard(actorUuid, resultObj[actorUuid], true);
 
     return resultObj;
   }
 
-  static async calculateIncomeForAllPlayerJournalActor() {
+  static async retrieveDetailsIncomeForAllActorOnFolder() {
     const folderUuid = game.settings.get(CONSTANTS.MODULE_ID, `specificFolderJournalPersonsIncome`);
     const folderObject = await fromUuid(folderUuid);
     if (!folderObject) {
@@ -64,9 +64,14 @@ export class IncomeHelpers {
     const resultObj = {};
     for (const voice of persons) {
       const journalActor = stringIsUuid(voice) ? await fromUuid(voice) : await fromUuid(voice.uuid);
-      const details = IncomeHelpers.calculateIncomeForAPlayerJournalActor(journalActor);
-      log(`101 Details:` + JSON.stringify(details));
-      resultObj[details.actorUuid] = details;
+      const details = await IncomeHelpers.calculateIncomeForAPlayerJournalActor(journalActor);
+      if (details) {
+        log(`101 Details:` + JSON.stringify(details));
+        resultObj[details.actorUuid] = details;
+        await IncomeHelpers.prepareChatCard(details.actorUuid, resultObj[details.actorUuid], true);
+      } else {
+        warn(`102 Non sono riuscito a calcolare l'income per '${journalActor.name}'`, true);
+      }
     }
     return resultObj;
   }
@@ -315,7 +320,7 @@ export class IncomeHelpers {
     }
 ]
 */
-  static async prepareChatCard(actorP, details) {
+  static async prepareChatCard(actorP, details, showApplyDialog) {
     function colorSetter(number, low, high) {
       if (number <= low) return `color:red;`;
       if (number >= high) return `color:green;`;
@@ -480,24 +485,40 @@ export class IncomeHelpers {
     };
     ChatMessage.create(chatData, {});
 
-    const shouldApplyTheCurrencyUpdated = await Dialog.confirm({
-      title: `Ti torna tutto ? Sei sicuro di voler applicare la differenza  ?`,
-      content: `Sei sicuro di voler togliere i soldi alla banca '${actorBanca.name}' collegata all'attore '${actor.name}', se i soldi in banca saranno inferiori alle spese la sottrazzione si fermera' ad avere 0 currency`,
-    });
+    let contentFinal = ``;
+    if (isInActive) {
+      let finalWarn = `<span style="color:green; font-weight: bold; border-bottom:1px solid #000; border-top:1px solid #000;">${"Il giocatore e' in attivo"}</span>`;
+      contentFinal = finalWarn;
+    } else {
+      let finalWarn = `<span style="${
+        isPoor ? "color:red;" : "color:green;"
+      } font-weight: bold; border-top:1px solid #000;">${
+        isPoor ? "La banca non ha abbastanza soldi" : "La banca ha abbastanza soldi"
+      }</span>`;
 
-    if (shouldApplyTheCurrencyUpdated) {
-      if (totalIncome < 0) {
-        game.modules.get("lazymoney").api.subtractCurrency({
-          actor: actorBanca.uuid,
-          currencyValue: totalIncome,
-          currencyDenom: "gp",
-        });
-      } else {
-        game.modules.get("lazymoney").api.addCurrency({
-          actor: actorBanca.uuid,
-          currencyValue: totalIncome,
-          currencyDenom: "gp",
-        });
+      contentFinal = finalWarn;
+    }
+
+    if (showApplyDialog) {
+      const shouldApplyTheCurrencyUpdated = await Dialog.confirm({
+        title: `Ti torna tutto ? Sei sicuro di voler applicare la differenza  ?`,
+        content: `<b>${contentFinal}</b><br>Sei sicuro di voler togliere i soldi alla banca '${actorBanca.name}' collegata all'attore '${actor.name}', se i soldi in banca saranno inferiori alle spese la sottrazzione si fermera' e nessuna currency sarà tolta`,
+      });
+
+      if (shouldApplyTheCurrencyUpdated) {
+        if (totalIncome < 0) {
+          game.modules.get("lazymoney").api.subtractCurrency({
+            actor: actorBanca.uuid,
+            currencyValue: totalIncome,
+            currencyDenom: "gp",
+          });
+        } else {
+          game.modules.get("lazymoney").api.addCurrency({
+            actor: actorBanca.uuid,
+            currencyValue: totalIncome,
+            currencyDenom: "gp",
+          });
+        }
       }
     }
   }
