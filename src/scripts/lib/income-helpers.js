@@ -7,7 +7,7 @@ export class IncomeHelpers {
     const folderUuid = game.settings.get(CONSTANTS.MODULE_ID, `specificFolderJournalPersonsIncome`);
     const folderObject = await fromUuid(folderUuid);
     if (!folderObject) {
-      warn(`00 No folder found for the reference '${folderUuid}'`, true);
+      warn(`00 No folder found for the reference '${folderUuid}'`);
       return;
     }
     const persons = folderObject.contents.filter((e) => {
@@ -22,19 +22,19 @@ export class IncomeHelpers {
         ? journalPerson.type
         : getProperty(journalPerson, `flags.monks-enhanced-journal.pagetype`);
       if (journalPersonType != "person") {
-        warn(`01 This journal person is not a type 'person' for the reference '${journalPerson}'`, true);
+        warn(`01 This journal person is not a type 'person' for the reference '${journalPerson}'`);
         continue;
       }
       const pages = journalPerson.pages;
       // MJE TYPE ARE ONE ONLY PAGE JOURNAL
       const actorJournalPage = await fromUuid(pages.contents[0].uuid);
       if (!actorJournalPage) {
-        warn(`02 No journal person page is been found it for the reference '${journalPerson}'`, true);
+        warn(`02 No journal person page is been found it for the reference '${journalPerson}'`);
         continue;
       }
       const actorJ = getProperty(actorJournalPage, `flags.monks-enhanced-journal.actor`);
       if (!actorJ) {
-        warn(`03 No actor is present for the reference '${journalPerson}'`, true);
+        warn(`03 No actor is present for the reference '${journalPerson}'`);
         continue;
       }
       if (actorJ.uuid === actorUuid) {
@@ -54,7 +54,7 @@ export class IncomeHelpers {
     const folderUuid = game.settings.get(CONSTANTS.MODULE_ID, `specificFolderJournalPersonsIncome`);
     const folderObject = await fromUuid(folderUuid);
     if (!folderObject) {
-      warn(`04 No folder found for the reference '${folderUuid}'`, true);
+      warn(`04 No folder found for the reference '${folderUuid}'`);
       return;
     }
     const persons = folderObject.contents.filter((e) => {
@@ -70,7 +70,7 @@ export class IncomeHelpers {
         resultObj[details.actorUuid] = details;
         await IncomeHelpers.prepareChatCard(details.actorUuid, resultObj[details.actorUuid], true);
       } else {
-        warn(`102 Non sono riuscito a calcolare l'income per '${journalActor.name}'`, true);
+        warn(`102 Non sono riuscito a calcolare l'income per '${journalActor.name}'`);
       }
     }
     return resultObj;
@@ -81,26 +81,26 @@ export class IncomeHelpers {
       ? await fromUuid(journalPersonUuid)
       : await fromUuid(journalPersonUuid.uuid);
     if (!journalPerson) {
-      warn(`05 No journal person page is been found it for the reference '${journalPlaceUuid}'`, true);
+      warn(`05 No journal person page is been found it for the reference '${journalPlaceUuid}'`);
       return;
     }
     const journalPersonType = journalPerson.type
       ? journalPerson.type
       : getProperty(journalPerson, `flags.monks-enhanced-journal.pagetype`);
     if (journalPersonType != "person") {
-      warn(`06 This journal person is not a type 'person' for the reference '${journalPersonUuid}'`, true);
+      warn(`06 This journal person is not a type 'person' for the reference '${journalPersonUuid}'`);
       return;
     }
     const pages = journalPerson.pages;
     // MJE TYPE ARE ONE ONLY PAGE JOURNAL
     const actorJournalPage = await fromUuid(pages.contents[0].uuid);
     if (!actorJournalPage) {
-      warn(`07 No journal person page is been found it for the reference '${journalPerson}'`, true);
+      warn(`07 No journal person page is been found it for the reference '${journalPerson}'`);
       return;
     }
     const actorJ = getProperty(actorJournalPage, `flags.monks-enhanced-journal.actor`);
     if (!actorJ) {
-      warn(`08 No actor is present for the reference '${journalPerson}'`, true);
+      warn(`08 No actor is present for the reference '${journalPerson}'`);
       return;
     }
 
@@ -110,32 +110,32 @@ export class IncomeHelpers {
       return bancaPersonType === "person" && String(e.relationship)?.toLowerCase() === "banca";
     });
     if (!bancaPersonJ || bancaPersonJ.length <= 0) {
-      warn(`09 No journal person for banca page is been found it for the reference '${actorJournalPage}'`, true);
+      warn(`09 No journal person for banca page is been found it for the reference '${actorJournalPage}'`);
       return;
     }
 
     // NOTA: ONLY ONE BANK AT THE TIME CAN BE PRESENT
     const bancaPersonJWithPages = await fromUuid(bancaPersonJ[0].uuid);
     if (!bancaPersonJWithPages) {
-      warn(`09 No journal person for banca page is been found it for the reference '${actorJournalPage}'`, true);
+      warn(`09 No journal person for banca page is been found it for the reference '${actorJournalPage}'`);
       return;
     }
     const bancaPages = bancaPersonJWithPages.pages;
     // MJE TYPE ARE ONE ONLY PAGE JOURNAL
     const actorBancaJournalPage = await fromUuid(bancaPages.contents[0].uuid);
     if (!actorBancaJournalPage) {
-      warn(`09 No journal person page for banca  is been found it for the reference '${bancaPersonJWithPages}'`, true);
+      warn(`09 No journal person page for banca  is been found it for the reference '${bancaPersonJWithPages}'`);
       return;
     }
     const actorBancaJ = getProperty(actorBancaJournalPage, `flags.monks-enhanced-journal.actor`);
     if (!actorBancaJ) {
-      warn(`09 No actor banca is present for the reference '${actorBancaJournalPage}'`, true);
+      warn(`09 No actor banca is present for the reference '${actorBancaJournalPage}'`);
       return;
     }
 
     const actorBanca = await fromUuid(actorBancaJ.uuid);
     if (!actorBanca) {
-      warn(`09 No actor banca is present for the reference '${actorBancaJ}'`, true);
+      warn(`09 No actor banca is present for the reference '${actorBancaJ}'`);
       return;
     }
     // END RECUPERO BANCA
@@ -148,7 +148,7 @@ export class IncomeHelpers {
     for (const placeJRel of placesJ) {
       const place = stringIsUuid(placeJRel) ? await fromUuid(placeJRel) : await fromUuid(placeJRel.uuid);
       if (!place) {
-        warn(`09 No journal person page is been found it for the reference '${placeJRel.uuid}'`, true);
+        warn(`09 No journal person page is been found it for the reference '${placeJRel.uuid}'`);
         continue;
       }
       const incomeCustomPlaceJ = is_lazy_number(placeJRel.relationship) ? parseInt(placeJRel.relationship) : 0;
@@ -177,26 +177,26 @@ export class IncomeHelpers {
       ? await fromUuid(journalPlaceUuid)
       : await fromUuid(journalPlaceUuid.uuid);
     if (!journalPlace) {
-      warn(`10 No journal place page is been found it for the reference '${journalPlaceUuid}'`, true);
+      warn(`10 No journal place page is been found it for the reference '${journalPlaceUuid}'`);
       return;
     }
     const actor = stringIsUuid(actorJ) ? await fromUuid(actorJ) : await fromUuid(actorJ.uuid);
     if (!actor) {
-      warn(`11 No actor is been found it for the reference '${actorJ}'`, true);
+      warn(`11 No actor is been found it for the reference '${actorJ}'`);
       return;
     }
     const journalPlaceType = journalPlace.type
       ? journalPlace.type
       : getProperty(journalPlace, `flags.monks-enhanced-journal.pagetype`);
     if (journalPlaceType !== "place") {
-      warn(`12 This journal place is not a type 'person' for the reference '${journalPlace}'`, true);
+      warn(`12 This journal place is not a type 'person' for the reference '${journalPlace}'`);
       return;
     }
     const pages = journalPlace.pages;
     // MJE TYPE ARE ONE ONLY PAGE JOURNAL
     const placeJournalPage = await fromUuid(pages.contents[0].uuid);
     if (!placeJournalPage) {
-      warn(`13 No journal place page is been found it for the reference '${journalPlace}'`, true);
+      warn(`13 No journal place page is been found it for the reference '${journalPlace}'`);
       return;
     }
     const attributesPlaceJ = getProperty(placeJournalPage, `flags.monks-enhanced-journal.attributes`);
@@ -217,14 +217,14 @@ export class IncomeHelpers {
     for (const personJRel of personsJ) {
       const journalPerson = stringIsUuid(personJRel) ? await fromUuid(personJRel) : await fromUuid(personJRel.uuid);
       if (!journalPerson) {
-        warn(`14 No journal person page is been found it for the reference '${personJRel.uuid}'`, true);
+        warn(`14 No journal person page is been found it for the reference '${personJRel.uuid}'`);
         continue;
       }
       const pages = journalPerson.pages;
       // MJE TYPE ARE ONE ONLY PAGE JOURNAL
       const personJournalPage = await fromUuid(pages.contents[0].uuid);
       if (!personJournalPage) {
-        warn(`15 No journal person page is been found it for the reference '${personJRel}'`, true);
+        warn(`15 No journal person page is been found it for the reference '${personJRel}'`);
         continue;
       }
       const attributesPersonJ = getProperty(personJournalPage, `flags.monks-enhanced-journal.attributes`);
@@ -274,52 +274,6 @@ export class IncomeHelpers {
     return totalIncome;
   }
 
-  /*
-  [
-    {
-        "name": "Scuola",
-        "id": "UQibzl5E4XrZpWdx",
-        "uuid": "JournalEntry.UQibzl5E4XrZpWdx",
-        "customIncome": -40,
-        "actorBanca": "Actor.tyerueve23"
-        "details": {
-            "name": "Scuola",
-            "id": "UQibzl5E4XrZpWdx",
-            "uuid": "JournalEntry.UQibzl5E4XrZpWdx",
-            "income": 0,
-            "upkeep": 0,
-            "workers": [
-                {
-                    "name": "Jia, Insegnante",
-                    "id": "jnRZjl4XljYLSKui",
-                    "uuid": "JournalEntry.jnRZjl4XljYLSKui",
-                    "costo": 30
-                },
-                {
-                    "name": "Lydia, Insegnante",
-                    "id": "Y4X3skMFXh2wUKKZ",
-                    "uuid": "JournalEntry.Y4X3skMFXh2wUKKZ",
-                    "costo": 30
-                }
-            ]
-        }
-    },
-    {
-        "name": "Boutique",
-        "id": "CbPeeyPQlI5iK9Hv",
-        "uuid": "JournalEntry.CbPeeyPQlI5iK9Hv",
-        "customIncome": -10,
-        "details": {
-            "name": "Boutique",
-            "id": "CbPeeyPQlI5iK9Hv",
-            "uuid": "JournalEntry.CbPeeyPQlI5iK9Hv",
-            "income": 225,
-            "upkeep": 0,
-            "workers": []
-        }
-    }
-]
-*/
   static async prepareChatCard(actorP, details, showApplyDialog) {
     function colorSetter(number, low, high) {
       if (number <= low) return `color:red;`;
@@ -332,24 +286,24 @@ export class IncomeHelpers {
     }
 
     if (!details) {
-      warn(`17.2 No details is present for the reference`, true);
+      warn(`17.2 No details is present for the reference`);
       return;
     }
 
     const actor = stringIsUuid(actorP.uuid ? actorP.uuid : actorP) ? await fromUuid(actorP) : actorP;
     if (!actor) {
-      warn(`18 No actor is present for the reference '${actorP}'`, true);
+      warn(`18 No actor is present for the reference '${actorP}'`);
       return;
     }
     if (!details.actorBancaUuid) {
-      warn(`18.1 No actor banca is present for the reference '${details}'`, true);
+      warn(`18.1 No actor banca is present for the reference '${details}'`);
       return;
     }
     const actorBanca = stringIsUuid(details.actorBancaUuid.uuid ? details.actorBancaUuid.uuid : details.actorBancaUuid)
       ? await fromUuid(details.actorBancaUuid)
       : details.actorBancaUuid;
     if (!actorBanca) {
-      warn(`18.2 No actor banca is present for the reference '${details.actorBancaUuid}'`, true);
+      warn(`18.2 No actor banca is present for the reference '${details.actorBancaUuid}'`);
       return;
     }
 
@@ -442,7 +396,7 @@ export class IncomeHelpers {
     return_value = return_value + finalSum;
 
     let isInActive = totalIncome >= 0;
-    let isPoor = totalIncome < 0 ? actorBancaGp < totalIncome : false;
+    let isPoor = totalIncome < 0 ? actorBancaGp < totalIncome * -1 : false;
 
     if (isInActive) {
       let finalWarn = `<tr>
@@ -502,7 +456,7 @@ export class IncomeHelpers {
     if (showApplyDialog) {
       const shouldApplyTheCurrencyUpdated = await Dialog.confirm({
         title: `Ti torna tutto ? Sei sicuro di voler applicare la differenza  ?`,
-        content: `<b>${contentFinal}</b><br>Sei sicuro di voler togliere i soldi alla banca '${actorBanca.name}' collegata all'attore '${actor.name}', se i soldi in banca saranno inferiori alle spese la sottrazzione si fermera' e nessuna currency sarà tolta`,
+        content: `<b>${contentFinal}</b><br>Sei sicuro di voler togliere i soldi alla banca <b>'${actorBanca.name}'</b> collegata all'attore <b>'${actor.name}'</b>, se i soldi in banca saranno inferiori alle spese la sottrazzione si fermera' e nessuna currency sarà tolta`,
       });
 
       if (shouldApplyTheCurrencyUpdated) {

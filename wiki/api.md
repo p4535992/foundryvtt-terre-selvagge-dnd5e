@@ -193,10 +193,39 @@ game.modules.get('terre-selvagge-dnd5e').api.giveTimeCoinsv2({
 })
 ```
 
-TODO da finire la documentazione....
+#### retrieveDetailsIncomeForActor({uuid: string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
-### Altri esempi
+Analizza l'income del singolo attore
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+| uuid | <code>string</code> | The actor uuid |
+
+**Example**:
 
 ```
 game.modules.get('terre-selvagge-dnd5e').api.retrieveDetailsIncomeForActor({uuid: "Actor.yYmgTUEKN2or5YKe"})
 ```
+
+#### retrieveDetailsIncomeForAllActorOnFolder():void ⇒ <code>Promise&lt;void&gt;</code>
+
+Analizza l'income di tutti i giocatori presenti nella cartella uno per uno
+
+**Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
+
+| Param | Type | Description | Note |
+| --- | --- | --- | --- |
+
+**Example**:
+
+```
+game.modules.get('terre-selvagge-dnd5e').api.retrieveDetailsIncomeForAllActorOnFolder()
+```
+
+
+
+TODO da finire la documentazione....
+
+### Altri esempi
