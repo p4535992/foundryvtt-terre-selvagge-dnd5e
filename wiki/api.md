@@ -1,6 +1,6 @@
 The api is reachable from the variable `game.modules.get('terre-selvagge-dnd5e').api` or from the socket libary `socketLib` on the variable `game.modules.get('terre-selvagge-dnd5e').socket` if present and active.
 
-#### retrieveAndApplyBonuses({item: uuid|Item, type:string, name?:string, image?:string, prefix?:string, suffix?:string}):void ⇒ <code>Promise&lt;void&gt;</code>
+### retrieveAndApplyBonuses({item: uuid|Item, type:string, name?:string, image?:string, prefix?:string, suffix?:string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Recupera gli item presenti su un attore, di un certo tipo (e.g. weapon) dall'attore corrente e permette di selezionare uno degli item su cui settare uno degli effetti del modulo babonus sull'arma scelta.
 In pratica applica un bonus di babonus all'item scelto.
@@ -26,7 +26,7 @@ game.modules.get('terre-selvagge-dnd5e').api.retrieveAndApplyBonuses({
 
 ```
 
-#### retrieveSuperiorItemAndReplaceOnActor({item: uuid|Item, type:string, target_bonus:number, name?:string, image?:string, prefix?:string, suffix?:string}):void ⇒ <code>Promise&lt;void&gt;</code>
+### retrieveSuperiorItemAndReplaceOnActor({item: uuid|Item, type:string, target_bonus:number, name?:string, image?:string, prefix?:string, suffix?:string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Recupera un'oggetto "superiore" dell'oggetto corrente usando come riferimento il nome dell'oggetto linkato ad esso e non l'oggetto stesso.
 Una macro che sostituisce ad esempio Longsword +1, to Longsword +2
@@ -64,7 +64,7 @@ game.modules.get('terre-selvagge-dnd5e').api.retrieveSuperiorItemAndReplaceOnAct
 ```
 
 
-#### deleteAllBonusFromItem({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+### deleteAllBonusFromItem({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Rimuovi tutti i bonus dall'oggetto selezionato
 
@@ -84,7 +84,7 @@ game.modules.get('terre-selvagge-dnd5e').api.deleteAllBonusFromItem({
 
 ```
 
-#### setItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+### setItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Rendi un'oggetto "beaver craftato" aggiungendo i flags appositi , "created" se il flag è assente "updated" se gia' presente con il valore "created"
 
@@ -103,7 +103,7 @@ game.modules.get('terre-selvagge-dnd5e').api.setItemAsBeaverCrafted({
 })
 ```
 
-#### unsetItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+### unsetItemAsBeaverCrafted({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Rimuovi i flags del "beaver craftato" rendendo l'oggetto craftato non craftato
 
@@ -123,7 +123,7 @@ game.modules.get('terre-selvagge-dnd5e').api.unsetItemAsBeaverCrafted({
 
 ```
 
-#### createScroll({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
+### createScroll({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Crea uno scroll con valori predefiniti a partire da un'item.
 I valori predefiniti sono:
@@ -149,7 +149,7 @@ game.modules.get('terre-selvagge-dnd5e').api.createScroll({
 
 ```
 
-#### createScrollWithParams({item: uuid|Item, spellComponents: Object, feats: Object, label: string, timeToken:string}):void ⇒ <code>Promise&lt;void&gt;</code>
+### createScrollWithParams({item: uuid|Item, spellComponents: Object, feats: Object, label: string, timeToken:string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Crea uno scroll con valori espliciti a partire da un'item.
 
@@ -171,7 +171,7 @@ game.modules.get('terre-selvagge-dnd5e').api.createScrollWithParams({
 })
 ```
 
-#### giveTimeCoinsv2({actorFoldername: string, addQuantita: number, uuidItemTimeCoinOnCompendium: string}):void ⇒ <code>Promise&lt;void&gt;</code>
+### giveTimeCoinsv2({actorFoldername: string, addQuantita: number, uuidItemTimeCoinOnCompendium: string}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Dai delle time coins a tutti gli attori della cartella con il nome specifico
 
