@@ -18,6 +18,7 @@ import { CustomCharacterSheetSectionsHelpers } from "./lib/custom-character-shee
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
 import { ScrollHelpers } from "./lib/scroll-helpers.js";
+import { TerreSelvaggeHelpers } from "./lib/terre-selvagge-helpers.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export let invPlusActive = false;
@@ -180,12 +181,21 @@ export const readyHooks = () => {
     enableNoteOnCanvasInit();
   });
 
-  Hooks.on("hoverNote", (note, hover) => {
-    patchForNoteWithMacroWheelModule(note, hover);
+  Hooks.on("hoverNote", (note, hovered) => {
+    patchForNoteWithMacroWheelModule(note, hovered);
+    TerreSelvaggeHelpers.hoverNoteColor(note, hovered);
   });
 
   Hooks.on("dnd5e.createScrollFromSpell", (spell, spellScrollData) => {
     ScrollHelpers.doNotCreateASpellScrollIfYouAreNotGMV2(spell, spellScrollData);
+  });
+
+  Hooks.on("renderJournalSheet", (app, html, data) => {
+    TerreSelvaggeHelpers.renderJournalSheetAvamposto, (app, html, data);
+  });
+
+  Hooks.on("renderItemSheet", (app, html, data) => {
+    TerreSelvaggeHelpers.renderItemSheetLockAndKeyNoText(app, html, data);
   });
 };
 

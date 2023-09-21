@@ -125,6 +125,15 @@ export const registerSettings = function () {
     config: true,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "enableHoverNote", {
+    name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.enableHoverNote.name`),
+    hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.enableHoverNote.hint`),
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
   // ========================================================================
   game.settings.register(CONSTANTS.MODULE_ID, "debug", {
     name: `${CONSTANTS.MODULE_ID}.setting.debug.name`,
