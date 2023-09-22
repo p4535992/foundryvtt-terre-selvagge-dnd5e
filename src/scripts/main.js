@@ -184,6 +184,7 @@ export const readyHooks = () => {
   Hooks.on("hoverNote", (note, hovered) => {
     patchForNoteWithMacroWheelModule(note, hovered);
     TerreSelvaggeHelpers.hoverNoteColor(note, hovered);
+    TerreSelvaggeHelpers.hoverNoteBySettings(note, hovered);
   });
 
   Hooks.on("dnd5e.createScrollFromSpell", (spell, spellScrollData) => {

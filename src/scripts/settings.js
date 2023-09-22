@@ -125,6 +125,18 @@ export const registerSettings = function () {
     config: true,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "hoverNoteSettings", {
+    name: "Hover Note Settings",
+    hint: "Stores settings for hover note hooks.",
+    default: JSON.stringify({
+      Foresta: "Tiles/POI/RegionIconsMapPack/ElfRegionIcons/Forest.png",
+      // ...other defaults
+    }),
+    type: String,
+    scope: "world",
+    config: false,
+  });
+
   game.settings.register(CONSTANTS.MODULE_ID, "enableHoverNote", {
     name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.enableHoverNote.name`),
     hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.setting.enableHoverNote.hint`),

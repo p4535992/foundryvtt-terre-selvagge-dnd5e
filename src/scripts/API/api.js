@@ -5,6 +5,7 @@ import { HarvesterHelpers } from "../lib/harvester-helpers.js";
 import { IncomeHelpers } from "../lib/income-helpers.js";
 import { error } from "../lib/lib.js";
 import { ScrollHelpers } from "../lib/scroll-helpers.js";
+import { TerreSelvaggeHelpers } from "../lib/terre-selvagge-helpers.js";
 import { TimeCoinsHelpers } from "../lib/time-coins-helpers.js";
 import { retrieveAndApplyBonuses } from "../old/retrieve-and-apply-babonus.js";
 import { retrieveSuperiorItemAndReplaceOnActor } from "../old/retrieve-superior-bymagus.js";
@@ -158,6 +159,10 @@ const API = {
 
   async retrieveDetailsIncomeForAllActorOnFolder() {
     return await IncomeHelpers.retrieveDetailsIncomeForAllActorOnFolder();
+  },
+
+  async showSettingsDialog() {
+    return await TerreSelvaggeHelpers.showSettingsDialog();
   },
 };
 
