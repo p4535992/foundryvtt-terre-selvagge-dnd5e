@@ -134,7 +134,7 @@ export const registerSettings = function () {
     }),
     type: String,
     scope: "world",
-    config: false,
+    config: true,
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "enableHoverNote", {
