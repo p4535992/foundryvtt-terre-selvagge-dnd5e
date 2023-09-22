@@ -227,4 +227,66 @@ export class TerreSelvaggeHelpers {
     // Alternatively, you can also do it like this:
     // titleElement.html('<i class="fas fa-key"></i>');
   }
+
+  static async renderJournalSheetAvamposto(app, html, data) {
+    // Debugging line to inspect 'data'
+    console.log("Data:", data);
+
+    // Check if the journal name starts with "Avamposto"
+    if (data.title.startsWith("Avamposto")) {
+      // Delay the changes to ensure the form elements are rendered
+      setTimeout(() => {
+        // Find the "Alignment" label and change it to "Stato"
+        const alignmentLabel = html.find("label:contains('Alignment')");
+        if (alignmentLabel.length > 0) {
+          alignmentLabel.text("Stato");
+        }
+
+        // Hide the "Notes" and "Relationships" tabs
+        html.find("a.item[data-tab='notes']").hide();
+        html.find("a.item[data-tab='relationships']").hide();
+
+        // Translate the "Description" tab into "Descrizione"
+        const descriptionTab = html.find("a.item[data-tab='description']");
+        if (descriptionTab.length > 0) {
+          descriptionTab.text("Descrizione");
+        }
+
+        // Translate the "Offerings" tab into "Ricostruzione"
+        const offeringsTab = html.find("a.item[data-tab='offerings']");
+        if (offeringsTab.length > 0) {
+          offeringsTab.text("Ricostruzione");
+        }
+
+        // Replace input with select for "Stato"
+        const alignmentInput = html.find("input[name='flags.monks-enhanced-journal.alignment']");
+        const currentValue = alignmentInput.val() || "Non Completato"; // default value
+        if (alignmentInput.length > 0) {
+          const selectElement = `
+          <select name="flags.monks-enhanced-journal.alignment">
+            <option value="Completato" ${currentValue === "Completato" ? "selected" : ""}>Completato</option>
+            <option value="Non Completato" ${
+              currentValue === "Non Completato" ? "selected" : ""
+            }>Non Completato</option>
+          </select>
+        `;
+          alignmentInput.replaceWith(selectElement);
+        }
+
+        // Remove the Location form-group
+        const locationLabel = html.find("label:contains('Location')");
+        if (locationLabel.length > 0) {
+          locationLabel.closest(".form-group").remove();
+        }
+
+        // Blur the image if the alignment is "Non Completato"
+        const profileImage = html.find(".profile");
+        if (currentValue === "Non Completato") {
+          profileImage.css("filter", "blur(5px)");
+        } else {
+          profileImage.css("filter", "");
+        }
+      }, 100); // 100ms delay
+    }
+  }
 }

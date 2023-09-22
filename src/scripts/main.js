@@ -192,7 +192,7 @@ export const readyHooks = () => {
   });
 
   Hooks.on("renderJournalSheet", (app, html, data) => {
-    TerreSelvaggeHelpers.renderJournalSheetAvamposto, (app, html, data);
+    TerreSelvaggeHelpers.renderJournalSheetAvamposto(app, html, data);
   });
 
   Hooks.on("renderItemSheet", (app, html, data) => {
