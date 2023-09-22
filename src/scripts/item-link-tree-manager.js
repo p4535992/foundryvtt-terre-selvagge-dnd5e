@@ -139,6 +139,7 @@ export class ItemLinkTreeManager {
             const effectData = effectToAdd.toObject();
             setProperty(effectData, `origin`, item.uuid);
             setProperty(effectData, `flags.core.sourceId`, item.uuid);
+            setProperty(effectData, `name`, itemAdded.name);
             effectDatas.push(effectData);
             //await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
           }
@@ -192,7 +193,7 @@ export class ItemLinkTreeManager {
         const idsEffectActorToRemove = [];
         for (const effectToRemove of itemEffects) {
           for (const effect of actorEffects) {
-            if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
+            if (effect.name.startsWith(effectToRemove.name) && effect.origin === item.uuid) {
               log(`Rimosso effect from actor '${effect.name}'`, true);
               idsEffectActorToRemove.push(effect.id);
             }
@@ -202,6 +203,21 @@ export class ItemLinkTreeManager {
           await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
         }
         await DAE.fixTransferEffects(actor);
+        const idsEffectActorToRemove2 = [];
+        const actorEffects2 = actor.effects ?? [];
+        for (const effectToRemove of actorEffects2) {
+          if (
+            effectToRemove.flags?.core?.sourceId &&
+            effectToRemove.flags?.core?.sourceId.startsWith("Compendium") &&
+            effectToRemove.name.startsWith(effectToRemove.name)
+          ) {
+            log(`Rimosso effect from actor '${effectToRemove.name}'`, true);
+            idsEffectActorToRemove2.push(effectToRemove.id);
+          }
+        }
+        if (idsEffectActorToRemove2.length > 0) {
+          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove2);
+        }
       }
     }
   }
@@ -238,7 +254,7 @@ export class ItemLinkTreeManager {
         // if (DAE) {
         //   for (const effectToRemove of effectsToRemove) {
         //     for (const effect of effects) {
-        //       if (effect.name === effectToRemove.name) {
+        //       if (effect.name.startsWith(effectToRemove.name)) {
         //         log(`Rimosso effect '${effect.name}'`, true);
         //         let uuidItem = item.uuid;
         //         let origin = effect.origin;
@@ -253,7 +269,7 @@ export class ItemLinkTreeManager {
         const idsEffectItemToRemove = [];
         for (const effectToRemove of effectsToRemove) {
           for (const effect of itemEffects) {
-            if (effect.name === effectToRemove.name) {
+            if (effect.name.startsWith(effectToRemove.name)) {
               // Non funziona  && effect.origin === itemRemoved.uuid
               log(`Rimosso effect from item '${effect.name}'`, true);
               idsEffectItemToRemove.push(effect.id);
@@ -267,7 +283,7 @@ export class ItemLinkTreeManager {
         const idsEffectActorToRemove = [];
         for (const effectToRemove of effectsToRemove) {
           for (const effect of actorEffects) {
-            if (effect.name === effectToRemove.name && effect.origin === item.uuid) {
+            if (effect.name.startsWith(effectToRemove.name) && effect.origin === item.uuid) {
               log(`Rimosso effect from actor '${effect.name}'`, true);
               idsEffectActorToRemove.push(effect.id);
             }

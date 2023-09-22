@@ -51,27 +51,23 @@ export class TerreSelvaggeHelpers {
         });
 
         // Add new fields dynamically
-        $(html)
-          .off("click", "#addNew")
-          .on("click", "#addNew", function () {
-            let newIndex = $("#form .form-group").length;
-            $("#form").append(`<div class="form-group">
+        html.off("click", "#addNew").on("click", "#addNew", function () {
+          let newIndex = $("#form .form-group").length;
+          $("#form").append(`<div class="form-group">
                 <input type="text" name="label" value="New Label">
                 <input type="text" name="path" value="New Path" id="path-${newIndex}">
                 <button type="button" class="filepicker" data-target="path-${newIndex}">Browse</button>
                 <button class="delete">Delete</button>
             </div>`);
-          });
+        });
 
         // Remove any previous click event handlers on '.delete'
-        $(html)
-          .off("click", ".delete")
-          .on("click", ".delete", function () {
-            $(this).closest(".form-group").remove();
-          });
+        html.off("click", ".delete").on("click", ".delete", function () {
+          $(this).closest(".form-group").remove();
+        });
 
         // Delete a field
-        $(html).on("click", ".delete", function () {
+        html.on("click", ".delete", function () {
           $(this).closest(".form-group").remove();
         });
       },
