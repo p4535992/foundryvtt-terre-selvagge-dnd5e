@@ -137,7 +137,7 @@ export const registerSettings = function () {
   //   config: true,
   // });
 
-  game.settings.register(CONSTANTS.MODULE_ID, "nameRollTableMapNOtes", {
+  game.settings.register(CONSTANTS.MODULE_ID, "nameRollTableMapNotes", {
     name: "Name of the RollTable for Mpa Notes",
     hint: "Name of the RollTable for Mpa Notes",
     type: String,

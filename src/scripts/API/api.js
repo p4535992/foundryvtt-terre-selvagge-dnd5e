@@ -161,9 +161,9 @@ const API = {
     return await IncomeHelpers.retrieveDetailsIncomeForAllActorOnFolder();
   },
 
-  async showSettingsDialog() {
-    return await TerreSelvaggeHelpers.showSettingsDialog();
-  },
+  // async showSettingsDialog() {
+  //   return await TerreSelvaggeHelpers.showSettingsDialog();
+  // },
 };
 
 export default API;

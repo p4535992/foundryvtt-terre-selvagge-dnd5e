@@ -1,93 +1,103 @@
 import CONSTANTS from "../constants/constants";
+import { warn } from "./lib";
 
 export class TerreSelvaggeHelpers {
-  static showSettingsDialog() {
-    // Function to show the dialog
+  // static showSettingsDialog() {
+  //   // Function to show the dialog
 
-    let currentSettings = JSON.parse(game.settings.get("myModule", "hoverNoteSettings"));
-    let content = `<div id="form">
-      ${Object.keys(currentSettings)
-        .map(
-          (key, index) => `
-          <div class="form-group">
-              <input type="text" name="label" value="${key}">
-              <input type="text" name="path" value="${currentSettings[key]}" id="path-${index}">
-              <button type="button" class="filepicker" data-target="path-${index}">Browse</button>
-              <button class="delete">Delete</button>
-          </div>`
-        )
-        .join("")}
-      </div>
-      <p><button id="addNew">Add New</button></p>`;
+  //   let currentSettings = JSON.parse(game.settings.get(CONSTANTS.MODULE_ID, "hoverNoteSettings"));
+  //   let content = `<div id="form">
+  //     ${Object.keys(currentSettings)
+  //       .map(
+  //         (key, index) => `
+  //         <div class="form-group">
+  //             <input type="text" name="label" value="${key}">
+  //             <input type="text" name="path" value="${currentSettings[key]}" id="path-${index}">
+  //             <button type="button" class="filepicker" data-target="path-${index}">Browse</button>
+  //             <button class="delete">Delete</button>
+  //         </div>`
+  //       )
+  //       .join("")}
+  //     </div>
+  //     <p><button id="addNew">Add New</button></p>`;
 
-    new Dialog({
-      title: "Hover Note Settings",
-      content,
-      buttons: {
-        save: {
-          label: "Save",
-          callback: async (html) => {
-            let newSettings = {};
-            html.find(".form-group").each((i, el) => {
-              let $el = $(el);
-              let label = $el.find("input[name='label']").val();
-              let path = $el.find("input[name='path']").val();
-              newSettings[label] = path;
-            });
-            await game.settings.set("myModule", "hoverNoteSettings", JSON.stringify(newSettings));
-          },
-        },
-      },
-      default: "save",
-      render: (html) => {
-        html.find(".filepicker").click(async (ev) => {
-          let target = $(ev.currentTarget).data("target");
-          new FilePicker({
-            type: "image",
-            callback: (path) => {
-              html.find(`#${target}`).val(path);
-            },
-          }).browse();
-        });
+  //   new Dialog({
+  //     title: "Hover Note Settings",
+  //     content,
+  //     buttons: {
+  //       save: {
+  //         label: "Save",
+  //         callback: async (html) => {
+  //           let newSettings = {};
+  //           html.find(".form-group").each((i, el) => {
+  //             let $el = $(el);
+  //             let label = $el.find("input[name='label']").val();
+  //             let path = $el.find("input[name='path']").val();
+  //             newSettings[label] = path;
+  //           });
+  //           await game.settings.set(CONSTANTS.MODULE_ID, "hoverNoteSettings", JSON.stringify(newSettings));
+  //         },
+  //       },
+  //     },
+  //     default: "save",
+  //     render: (html) => {
+  //       html.find(".filepicker").click(async (ev) => {
+  //         let target = $(ev.currentTarget).data("target");
+  //         new FilePicker({
+  //           type: "image",
+  //           callback: (path) => {
+  //             html.find(`#${target}`).val(path);
+  //           },
+  //         }).browse();
+  //       });
 
-        // Add new fields dynamically
-        html.off("click", "#addNew").on("click", "#addNew", function () {
-          let newIndex = $("#form .form-group").length;
-          $("#form").append(`<div class="form-group">
-                <input type="text" name="label" value="New Label">
-                <input type="text" name="path" value="New Path" id="path-${newIndex}">
-                <button type="button" class="filepicker" data-target="path-${newIndex}">Browse</button>
-                <button class="delete">Delete</button>
-            </div>`);
-        });
+  //       // Add new fields dynamically
+  //       html.off("click", "#addNew").on("click", "#addNew", function () {
+  //         let newIndex = $("#form .form-group").length;
+  //         $("#form").append(`<div class="form-group">
+  //               <input type="text" name="label" value="New Label">
+  //               <input type="text" name="path" value="New Path" id="path-${newIndex}">
+  //               <button type="button" class="filepicker" data-target="path-${newIndex}">Browse</button>
+  //               <button class="delete">Delete</button>
+  //           </div>`);
+  //       });
 
-        // Remove any previous click event handlers on '.delete'
-        html.off("click", ".delete").on("click", ".delete", function () {
-          $(this).closest(".form-group").remove();
-        });
+  //       // Remove any previous click event handlers on '.delete'
+  //       html.off("click", ".delete").on("click", ".delete", function () {
+  //         $(this).closest(".form-group").remove();
+  //       });
 
-        // Delete a field
-        html.on("click", ".delete", function () {
-          $(this).closest(".form-group").remove();
-        });
-      },
-    }).render(true);
-  }
+  //       // Delete a field
+  //       html.on("click", ".delete", function () {
+  //         $(this).closest(".form-group").remove();
+  //       });
+  //     },
+  //   }).render(true);
+  // }
 
   static async hoverNoteBySettings(note, hovered) {
-    const currentSettings = JSON.parse(game.settings.get(CONSTANTS.MODULE_ID, "hoverNoteSettings"));
+    // const currentSettings = JSON.parse(game.settings.get(CONSTANTS.MODULE_ID, "hoverNoteSettings"));
+    const currentSettings = game.settings.get(CONSTANTS.MODULE_ID, "nameRollTableMapNotes");
+    const rollTableMapNotes = game.tables.getName(currentSettings);
+    if (!rollTableMapNotes) {
+      warn(`No roll table for map notes found with name '${currentSettings}'`, true);
+      return;
+    }
+    const results = rollTableMapNotes.results.contents ?? [];
     const tooltipText = note.document.text;
     let iconPath = "";
 
-    for (const [label, path] of Object.entries(currentSettings)) {
-      if (tooltipText.startsWith(label)) {
-        iconPath = path;
+    for (const res of results) {
+      if (res.text === tooltipText) {
+        iconPath = res.img;
         break;
       }
     }
 
     if (iconPath) {
-      note.document.update({ icon: iconPath });
+      if (iconPath !== note.document.texture.src) {
+        note.document.update({ icon: iconPath });
+      }
     }
   }
 
