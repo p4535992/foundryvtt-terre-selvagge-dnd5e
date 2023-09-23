@@ -6,6 +6,14 @@ import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
+  static _cleanLeafAndGem(name) {
+    return name
+      .replaceAll(CONSTANTS.SYMBOL_UPGRADE, "")
+      .replaceAll(CONSTANTS.SYMBOL_GEM, "")
+      .replaceAll(CONSTANTS.SYMBOL_LEAF, "")
+      .trim();
+  }
+
   static managePreAddLeafToItem(item, itemAdded) {
     const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
     if (!isCrafted) {
@@ -193,7 +201,11 @@ export class ItemLinkTreeManager {
         const idsEffectActorToRemove = [];
         for (const effectToRemove of itemEffects) {
           for (const effect of actorEffects) {
-            if (effect.name.startsWith(effectToRemove.name) && effect.origin === item.uuid) {
+            if (
+              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
+                ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) &&
+              effect.origin === item.uuid
+            ) {
               log(`Rimosso effect from actor '${effect.name}'`, true);
               idsEffectActorToRemove.push(effect.id);
             }
@@ -209,7 +221,8 @@ export class ItemLinkTreeManager {
           if (
             effectToRemove.flags?.core?.sourceId &&
             effectToRemove.flags?.core?.sourceId.startsWith("Compendium") &&
-            effectToRemove.name.startsWith(effectToRemove.name)
+            ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) ===
+              ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)
           ) {
             log(`Rimosso effect from actor '${effectToRemove.name}'`, true);
             idsEffectActorToRemove2.push(effectToRemove.id);
@@ -254,7 +267,7 @@ export class ItemLinkTreeManager {
         // if (DAE) {
         //   for (const effectToRemove of effectsToRemove) {
         //     for (const effect of effects) {
-        //       if (effect.name.startsWith(effectToRemove.name)) {
+        //       if (ItemLinkTreeManager._cleanLeafAndGem(effect.name) === ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)) {
         //         log(`Rimosso effect '${effect.name}'`, true);
         //         let uuidItem = item.uuid;
         //         let origin = effect.origin;
@@ -269,7 +282,10 @@ export class ItemLinkTreeManager {
         const idsEffectItemToRemove = [];
         for (const effectToRemove of effectsToRemove) {
           for (const effect of itemEffects) {
-            if (effect.name.startsWith(effectToRemove.name)) {
+            if (
+              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
+              ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)
+            ) {
               // Non funziona  && effect.origin === itemRemoved.uuid
               log(`Rimosso effect from item '${effect.name}'`, true);
               idsEffectItemToRemove.push(effect.id);
@@ -283,7 +299,11 @@ export class ItemLinkTreeManager {
         const idsEffectActorToRemove = [];
         for (const effectToRemove of effectsToRemove) {
           for (const effect of actorEffects) {
-            if (effect.name.startsWith(effectToRemove.name) && effect.origin === item.uuid) {
+            if (
+              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
+                ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) &&
+              effect.origin === item.uuid
+            ) {
               log(`Rimosso effect from actor '${effect.name}'`, true);
               idsEffectActorToRemove.push(effect.id);
             }

@@ -125,13 +125,21 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(CONSTANTS.MODULE_ID, "hoverNoteSettings", {
-    name: "Hover Note Settings",
-    hint: "Stores settings for hover note hooks.",
-    default: JSON.stringify({
-      Foresta: "Tiles/POI/RegionIconsMapPack/ElfRegionIcons/Forest.png",
-      // ...other defaults
-    }),
+  // game.settings.register(CONSTANTS.MODULE_ID, "hoverNoteSettings", {
+  //   name: "Hover Note Settings",
+  //   hint: "Stores settings for hover note hooks.",
+  //   default: JSON.stringify({
+  //     Foresta: "Tiles/POI/RegionIconsMapPack/ElfRegionIcons/Forest.png",
+  //     // ...other defaults
+  //   }),
+  //   type: String,
+  //   scope: "world",
+  //   config: true,
+  // });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "nameRollTableMapNOtes", {
+    name: "Name of the RollTable for Mpa Notes",
+    hint: "Name of the RollTable for Mpa Notes",
     type: String,
     scope: "world",
     config: true,

@@ -41,6 +41,8 @@ const CONSTANTS = {
     SIZES_ORDERED: ["tiny", "sm", "med", "lg", "huge", "grg"],
   },
   SYMBOL_UPGRADE_OLD: "💎",
+  SYMBOL_LEAF: "🍃",
+  SYMBOL_GEM: "💎",
   SYMBOL_UPGRADE: "✮",
 };
 
