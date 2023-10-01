@@ -198,6 +198,10 @@ export const readyHooks = () => {
   Hooks.on("renderItemSheet", (app, html, data) => {
     TerreSelvaggeHelpers.renderItemSheetLockAndKeyNoText(app, html, data);
   });
+
+  Hooks.on("renderChatMessage", async (message, html, data) => {
+    TerreSelvaggeHelpers.renderChatMessageAnimatedSpells(message, html, data);
+  });
 };
 
 // /** spell launch dialog **/

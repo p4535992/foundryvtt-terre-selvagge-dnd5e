@@ -1,5 +1,5 @@
 import CONSTANTS from "../constants/constants";
-import { warn } from "./lib";
+import { error, log, warn } from "./lib";
 
 export class TerreSelvaggeHelpers {
   // static showSettingsDialog() {
@@ -236,7 +236,7 @@ export class TerreSelvaggeHelpers {
 
   static async renderJournalSheetAvamposto(app, html, data) {
     // Debugging line to inspect 'data'
-    console.log("Data:", data);
+    log("Data:", data);
 
     // Check if the journal name starts with "Avamposto"
     if (data.title.startsWith("Avamposto")) {
@@ -293,6 +293,56 @@ export class TerreSelvaggeHelpers {
           profileImage.css("filter", "");
         }
       }, 100); // 100ms delay
+    }
+  }
+
+  static async renderChatMessageAnimatedSpells(message, html, data) {
+    if (message.data.flags.dnd5e && message.data.flags.dnd5e.use.type === "spell") {
+      const spellId = await fromUuid(message.data.flags.dnd5e.use.itemUuid);
+      let spellDescription = spellId ? spellId.data.data.description.value : "";
+      const spellName = message.data.flavor ? message.data.flavor.toLowerCase().replace(/\s+/g, "") : "";
+      const spellNameB = message.data.flavor ? message.data.flavor : "";
+
+      // Sanitize spellDescription
+      const sanitizedDescription = spellDescription
+        .replace(/<\/?[^>]+(>|$)/g, "")
+        .replace(/@Compendium\[[^\]]+\]\{([^}]+)\}/g, "<strong>$1</strong>")
+        .replace(/@spell\[([^\]]+)\]/g, "<strong>$1</strong>")
+        .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>");
+
+      const imgURL = `spellsanimations/${spellName}.gif`;
+
+      try {
+        const response = await fetch(imgURL);
+        if (response.status === 200) {
+          const tooltipContent = `
+      <span style='font-family:Fondamento; font-size:24px; text-align:center; color:#2E1E0F; font-weight: bold; text-transform: uppercase;'>${spellNameB}</span>
+      <hr class='side'>
+      ${sanitizedDescription}
+    `;
+
+          const imgContainer = `
+            <div style="overflow: hidden; height: 320px; margin-top: -30px;">
+              <img style="border-radius: 8px; transform: scale(0.8); transform-origin: top; position: relative; bottom: -30px;" src="${imgURL}" data-tooltip="${tooltipContent}" data-tooltip-class="mybloodytooltip">
+            </div>
+          `;
+
+          const cardContent = html.find(".card-content");
+          if (cardContent.length > 0) {
+            cardContent.append(imgContainer);
+          }
+
+          // Find the card-header and replace its content
+          const cardHeader = html.find(".card-header");
+          if (cardHeader.length > 0) {
+            cardHeader.html(
+              `<span style='font-family:Fondamento; font-size:20px; text-align:center; color:#2E1E0F; font-weight: bold; text-transform: uppercase;'>${spellNameB}</span>`
+            );
+          }
+        }
+      } catch (e) {
+        error(`Failed to load image: ${imgURL}`, e);
+      }
     }
   }
 }

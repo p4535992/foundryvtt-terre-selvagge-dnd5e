@@ -51,3 +51,29 @@
 .item.linked.broken-link div h4::after {
   content: url("/modules/terre-selvagge-dnd5e/assets/images/item-color-linking/TS2.png");
 }
+
+hr.side {
+  background-image: url("linea.png");
+  display: block;
+  border: 0;
+  height: 36px;
+  width: 198px;
+}
+
+#tooltip.mybloodytooltip {
+  background-color: transparent;
+  background-image: none;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/rpg-styled-ui/ui/img/gui/ui-board-parchment.png);
+  border-image-repeat: repeat;
+  border-image-slice: 120 fill;
+  border-image-width: 20px;
+  border-color: transparent !important;
+  border-width: 4px;
+  margin: 0.3rem 0.5rem;
+  padding: 1rem 1.1rem 0.6rem 1.1rem;
+  filter: sepia(10%);
+  color: black;
+  font-family: "Fondamento";
+  left: 0; /* Adjust this to move the tooltip horizontally */
+  transform: translate(-95%, 0); /* Adjust this to move the tooltip more to the left */
+}
