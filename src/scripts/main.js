@@ -183,7 +183,6 @@ export const readyHooks = () => {
 
   Hooks.on("hoverNote", (note, hovered) => {
     patchForNoteWithMacroWheelModule(note, hovered);
-    TerreSelvaggeHelpers.hoverNoteColor(note, hovered);
     TerreSelvaggeHelpers.hoverNoteBySettings(note, hovered);
   });
 
