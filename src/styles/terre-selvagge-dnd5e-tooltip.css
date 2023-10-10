@@ -1,0 +1,204 @@
+.stileinput {
+  background-color: white;
+  color: black;
+}
+@keyframes gradient-animation {
+  0%,
+  to {
+    background-position: 0 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@-webkit-keyframes slidein {
+  0% {
+    background-position: top;
+    background-size: 1500px;
+  }
+
+  to {
+    background-position: -100px 0;
+    background-size: 1250px;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    background-position: top;
+    background-size: 1500px;
+  }
+
+  to {
+    background-position: -100px 0;
+    background-size: 1250px;
+  }
+}
+
+aside.note-tooltip {
+  padding: 15px;
+  min-width: 180px;
+  max-width: 330px;
+  background-color: rgba(34, 28, 27, 0.95);
+  border-image-slice: 16 16 16 16;
+  border-image-width: 20px 20px 20px 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/bordo-pulsanti.webp);
+  border-radius: 0;
+  color: #fff;
+  box-shadow: 0 0 4px #000;
+  transition: opacity 150ms;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltip2 {
+  background-color: transparent;
+  min-width: 180px;
+  max-width: 330px;
+  color: #000;
+  background-image: none;
+  border-image-source: url(/modules/terre-selvagge-dnd5e/assets/images/style/rpg-styled-ui/ui/img/gui/ui-board-parchment.png);
+  border-image-repeat: repeat;
+  border-image-slice: 120 fill;
+  border-image-width: 20px;
+  border-color: transparent !important;
+  border-width: 4px;
+  margin: 0.1rem 0.2rem;
+  padding: 0.5rem 1rem;
+  filter: sepia(10%);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltip3,
+aside.notetooltip4 {
+  padding: 15px;
+  border: 4px ridge #8b4513;
+  min-width: 180px;
+  max-width: 330px;
+  border-radius: 20px;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+aside.notetooltip4 {
+  background: linear-gradient(300deg, #9400d3, #eb0a0a, #2d0d0d);
+  background-size: 180% 180%;
+  animation: gradient-animation 12s ease infinite;
+  min-width: 180px;
+  max-width: 330px;
+  color: #fff;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltip3 {
+  background-image: url(https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg);
+  min-width: 180px;
+  max-width: 330px;
+  color: #000;
+  padding: 15px !important;
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltipBF {
+  min-width: 180px;
+  max-width: 330px;
+  background-image: url(https://images8.alphacoders.com/130/1304871.jpg);
+  color: #000;
+  border: 4px ridge DarkGreen;
+  filter: brightness(1.1) saturate(0.6) contrast(0.8);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltipBF,
+aside.notetooltipMM,
+aside.notetooltipP {
+  padding: 15px;
+  min-width: 180px;
+  max-width: 330px;
+  border-radius: 20px;
+  background-size: cover;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+aside.notetooltipMM {
+  min-width: 180px;
+  max-width: 330px;
+  background-image: url(https://images.alphacoders.com/678/678464.jpg);
+  color: #000;
+  border: 4px ridge DarkGray;
+  filter: brightness(1.2) saturate(0.6) contrast(0.8);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
+}
+
+aside.notetooltipP {
+  min-width: 180px;
+  max-width: 330px;
+  background-image: url(https://images4.alphacoders.com/760/760914.jpg);
+  border: 4px ridge Olive;
+  filter: saturate(0.8);
+  color: #fff;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
+}
+
+aside.note-tooltip p:first-of-type::first-letter,
+aside.notetooltip2 p:first-of-type::first-letter {
+  font-family: "Dropcap";
+  font-size: 3em;
+  float: left;
+  margin-right: 0.1em;
+  line-height: 0.8;
+  vertical-align: -0.2em;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
+}

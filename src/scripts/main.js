@@ -12,13 +12,14 @@ import {
 } from "./custom.js";
 import { setItemLinkingColor } from "./item-color-linking.js";
 import { ItemLinkTreeManager } from "./item-link-tree-manager.js";
-import { CleanerSheetTitleBarHelpers } from "./lib/cleaner-sheet-title-bar-helpers.js";
+// import { CleanerSheetTitleBarHelpers } from "./lib/cleaner-sheet-title-bar-helpers.js";
 import { CssHelpers } from "./lib/css-helpers.js";
 import { CustomCharacterSheetSectionsHelpers } from "./lib/custom-character-sheet-sections-helpers.js";
 import { warn, error, log } from "./lib/lib.js";
 import { LockersHelpers } from "./lib/locker-helpers.js";
 import { ScrollHelpers } from "./lib/scroll-helpers.js";
 import { TerreSelvaggeHelpers } from "./lib/terre-selvagge-helpers.js";
+import { ToolTipHelpers } from "./lib/tooltip-helpers.js";
 import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export let invPlusActive = false;
@@ -55,12 +56,19 @@ export const setupHooks = async () => {
 export const readyHooks = () => {
   readyHooksRarityColors();
   CssHelpers.applyGMStyle();
-  CleanerSheetTitleBarHelpers.registerCleanerSheetTitleBarHandler();
+  // CleanerSheetTitleBarHelpers.registerCleanerSheetTitleBarHandler();
   libWrapper.register(
     CONSTANTS.MODULE_ID,
     "CONFIG.Actor.sheetClasses.character['dnd5e.ActorSheet5eCharacter'].cls.prototype.getData",
     CustomCharacterSheetSectionsHelpers.customSectionGetData,
     "WRAPPER"
+  );
+
+  libWrapper.register(
+    CONSTANTS.MODULE_ID,
+    "CONFIG.Note.objectClass.prototype._drawTooltip",
+    ToolTipHelpers.drawTooltipHandler,
+    "MIXED"
   );
 
   Hooks.on("renderActorSheet5eCharacter", (app, html, appData) => {

@@ -101,8 +101,6 @@ export class TerreSelvaggeHelpers {
     }
   }
 
-  
-
   static renderItemSheetLockAndKeyNoText(app, html, data) {
     // Find the element containing the tab's title
     const titleElement = html.find(".item.list-row[data-tab='LocknKey']");
