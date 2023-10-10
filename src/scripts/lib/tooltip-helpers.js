@@ -30,21 +30,23 @@ export class ToolTipHelpers {
     const tipo = note.document.text;
     let tooltipClass;
 
-    if (journalType === "quest" || pageType === "quest") {
-      tooltipClass = "notetooltip3";
-    } else if (journalType === "encounter" || pageType === "encounter") {
-      tooltipClass = "notetooltip3";
-    } else {
-      tooltipClass = "notetooltip3";
-    }
+if (journalType === 'quest' || pageType === 'quest') {
+    tooltipClass = 'notetooltip3';
+} else if (journalType === 'encounter' || pageType === 'encounter') {
+    tooltipClass = 'notetooltip3';
+} else if (journalType === 'journalentry' || pageType === 'journalentry') {
+    tooltipClass = 'notetooltip2';
+} else {
+    tooltipClass = 'notetooltip3';
+}
 
-    if (tipo.includes("Bosco") || tipo.includes("Foresta") || tipo.includes("Pianura")) {
-      tooltipClass = "notetooltipBF";
-    } else if (tipo.includes("Montagna") || tipo.includes("Miniera")) {
-      tooltipClass = "notetooltipMM";
-    } else if (tipo.includes("Palude")) {
-      tooltipClass = "notetooltipP";
-    }
+if (tipo && (tipo.includes("Bosco") || tipo.includes("Foresta") || tipo.includes("Pianura"))) {
+    tooltipClass = 'notetooltipBF';
+} else if (tipo && (tipo.includes("Montagna") || tipo.includes("Miniera"))) {
+    tooltipClass = 'notetooltipMM';
+} else if (tipo && tipo.includes("Palude")) {
+    tooltipClass = 'notetooltipP';
+} 
 
     const container = $(
       `<aside class="${tooltipClass}" style="opacity: 0; display: none; user-select: all!important;"></aside>`
@@ -584,6 +586,49 @@ ${page.text.content}
         }); // Replace 'note.entry' with your actual journal entry or note object
       });
 
+      return element;
+    },
+      journalentry: (note) => {
+        const page = note.entry.pages.contents[0];
+        const defaultPermission = note.entry.data.ownership.default; // Replace 'note.entry' with your actual journal entry or note object
+
+        const isChecked = defaultPermission === 2; // Check if the default permission is OBSERVER (usually 2)
+
+        const element = $(`
+<div>
+  <div style="text-align: center;">
+    <img src="${page.src}" style="width: 150px; object-fit: contain; border: none;">
+  </div>
+  <h2 style="text-align: center; font-family: 'Dalelands';">${page.name}</h2>
+${page.text.content}
+<p>Scoperta?<input id="checkboxK" type="checkbox" ${isChecked ? 'checked' : ''}></p>
+</div>
+`)[0];
+        const checkboxK = element.querySelector('#checkboxK');
+
+        checkboxK.addEventListener('click', async () => {
+
+
+            const isChecked = checkboxK.checked;
+            let update;
+
+            if (isChecked) {
+                // Set default ownership level to OBSERVER (usually 2)
+                update = {
+                    default: 2 // Using 2 for OBSERVER level
+                };
+            } else {
+                // Set default ownership level to NONE (usually 0)
+                update = {
+                    default: 0 // Using 0 for NONE level
+                };
+            }
+
+            // Update the journal entry (or note) with new default ownership level
+            await note.entry.update({
+                permission: update
+            }); // Replace 'note.entry' with your actual journal entry or note object
+        });
       return element;
     },
     organization: (note) => {
