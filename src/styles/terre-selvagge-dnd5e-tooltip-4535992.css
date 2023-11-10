@@ -37,8 +37,9 @@
   }
 }
 
-aside.terre-selvagge-note-tooltip {
+aside.terre-selvagge-dnd5e-note-tooltip {
   padding: 15px;
+  min-width: 180px;
   max-width: 330px;
   background-color: rgba(34, 28, 27, 0.95);
   border-image-slice: 16 16 16 16;
@@ -49,10 +50,15 @@ aside.terre-selvagge-note-tooltip {
   color: #fff;
   box-shadow: 0 0 4px #000;
   transition: opacity 150ms;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltip2 {
+aside.terre-selvagge-dnd5e-notetooltip2 {
   background-color: transparent;
+  min-width: 180px;
   max-width: 330px;
   color: #000;
   background-image: none;
@@ -66,26 +72,41 @@ aside.terre-selvagge-notetooltip2 {
   padding: 0.5rem 1rem;
   filter: sepia(10%);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltip3,
-aside.terre-selvagge-notetooltip4 {
+aside.terre-selvagge-dnd5e-notetooltip3,
+aside.terre-selvagge-dnd5e-notetooltip4 {
   padding: 15px;
   border: 4px ridge #8b4513;
+  min-width: 180px;
   max-width: 330px;
   border-radius: 20px;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
-aside.terre-selvagge-notetooltip4 {
+aside.terre-selvagge-dnd5e-notetooltip4 {
   background: linear-gradient(300deg, #9400d3, #eb0a0a, #2d0d0d);
   background-size: 180% 180%;
   animation: gradient-animation 12s ease infinite;
-  min-width: 150px;
+  min-width: 180px;
+  max-width: 330px;
   color: #fff;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltip3 {
+aside.terre-selvagge-dnd5e-notetooltip3 {
   background-image: url(https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg);
   min-width: 180px;
+  max-width: 330px;
   color: #000;
   padding: 15px !important;
   background-size: cover;
@@ -97,18 +118,28 @@ aside.terre-selvagge-notetooltip3 {
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltipBF {
+aside.terre-selvagge-dnd5e-notetooltipBF {
+  min-width: 180px;
+  max-width: 330px;
   background-image: url(https://images8.alphacoders.com/130/1304871.jpg);
   color: #000;
   border: 4px ridge DarkGreen;
   filter: brightness(1.1) saturate(0.6) contrast(0.8);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltipBF,
-aside.terre-selvagge-notetooltipMM,
-aside.terre-selvagge-notetooltipP {
+aside.terre-selvagge-dnd5e-notetooltipBF,
+aside.terre-selvagge-dnd5e-notetooltipMM,
+aside.terre-selvagge-dnd5e-notetooltipP {
   padding: 15px;
   min-width: 180px;
   max-width: 330px;
@@ -123,28 +154,51 @@ aside.terre-selvagge-notetooltipP {
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-aside.terre-selvagge-notetooltipMM {
+aside.terre-selvagge-dnd5e-notetooltipMM {
+  min-width: 180px;
+  max-width: 330px;
   background-image: url(https://images.alphacoders.com/678/678464.jpg);
   color: #000;
   border: 4px ridge DarkGray;
   filter: brightness(1.2) saturate(0.6) contrast(0.8);
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
 }
 
-aside.terre-selvagge-notetooltipP {
+aside.terre-selvagge-dnd5e-notetooltipP {
+  min-width: 180px;
+  max-width: 330px;
   background-image: url(https://images4.alphacoders.com/760/760914.jpg);
   border: 4px ridge Olive;
   filter: saturate(0.8);
   color: #fff;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
 }
 
-.terre-selvagge-note-tooltip p:first-of-type::first-letter,
-.terre-selvagge-notetooltip2 p:first-of-type::first-letter {
+aside.terre-selvagge-dnd5e-note-tooltip p:first-of-type::first-letter,
+aside.terre-selvagge-dnd5e-notetooltip2 p:first-of-type::first-letter {
   font-family: "Dropcap";
   font-size: 3em;
   float: left;
   margin-right: 0.1em;
   line-height: 0.8;
   vertical-align: -0.2em;
+
+  /*font-size: 15px;*/
+  text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.5), 1px -1px 0 rgba(255, 255, 255, 0.5),
+    -1px 1px 0 rgba(255, 255, 255, 0.5), 1px 1px 0 rgba(255, 255, 255, 0.5);
+  mix-blend-mode: difference;
 }

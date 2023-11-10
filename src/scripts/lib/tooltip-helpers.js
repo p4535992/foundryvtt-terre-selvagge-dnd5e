@@ -49,7 +49,7 @@ export class ToolTipHelpers {
     }
 
     const container = $(
-      `<aside class="${tooltipClass}" style="opacity: 0; display: none; user-select: all!important;"></aside>`
+      `<aside class="terre-selvagge-dnd5e-${tooltipClass}" style="opacity: 0; display: none; user-select: all!important;"></aside>`
     )[0];
 
     // create wrapped element
