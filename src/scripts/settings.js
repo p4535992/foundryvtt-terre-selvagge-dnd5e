@@ -20,9 +20,18 @@ export const registerSettings = function () {
     type: String,
   });
 
-  game.settings.register(CONSTANTS.MODULE_ID, "patchDAE", {
-    name: `${CONSTANTS.MODULE_ID}.setting.patchDAE.name`,
-    hint: `${CONSTANTS.MODULE_ID}.setting.patchDAE.hint`,
+  // game.settings.register(CONSTANTS.MODULE_ID, "patchDAE", {
+  //   name: `${CONSTANTS.MODULE_ID}.setting.patchDAE.name`,
+  //   hint: `${CONSTANTS.MODULE_ID}.setting.patchDAE.hint`,
+  //   scope: "world",
+  //   config: true,
+  //   default: false,
+  //   type: Boolean,
+  // });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "patchTooltipHelper", {
+    name: `${CONSTANTS.MODULE_ID}.setting.patchTooltipHelper.name`,
+    hint: `${CONSTANTS.MODULE_ID}.setting.patchTooltipHelper.hint`,
     scope: "world",
     config: true,
     default: false,

@@ -20,6 +20,9 @@
   "terre-selvagge-dnd5e.setting.patchDAE.name": "Patch DAE trasferimento effetti",
   "terre-selvagge-dnd5e.setting.patchDAE.hint": "Una patch che ricsotruisce gli effetti di DAE per attivarli nel modo corretto (dovrebbe essere usata solo con version <= 11.0.11 di DAE)",
 
+  "terre-selvagge-dnd5e.setting.patchTooltipHelper.name": "Patch Tooltip Helper",
+  "terre-selvagge-dnd5e.setting.patchTooltipHelper.hint": "Versione embeddeta della macro di magus per il tooltip helper. Kal dice che c'e' qualche problema per adesso la si lascia attivabile con un setting",
+
   "terre-selvagge-dnd5e.setting.enableHoverNote.name": "Enable Hover Note",
   "terre-selvagge-dnd5e.setting.enableHoverNote.hint": "Enable Hover Note",
 

@@ -105,6 +105,8 @@ export class ItemLinkTreeManager {
     if (!actor) {
       return;
     }
+    // NOW IS MANAGED DIRECTLY FROM THE MODULE ITEM LINK TREE
+    /*
     const customType = getProperty(itemAdded, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemAdded, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemAdded, `flags.item-link-tree.suffix`) ?? "";
@@ -157,6 +159,7 @@ export class ItemLinkTreeManager {
         }
       }
     }
+    */
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
 
@@ -194,6 +197,7 @@ export class ItemLinkTreeManager {
       }
     }
 
+    /*
     if (game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
       if (DAE && actor) {
         const itemEffects = item.effects ?? [];
@@ -233,6 +237,7 @@ export class ItemLinkTreeManager {
         }
       }
     }
+    */
   }
 
   static async managePostRemoveLeafFromItem(item, itemRemoved) {
@@ -240,6 +245,8 @@ export class ItemLinkTreeManager {
     if (!actor) {
       return;
     }
+    // NOW IS MANAGED DIRECTLY FROM THE MODULE ITEM LINK TREE
+    /*
     const customType = getProperty(itemRemoved, `flags.item-link-tree.customType`) ?? "";
     // const prefix = getProperty(itemRemoved, `flags.item-link-tree.prefix`) ?? "";
     // const suffix = getProperty(itemRemoved, `flags.item-link-tree.suffix`) ?? "";
@@ -316,7 +323,7 @@ export class ItemLinkTreeManager {
         // }
       }
     }
-
+    */
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
 
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();

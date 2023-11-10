@@ -64,12 +64,14 @@ export const readyHooks = () => {
     "WRAPPER"
   );
 
-  libWrapper.register(
-    CONSTANTS.MODULE_ID,
-    "CONFIG.Note.objectClass.prototype._drawTooltip",
-    ToolTipHelpers.drawTooltipHandler,
-    "MIXED"
-  );
+  if (game.settings.get(CONSTANTS.MODULE_ID, "patchTooltipHelper")) {
+    libWrapper.register(
+      CONSTANTS.MODULE_ID,
+      "CONFIG.Note.objectClass.prototype._drawTooltip",
+      ToolTipHelpers.drawTooltipHandler,
+      "MIXED"
+    );
+  }
 
   Hooks.on("renderActorSheet5eCharacter", (app, html, appData) => {
     CustomCharacterSheetSectionsHelpers.renderActorSheet5eCharacterHandler(app, html, appData);
