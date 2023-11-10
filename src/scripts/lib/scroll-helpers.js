@@ -126,6 +126,10 @@ export class ScrollHelpers {
   static async createScrollFromSpell(spell, options = {}) {
     // Get spell data
     const itemData = spell instanceof Item ? spell.toObject() : spell;
+
+    // improve scroll creation so that effects and flags from the original spell are included in the created scroll
+    options = mergeObject(options, { flags: itemData.flags, effects: itemData.effects }, { overwrite: false });
+
     let {
       actionType,
       description,

@@ -1,3 +1,7 @@
+### 0.0.65
+
+- improve scroll creation so that effects and flags from the original spell are included in the created scroll
+
 ### 0.0.64
 
 - Some cleanup
