@@ -54,7 +54,7 @@ export class ElementWrapper extends PIXI.DisplayObject {
     const bounds = this.bounds;
     this.toGlobal(new PIXI.Point(0, 0));
     const rightSide = matrix.tx < canvas.screenDimensions[0] / 2;
-    const paddingX = (rightSide ? 1 : -1) * (bounds.width / 2 + 30);
+    const paddingX = (rightSide ? 1 : -1) * (bounds.width / 2 + 22);
     this.target.style.transform = `translate(${matrix.tx - bounds.width / 2 + paddingX}px, ${
       matrix.ty - bounds.height / 2
     }px)`;
@@ -163,7 +163,7 @@ export class ElementWrapper extends PIXI.DisplayObject {
     if (value === false) {
       this._fadeoutTimeout = setTimeout(() => {
         this.target.style.display = "none";
-      }, 150);
+      }, 160);
     } else {
       this.target.innerHTML = "";
       this.target.append(this._parser(this.note));

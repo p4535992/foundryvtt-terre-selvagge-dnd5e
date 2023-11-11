@@ -180,11 +180,11 @@ export class TerreSelvaggeHelpers {
   }
 
   static async renderChatMessageAnimatedSpells(message, html, data) {
-    if (message.data.flags.dnd5e && message.data.flags.dnd5e.use.type === "spell") {
-      const spellId = await fromUuid(message.data.flags.dnd5e.use.itemUuid);
-      let spellDescription = spellId ? spellId.data.data.description.value : "";
-      const spellName = message.data.flavor ? message.data.flavor.toLowerCase().replace(/\s+/g, "") : "";
-      const spellNameB = message.data.flavor ? message.data.flavor : "";
+    if (message.flags.dnd5e && message.flags.dnd5e.use.type === "spell") {
+      const spellId = await fromUuid(message.flags.dnd5e.use.itemUuid);
+      let spellDescription = spellId ? spellId.system.description.value : "";
+      const spellName = message.flavor ? message.flavor.toLowerCase().replace(/\s+/g, "") : "";
+      const spellNameB = message.flavor ? message.flavor : "";
 
       // Sanitize spellDescription
       const sanitizedDescription = spellDescription

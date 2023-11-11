@@ -1,3 +1,8 @@
+### 0.0.66
+
+- Update tootltip helpers 
+- remove some old data
+
 ### 0.0.65
 
 - improve scroll creation so that effects and flags from the original spell are included in the created scroll

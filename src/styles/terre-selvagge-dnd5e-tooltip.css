@@ -68,18 +68,14 @@ aside.terre-selvagge-notetooltip2 {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
-aside.terre-selvagge-notetooltip3,
-aside.terre-selvagge-notetooltip4 {
+aside.terre-selvagge-notetooltip3 {
   padding: 15px;
   border: 4px ridge #8b4513;
   max-width: 330px;
   border-radius: 20px;
 }
 aside.terre-selvagge-notetooltip4 {
-  background: linear-gradient(300deg, #9400d3, #eb0a0a, #2d0d0d);
-  background-size: 180% 180%;
-  animation: gradient-animation 12s ease infinite;
-  min-width: 150px;
+  padding: 25px;
   color: #fff;
 }
 
