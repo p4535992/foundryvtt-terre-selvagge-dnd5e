@@ -2,7 +2,7 @@
 
 import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers";
 import { ItemLinkingHelpers } from "../lib/item-linking-helper";
-import { error, getItem, log, warn } from "../lib/lib";
+import { error, getItem, log, manageNewName, warn } from "../lib/lib";
 
 // Insert here the list of compendiums names for every macro "type"
 const COMPENDIUM = {
@@ -104,7 +104,7 @@ export async function retrieveSuperiorItemAndReplaceOnActor(
         // warn(`The item ${i.name}|${i.uuid} is not linked`);
         return false;
       }
-      const baseItem = retrieveLinkedItem(i);
+      const baseItem = ItemLinkingHelpers.retrieveLinkedItem(i);
       if (!baseItem) {
         // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
         return false;
@@ -127,7 +127,7 @@ export async function retrieveSuperiorItemAndReplaceOnActor(
       // warn(`The item ${i.name}|${i.uuid} is not linked`);
       return false;
     }
-    const baseItem = retrieveLinkedItem(i);
+    const baseItem = ItemLinkingHelpers.retrieveLinkedItem(i);
     if (!baseItem) {
       // warn(`The item ${i.name}|${i.uuid} is linked but not item is founded`);
       return false;

@@ -352,7 +352,7 @@ export class ItemLinkTreeManager {
   }
 
   static checkIfYouCanAddMoreGemsToItem(item) {
-    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+    const leafs = ItemLinkTreeHelpers.getCollectionBySubType(item, ["gem", "leaf"]);
     const quantityOfGem = leafs.length ?? 0;
     const rarity = item.system.rarity ?? "";
     let canAddGem = false;

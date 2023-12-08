@@ -6,34 +6,31 @@ export class ItemLinkTreeHelpers {
   }
 
   static getCollectionEffectAndBonus(item) {
-    const leafs = ItemLinkTreeHelpers.getCollection(item);
-    if (leafs?.length <= 0) {
-      return [];
-    }
-    const leafsFilter = leafs.filter((leaf) => {
-      return leaf.customLink === "bonus" || leaf.customLink === "effect" || leaf.customLink === "effectAndBonus";
+    return game.modules.get("item-link-tree").api.getCollectionEffectAndBonus({
+      item: item,
     });
-    return leafsFilter;
   }
 
   static isItemLeaf(itemToCheck) {
-    const isLeaf = itemToCheck.getFlag("item-link-tree", "isLeaf");
-    if (isLeaf) {
-      return true;
-    }
-    return false;
+    return game.modules.get("item-link-tree").api.isItemLeaf(itemToCheck);
   }
 
   static isFilterByItemTypeOk(itemToCheck, itemType) {
-    const filterItemType = itemToCheck.getFlag("item-link-tree", "filterItemType");
-    if (filterItemType && itemType) {
-      const filterItemTypeArr = filterItemType.split(",") ?? [];
-      if (filterItemTypeArr.length > 0 && filterItemTypeArr.includes(itemType)) {
-        return true;
-      }
-      return false;
-    } else {
-      return true;
-    }
+    return game.modules.get("item-link-tree").api.isFilterByItemTypeOk(itemToCheck, itemType);
+  }
+
+  static getCollectionBySubType(itemToCheck, types) {
+    return game.modules.get("item-link-tree").api.getCollectionBySubType({
+      item: itemToCheck,
+      types: types,
+    });
+  }
+
+  static isItemLeafBySubType(itemToCheck, subTypeToCheck) {
+    return game.modules.get("item-link-tree").api.isItemLeafBySubType(itemToCheck, subTypeToCheck);
+  }
+
+  static async upgradeItem(item, leaf) {
+    return await game.modules.get("item-link-tree").api.upgradeItem(item, leaf);
   }
 }
