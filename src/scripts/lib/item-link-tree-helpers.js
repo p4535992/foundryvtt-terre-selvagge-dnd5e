@@ -30,6 +30,10 @@ export class ItemLinkTreeHelpers {
     return game.modules.get("item-link-tree").api.isItemLeafBySubType(itemToCheck, subTypeToCheck);
   }
 
+  static isItemLeafByFeature(itemToCheck, subTypeToCheck) {
+    return game.modules.get("item-link-tree").api.isItemLeafByFeature(itemToCheck, subTypeToCheck);
+  }
+
   static async upgradeItem(item, leaf) {
     return await game.modules.get("item-link-tree").api.upgradeItem(item, leaf);
   }

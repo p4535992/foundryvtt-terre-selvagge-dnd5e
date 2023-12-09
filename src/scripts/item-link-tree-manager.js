@@ -161,7 +161,7 @@ export class ItemLinkTreeManager {
     }
     */
 
-    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item) ?? [];
 
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();
     currentName = currentName.replaceAll(CONSTANTS.SYMBOL_UPGRADE_OLD, "").trim();
@@ -192,8 +192,12 @@ export class ItemLinkTreeManager {
         log(`Update quantity item '${itemAdded.name}|${itemAdded.id}'`);
         await itemAdded.update({ "system.quantity": itemAdded.system.quantity - 1 });
       } else {
-        log(`Delete item '${itemAdded.name}|${itemAdded.id}'`);
-        await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
+        if (ItemLinkTreeHelpers.isItemLeafByFeature(itemAdded, "upgrade")) {
+          // DO NOTHING
+        } else {
+          log(`Delete item '${itemAdded.name}|${itemAdded.id}'`);
+          await actor.deleteEmbeddedDocuments("Item", [itemAdded.id]);
+        }
       }
     }
 
@@ -324,7 +328,7 @@ export class ItemLinkTreeManager {
       }
     }
     */
-    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item);
+    const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item) ?? [];
 
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();
     currentName = currentName.replaceAll(CONSTANTS.SYMBOL_UPGRADE_OLD, "").trim();
@@ -352,7 +356,7 @@ export class ItemLinkTreeManager {
   }
 
   static checkIfYouCanAddMoreGemsToItem(item) {
-    const leafs = ItemLinkTreeHelpers.getCollectionBySubType(item, ["gem", "leaf"]);
+    const leafs = ItemLinkTreeHelpers.getCollectionBySubType(item, ["", "gem", "leaf"]);
     const quantityOfGem = leafs.length ?? 0;
     const rarity = item.system.rarity ?? "";
     let canAddGem = false;
