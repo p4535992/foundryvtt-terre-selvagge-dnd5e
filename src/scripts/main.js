@@ -149,6 +149,15 @@ export const readyHooks = () => {
     await ItemLinkTreeManager.managePostRemoveLeafFromItem(item, itemRemoved);
   });
 
+  Hooks.call("item-link-tree.preUpgradeAdditionalCost", (actor, currentItem, itemUpgraded) => {
+    let isOkTmp = ItemLinkTreeManager.managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded);
+    return isOkTmp;
+  });
+
+  Hooks.call("item-link-tree.postUpgradeAdditionalCost", async (actor, currentItem, itemUpgraded) => {
+    await ItemLinkTreeManager.managePostUpgradeAdditionalCost(actor, currentItem, itemUpgraded);
+  });
+
   //   Hooks.on("renderTidy5eItemSheet", async (app, html, data) => {
 
   //   });

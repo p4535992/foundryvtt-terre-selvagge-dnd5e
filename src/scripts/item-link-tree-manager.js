@@ -3,7 +3,7 @@ import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 import { ItemPriceHelpers } from "./lib/item-price-helpers";
 import { ItemLinkTreeHelpers } from "./lib/item-link-tree-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
-import { log, warn } from "./lib/lib";
+import { error, log, warn } from "./lib/lib";
 
 export class ItemLinkTreeManager {
   static _cleanLeafAndGem(name) {
@@ -407,5 +407,52 @@ export class ItemLinkTreeManager {
       }
     }
     return canAddGem;
+  }
+
+  static managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded) {
+    let currentValuePrice = getProperty(currentItem, `system.price.value`) ?? 0;
+    let currentDenomPrice = getProperty(currentItem, `system.price.denomination`) ?? "gp";
+    let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
+
+    let priceValueToRemove = getProperty(itemUpgraded, `system.price.value`) ?? 0;
+    let priceDenomToRemove = getProperty(itemUpgraded, `system.price.denomination`) ?? "gp";
+    let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove);
+
+    let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
+    if (newCurrentValuePriceGp < 0) {
+      newCurrentValuePriceGp = 0;
+    }
+    return newCurrentValuePriceGp;
+  }
+
+  static async managePostUpgradeAdditionalCost(actor, currentItem, itemUpgraded) {
+    let currentValuePrice = getProperty(currentItem, `system.price.value`) ?? 0;
+    let currentDenomPrice = getProperty(currentItem, `system.price.denomination`) ?? "gp";
+    let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
+
+    let priceValueToRemove = getProperty(itemUpgraded, `system.price.value`) ?? 0;
+    let priceDenomToRemove = getProperty(itemUpgraded, `system.price.denomination`) ?? "gp";
+    let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove);
+
+    let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
+    if (newCurrentValuePriceGp < 0) {
+      newCurrentValuePriceGp = 0;
+    }
+
+    if (newCurrentValuePriceGp > 0) {
+      const result = await game.modules.get("lazymoney").api.hasEnoughCurrency({
+        actor: actor.uuid,
+        currencyValue: newCurrentValuePriceGp,
+        currencyDenom: "gp",
+      });
+      if (!result) {
+        throw error(`Non hai abbastanza denaro per effettuare l'upgrade`, true);
+      }
+      await game.modules.get("lazymoney").api.subtractCurrency({
+        actor: actor.uuid,
+        currencyValue: newCurrentValuePriceGp,
+        currencyDenom: "gp",
+      });
+    }
   }
 }
