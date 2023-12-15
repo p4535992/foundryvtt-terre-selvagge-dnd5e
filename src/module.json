@@ -2,7 +2,7 @@
   "id": "terre-selvagge-dnd5e",
   "title": "Terre Selvagge (Dnd5e)",
   "description": "A module for a homebrew game.",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "authors": [
     {
       "name": "p4535992",
@@ -68,8 +68,8 @@
     "maximum": 11
   },
   "url": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e",
-  "manifest": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/releases/download/0.0.67/module.json",
-  "download": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/releases/download/0.0.67/module.zip",
+  "manifest": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/releases/download/0.0.68/module.json",
+  "download": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/releases/download/0.0.68/module.zip",
   "readme": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/blob/main/README.md",
   "changelog": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/blob/main/CHANGELOG.md",
   "bugs": "https://github.com/p4535992/foundryvtt-terre-selvagge-dnd5e/issues",

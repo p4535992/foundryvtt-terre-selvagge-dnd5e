@@ -409,7 +409,7 @@ export class ItemLinkTreeManager {
     return canAddGem;
   }
 
-  static managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded) {
+  static managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded, options) {
     let currentValuePrice = getProperty(currentItem, `system.price.value`) ?? 0;
     let currentDenomPrice = getProperty(currentItem, `system.price.denomination`) ?? "gp";
     let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
@@ -419,36 +419,46 @@ export class ItemLinkTreeManager {
     let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove);
 
     let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
-    if (newCurrentValuePriceGp < 0) {
+    // If current item is mre precious of the new one...
+    if (newCurrentValuePriceGp > 0) {
       newCurrentValuePriceGp = 0;
+    } else {
+      newCurrentValuePriceGp = Math.abs(newCurrentValuePriceGp);
     }
     return newCurrentValuePriceGp;
   }
 
-  static async managePostUpgradeAdditionalCost(actor, currentItem, itemUpgraded) {
-    let currentValuePrice = getProperty(currentItem, `system.price.value`) ?? 0;
-    let currentDenomPrice = getProperty(currentItem, `system.price.denomination`) ?? "gp";
-    let currentValuePriceGp = ItemPriceHelpers.convertToGold(currentValuePrice, currentDenomPrice);
-
-    let priceValueToRemove = getProperty(itemUpgraded, `system.price.value`) ?? 0;
-    let priceDenomToRemove = getProperty(itemUpgraded, `system.price.denomination`) ?? "gp";
-    let priceValueToRemoveGp = ItemPriceHelpers.convertToGold(priceValueToRemove, priceDenomToRemove);
-
-    let newCurrentValuePriceGp = currentValuePriceGp - priceValueToRemoveGp;
-    if (newCurrentValuePriceGp < 0) {
-      newCurrentValuePriceGp = 0;
-    }
+  static managePreUpgrade(actor, currentItem, itemUpgraded, options) {
+    let newCurrentValuePriceGp = ItemLinkTreeManager.managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded);
 
     if (newCurrentValuePriceGp > 0) {
-      const result = await game.modules.get("lazymoney").api.hasEnoughCurrency({
+      const result = game.modules.get("lazymoney").api.hasEnoughCurrencySync({
         actor: actor.uuid,
         currencyValue: newCurrentValuePriceGp,
         currencyDenom: "gp",
       });
       if (!result) {
+        error(`Non hai abbastanza denaro per effettuare l'upgrade`, true);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static async managePostUpgrade(actor, currentItem, itemUpgraded, options) {
+    let newCurrentValuePriceGp = ItemLinkTreeManager.managePreUpgradeAdditionalCost(
+      actor,
+      currentItem,
+      itemUpgraded,
+      options
+    );
+
+    if (newCurrentValuePriceGp > 0) {
+      let hasEnoughMoney = ItemLinkTreeManager.managePreUpgrade(actor, currentItem, itemUpgraded, options);
+      if (!hasEnoughMoney) {
         throw error(`Non hai abbastanza denaro per effettuare l'upgrade`, true);
       }
-      await game.modules.get("lazymoney").api.subtractCurrency({
+      game.modules.get("lazymoney").api.subtractCurrencySync({
         actor: actor.uuid,
         currencyValue: newCurrentValuePriceGp,
         currencyDenom: "gp",

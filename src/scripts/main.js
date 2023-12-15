@@ -131,10 +131,10 @@ export const readyHooks = () => {
 
   //    });
 
-  Hooks.on("item-link-tree.preAddLeafToItem", (item, itemAdded) => {
-    let isOkTmp = ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
-    return isOkTmp;
-  });
+  // Hooks.on("item-link-tree.preAddLeafToItem", (item, itemAdded) => {
+  //   let isOkTmp = ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
+  //   return isOkTmp;
+  // });
 
   Hooks.on("item-link-tree.preRemoveLeafFromItem", (item, itemRemoved) => {
     let isOkTmp = ItemLinkTreeManager.managePreRemoveLeafFromItem(item, itemRemoved);
@@ -149,13 +149,18 @@ export const readyHooks = () => {
     await ItemLinkTreeManager.managePostRemoveLeafFromItem(item, itemRemoved);
   });
 
-  Hooks.call("item-link-tree.preUpgradeAdditionalCost", (actor, currentItem, itemUpgraded) => {
-    let isOkTmp = ItemLinkTreeManager.managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded);
+  Hooks.on("item-link-tree.preUpgradeAdditionalCost", (actor, currentItem, itemUpgraded, options) => {
+    let isOkTmp = ItemLinkTreeManager.managePreUpgradeAdditionalCost(actor, currentItem, itemUpgraded, options);
+    setProperty(options, `additionalCost`, isOkTmp);
+  });
+
+  Hooks.on("item-link-tree.preUpgrade", (actor, currentItem, itemUpgraded, options) => {
+    let isOkTmp = ItemLinkTreeManager.managePreUpgrade(actor, currentItem, itemUpgraded, options);
     return isOkTmp;
   });
 
-  Hooks.call("item-link-tree.postUpgradeAdditionalCost", async (actor, currentItem, itemUpgraded) => {
-    await ItemLinkTreeManager.managePostUpgradeAdditionalCost(actor, currentItem, itemUpgraded);
+  Hooks.on("item-link-tree.postUpgrade", async (actor, currentItem, itemUpgraded, options) => {
+    await ItemLinkTreeManager.managePostUpgrade(actor, currentItem, itemUpgraded, options);
   });
 
   //   Hooks.on("renderTidy5eItemSheet", async (app, html, data) => {
