@@ -34,7 +34,7 @@ export class ItemLinkTreeManager {
       return false;
     }
     const isItemLeaf = ItemLinkTreeHelpers.isItemLeaf(item);
-    if (isItemLeaf) {
+    if (isItemLeaf && !game.user.isGM) {
       warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' una gemma/foglia`, true);
       return false;
     }
