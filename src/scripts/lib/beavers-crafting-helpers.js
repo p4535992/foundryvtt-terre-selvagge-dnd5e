@@ -1,6 +1,10 @@
-import { getItem, warn } from "./lib";
+import { getItemSync, warn } from "./lib";
 
 export class BeaverCraftingHelpers {
+  static isBeaverCraftingModuleActive() {
+    return game.modules.get("beavers-crafting")?.active;
+  }
+
   static isItemBeaverCrafted(item) {
     // NOTE: is a boolean now
     const status = item.getFlag("beavers-crafting", "status");
@@ -20,9 +24,9 @@ export class BeaverCraftingHelpers {
   }
 
   static async setItemAsBeaverCrafted(itemOrItemUuid) {
-    const item = getItem(itemOrItemUuid);
+    const item = getItemSync(itemOrItemUuid);
     if (!item) {
-      warn(`Non sono riuscito a torvare l'item con riferimento ${itemOrItemUuid}`);
+      warn(`I could not find the item with reference ${itemOrItemUuid}`);
       return;
     }
     // NOTE: is a boolean now
@@ -34,12 +38,15 @@ export class BeaverCraftingHelpers {
   }
 
   static async unsetItemAsBeaverCrafted(itemOrItemUuid) {
-    const item = getItem(itemOrItemUuid);
+    const item = getItemSync(itemOrItemUuid);
     if (!item) {
-      warn(`Non sono riuscito a torvare l'item con riferimento ${itemOrItemUuid}`);
+      warn(`I could not find the item with reference ${itemOrItemUuid}`);
       return;
     }
-    await item.unsetFlag("beavers-crafting", "status");
+    const status = item.getFlag("beavers-crafting", "status");
+    if (status) {
+      await item.unsetFlag("beavers-crafting", "status");
+    }
     await item.unsetFlag("beavers-crafting", "isCrafted");
   }
 }

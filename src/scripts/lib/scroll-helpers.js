@@ -1,5 +1,5 @@
 import { BeaverCraftingHelpers } from "./beavers-crafting-helpers";
-import { error, warn, log, getItem, info } from "./lib";
+import { error, warn, log, info, getItemAsync } from "./lib";
 
 // The ID of the Components Compendium
 const TIME_TOKEN = "Time Coin";
@@ -246,7 +246,7 @@ export class ScrollHelpers {
   }
 
   static async createScroll(itemOrItemUuid) {
-    const item = getItem(itemOrItemUuid);
+    const item = await getItemAsync(itemOrItemUuid);
     if (!item) {
       warn(`Non sono riuscito a torvare l'item con riferimento ${itemOrItemUuid}`);
       return;
@@ -255,7 +255,7 @@ export class ScrollHelpers {
   }
 
   static async createScrollWithParams(itemOrItemUuid, spellComponents, feats, label, timeToken) {
-    const item = getItem(itemOrItemUuid);
+    const item = await getItemAsync(itemOrItemUuid);
     if (!item) {
       warn(`Non sono riuscito a torvare l'item con riferimento ${itemOrItemUuid}`);
       return;

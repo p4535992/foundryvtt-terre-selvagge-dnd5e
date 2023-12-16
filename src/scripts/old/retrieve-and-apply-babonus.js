@@ -1,7 +1,7 @@
 import { BabonusHelpers } from "../lib/babonus-helpers";
 import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers";
 import { ItemLinkingHelpers } from "../lib/item-linking-helper";
-import { getItem, log, manageNewName, warn } from "../lib/lib";
+import { getItemAsync, log, manageNewName, warn } from "../lib/lib";
 
 export async function retrieveAndApplyBonuses(
   itemToCheck,
@@ -12,7 +12,7 @@ export async function retrieveAndApplyBonuses(
   itemNewSuffix
 ) {
   //   const [itemToCheck] = args;
-  itemToCheck = getItem(itemToCheck);
+  itemToCheck = await getItemAsync(itemToCheck);
   // e.g. 'Compendium.' + compendium.metadata.id + '.Item.' + item.id;
   // const baseItemUuid = getProperty(itemToCheck,`flags.item-linking.baseItem`);
   const baseItemUuid = itemToCheck.getFlag("item-linking", "baseItem");

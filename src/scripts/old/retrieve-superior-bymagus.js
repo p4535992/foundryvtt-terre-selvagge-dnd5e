@@ -2,7 +2,7 @@
 
 import { BeaverCraftingHelpers } from "../lib/beavers-crafting-helpers";
 import { ItemLinkingHelpers } from "../lib/item-linking-helper";
-import { error, getItem, log, manageNewName, warn } from "../lib/lib";
+import { error, getItemAsync, log, manageNewName, warn } from "../lib/lib";
 
 // Insert here the list of compendiums names for every macro "type"
 const COMPENDIUM = {
@@ -52,7 +52,7 @@ export async function retrieveSuperiorItemAndReplaceOnActor(
   itemNewPrefix,
   itemNewSuffix
 ) {
-  gem = getItem(gem);
+  gem = await getItemAsync(gem);
   // Type checking
   if (!(gem instanceof CONFIG.Item.documentClass)) {
     throw error(`Invalid gem`, true);

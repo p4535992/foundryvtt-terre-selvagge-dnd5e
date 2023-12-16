@@ -1,6 +1,6 @@
 import CONSTANTS from "../constants/constants";
 import { ItemPriceHelpers } from "./item-price-helpers";
-import { error, warn, log, getItem, info, is_lazy_number, stringIsUuid } from "./lib";
+import { error, warn, log, info, is_lazy_number, stringIsUuid } from "./lib";
 
 export class IncomeHelpers {
   static async retrieveDetailsIncomeForActor(actorUuid) {
