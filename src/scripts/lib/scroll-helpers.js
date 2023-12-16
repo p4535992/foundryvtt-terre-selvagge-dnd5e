@@ -585,7 +585,7 @@ async function createScrollInner(item, SPELL_COMPONENTS, FEATS, LABEL, TIME_TOKE
     data.name = data.name + " (" + flavor + ")";
   }
 
-  setProperty(data, `flags.beavers-crafting.status`, `created`);
+  setProperty(data, `flags.beavers-crafting.status`, true);
   // const scroll = await CONFIG.Item.documentClass.createScrollFromSpell(data);
   const scroll = await ScrollHelpers.createScrollFromSpell(data);
   const docs = await actor.createEmbeddedDocuments("Item", [scroll]);

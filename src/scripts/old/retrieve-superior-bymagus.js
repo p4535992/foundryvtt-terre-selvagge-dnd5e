@@ -21,15 +21,13 @@ const removeItem = async (item) => {
 
 const addItem = async (actor, item, currentName, currentImage) => {
   const oldItem = actor.items.contents.find((i) => {
-    // MOD 4535992
-    // return i.name === item.name && i.getFlag("beavers-crafting", "status");
     return i.name === currentName && BeaverCraftingHelpers.isItemBeaverCrafted(i);
   });
   if (oldItem) {
     await oldItem.update({ "system.quantity": oldItem.system.quantity + 1 });
   } else {
     const data = item.toObject();
-    data.flags["beavers-crafting"] = { status: "updated" };
+    data.flags["beavers-crafting"] = { status: true };
     // MOD 4535992
     data.name = currentName;
     data.img = currentImage;
@@ -121,8 +119,6 @@ export async function retrieveSuperiorItemAndReplaceOnActor(
 
   // ------------------------------------ //
   const upgradeableItems = actor.items.contents.filter((i) => {
-    // MOD 4535992
-    //return itemKeys.includes(i.name) && i.getFlag("beavers-crafting", "status")
     if (!ItemLinkingHelpers.isItemLinked(i)) {
       // warn(`The item ${i.name}|${i.uuid} is not linked`);
       return false;

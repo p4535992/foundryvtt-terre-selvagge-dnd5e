@@ -50,7 +50,9 @@ export function setItemLinkingColor(actorSheet, html, data) {
 
     if (game.modules.get("beavers-crafting")?.active) {
       const title = itemElement.querySelector("h4");
+      // NOTE: is a boolean now
       const status = item.getFlag("beavers-crafting", "status");
+      // For retrocompatiblity
       if (status === "created") {
         const img = document.createElement("img");
         img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
@@ -58,16 +60,20 @@ export function setItemLinkingColor(actorSheet, html, data) {
         img.style.paddingRight = "5px";
         title.appendChild(img);
       }
-      if (status === "updated") {
+      // For retrocompatiblity
+      else if (status === "updated") {
+        const img = document.createElement("img");
+        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
+        img.style.border = "none";
+        img.style.paddingRight = "5px";
+        title.appendChild(img);
+      } else if (status) {
         const img = document.createElement("img");
         img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
         img.style.border = "none";
         img.style.paddingRight = "5px";
         title.appendChild(img);
       }
-      // if (status === 'updated') title.appendChild($('<i class="fas fa-tools" style="padding-right:5px"></i>')[0]);
-      // if (status === 'created') itemElement.classList.add('beavers-created');
-      // if (status === 'updated') itemElement.classList.add('beavers-updated');
     }
 
     if (game.modules.get("item-linking")?.active) {
