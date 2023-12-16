@@ -131,10 +131,10 @@ export const readyHooks = () => {
 
   //    });
 
-  // Hooks.on("item-link-tree.preAddLeafToItem", (item, itemAdded) => {
-  //   let isOkTmp = ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
-  //   return isOkTmp;
-  // });
+  Hooks.on("item-link-tree.preAddLeafToItem", (item, itemAdded) => {
+    let isOkTmp = ItemLinkTreeManager.managePreAddLeafToItem(item, itemAdded);
+    return isOkTmp;
+  });
 
   Hooks.on("item-link-tree.preRemoveLeafFromItem", (item, itemRemoved) => {
     let isOkTmp = ItemLinkTreeManager.managePreRemoveLeafFromItem(item, itemRemoved);
