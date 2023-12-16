@@ -17,6 +17,10 @@ export class BeaverCraftingHelpers {
     if (status === "updated") {
       return true;
     }
+    // For retrocompatibility
+    if (String(status) === "true") {
+      return true;
+    }
     if (isCrafted) {
       return true;
     }
