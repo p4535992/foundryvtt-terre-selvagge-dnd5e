@@ -1,4 +1,5 @@
 import CONSTANTS from "./constants/constants";
+import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 
 export function setItemLinkingColor(actorSheet, html, data) {
   if (!actorSheet) {
@@ -50,24 +51,7 @@ export function setItemLinkingColor(actorSheet, html, data) {
 
     if (game.modules.get("beavers-crafting")?.active) {
       const title = itemElement.querySelector("h4");
-      // NOTE: is a boolean now
-      const status = item.getFlag("beavers-crafting", "status");
-      // For retrocompatiblity
-      if (status === "created") {
-        const img = document.createElement("img");
-        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
-        img.style.border = "none";
-        img.style.paddingRight = "5px";
-        title.appendChild(img);
-      }
-      // For retrocompatiblity
-      else if (status === "updated") {
-        const img = document.createElement("img");
-        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
-        img.style.border = "none";
-        img.style.paddingRight = "5px";
-        title.appendChild(img);
-      } else if (status) {
+      if (BeaverCraftingHelpers.isItemBeaverCrafted(item)) {
         const img = document.createElement("img");
         img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
         img.style.border = "none";

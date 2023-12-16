@@ -27,7 +27,7 @@ const addItem = async (actor, item, currentName, currentImage) => {
     await oldItem.update({ "system.quantity": oldItem.system.quantity + 1 });
   } else {
     const data = item.toObject();
-    data.flags["beavers-crafting"] = { status: true };
+    data.flags["beavers-crafting"] = { isCrafted: true };
     // MOD 4535992
     data.name = currentName;
     data.img = currentImage;
