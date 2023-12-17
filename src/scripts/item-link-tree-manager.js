@@ -4,6 +4,7 @@ import { ItemPriceHelpers } from "./lib/item-price-helpers";
 import { ItemLinkTreeHelpers } from "./lib/item-link-tree-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 import { error, log, warn } from "./lib/lib";
+import { DaeHelpers } from "./lib/dae-helpers";
 
 export class ItemLinkTreeManager {
   static _cleanLeafAndGem(name) {
@@ -72,14 +73,17 @@ export class ItemLinkTreeManager {
         return false;
       }
     }
-    const isGemCanBeAdded = ItemLinkTreeManager.checkIfYouCanAddMoreGemsToItem(item);
-    if (!isGemCanBeAdded) {
-      warn(
-        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non puo' contenere altre gemme/foglie!`,
-        true
-      );
-      warn(`Hai raggiunto il numero massimo di gemme per l'arma '${item.name}'`, true);
-      return false;
+    // Make this check only if is not a crystal
+    if (!ItemLinkTreeHelpers.isItemLeafBySubType(itemAdded, "crystal")) {
+      const isGemCanBeAdded = ItemLinkTreeManager.checkIfYouCanAddMoreGemsToItem(item);
+      if (!isGemCanBeAdded) {
+        warn(
+          `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non puo' contenere altre gemme/foglie!`,
+          true
+        );
+        warn(`Hai raggiunto il numero massimo di gemme per l'arma '${item.name}'`, true);
+        return false;
+      }
     }
 
     // if (!game.user.isGM) {
@@ -105,61 +109,6 @@ export class ItemLinkTreeManager {
     if (!actor) {
       return;
     }
-    // NOW IS MANAGED DIRECTLY FROM THE MODULE ITEM LINK TREE
-    /*
-    const customType = getProperty(itemAdded, `flags.item-link-tree.customType`) ?? "";
-    // const prefix = getProperty(itemAdded, `flags.item-link-tree.prefix`) ?? "";
-    // const suffix = getProperty(itemAdded, `flags.item-link-tree.suffix`) ?? "";
-
-    if (customType === "bonus" || customType === "effectAndBonus") {
-      const bonuses = game.modules.get("babonus").api.getCollection(item) ?? [];
-      const bonusesToAdd = game.modules.get("babonus").api.getCollection(itemAdded) ?? [];
-      if (bonusesToAdd.size > 0) {
-        for (const bonusToAdd of bonusesToAdd) {
-          let foundedBonus = false;
-          for (const bonus of bonuses) {
-            if (bonus.name === bonusToAdd.name) {
-              foundedBonus = true;
-              break;
-            }
-          }
-          if (!foundedBonus) {
-            log(`Aggiunto bonus '${bonusToAdd.name}'`, true);
-            await game.modules.get("babonus").api.embedBabonus(item, bonusToAdd);
-          }
-        }
-      }
-    }
-    if (customType === "effect" || customType === "effectAndBonus") {
-      const itemEffects = item.effects ?? [];
-      const actorEffects = actor.effects ?? [];
-      const effectsToAdd = itemAdded.effects ?? [];
-      if (effectsToAdd.size > 0) {
-        const effectDatas = [];
-        for (const effectToAdd of effectsToAdd) {
-          let foundedEffect = false;
-          for (const effect of itemEffects) {
-            if (effect.name === effectToAdd.name) {
-              foundedEffect = true;
-              break;
-            }
-          }
-          if (!foundedEffect) {
-            log(`Aggiunto effect '${effectToAdd.name}'`, true);
-            const effectData = effectToAdd.toObject();
-            setProperty(effectData, `origin`, item.uuid);
-            setProperty(effectData, `flags.core.sourceId`, item.uuid);
-            setProperty(effectData, `name`, itemAdded.name);
-            effectDatas.push(effectData);
-            //await item.createEmbeddedDocuments("ActiveEffect", [effectData]);
-          }
-        }
-        if (effectDatas.length > 0) {
-          await item.createEmbeddedDocuments("ActiveEffect", effectDatas);
-        }
-      }
-    }
-    */
 
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item) ?? [];
 
@@ -201,47 +150,7 @@ export class ItemLinkTreeManager {
       }
     }
 
-    /*
-    if (game.settings.get(CONSTANTS.MODULE_ID, "patchDAE")) {
-      if (DAE && actor) {
-        const itemEffects = item.effects ?? [];
-        const actorEffects = actor.effects ?? [];
-        const idsEffectActorToRemove = [];
-        for (const effectToRemove of itemEffects) {
-          for (const effect of actorEffects) {
-            if (
-              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
-                ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) &&
-              effect.origin === item.uuid
-            ) {
-              log(`Rimosso effect from actor '${effect.name}'`, true);
-              idsEffectActorToRemove.push(effect.id);
-            }
-          }
-        }
-        if (idsEffectActorToRemove.length > 0) {
-          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
-        }
-        await DAE.fixTransferEffects(actor);
-        const idsEffectActorToRemove2 = [];
-        const actorEffects2 = actor.effects ?? [];
-        for (const effectToRemove of actorEffects2) {
-          if (
-            effectToRemove.flags?.core?.sourceId &&
-            effectToRemove.flags?.core?.sourceId.startsWith("Compendium") &&
-            ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) ===
-              ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)
-          ) {
-            log(`Rimosso effect from actor '${effectToRemove.name}'`, true);
-            idsEffectActorToRemove2.push(effectToRemove.id);
-          }
-        }
-        if (idsEffectActorToRemove2.length > 0) {
-          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove2);
-        }
-      }
-    }
-    */
+    // await DaeHelpers.fixTransferEffect(actor, item);
   }
 
   static async managePostRemoveLeafFromItem(item, itemRemoved) {
@@ -249,85 +158,6 @@ export class ItemLinkTreeManager {
     if (!actor) {
       return;
     }
-    // NOW IS MANAGED DIRECTLY FROM THE MODULE ITEM LINK TREE
-    /*
-    const customType = getProperty(itemRemoved, `flags.item-link-tree.customType`) ?? "";
-    // const prefix = getProperty(itemRemoved, `flags.item-link-tree.prefix`) ?? "";
-    // const suffix = getProperty(itemRemoved, `flags.item-link-tree.suffix`) ?? "";
-
-    if (customType === "bonus" || customType === "effectAndBonus") {
-      const bonuses = game.modules.get("babonus").api.getCollection(item) ?? [];
-      const bonusesToRemove = game.modules.get("babonus").api.getCollection(itemRemoved) ?? [];
-      if (bonusesToRemove.size > 0) {
-        for (const bonusToRemove of bonusesToRemove) {
-          for (const bonus of bonuses) {
-            if (bonus.name === bonusToRemove.name) {
-              log(`Rimosso bonus '${bonus.name}'`, true);
-              await game.modules.get("babonus").api.deleteBonus(item, bonus.id);
-            }
-          }
-        }
-      }
-    }
-    if (customType === "effect" || customType === "effectAndBonus") {
-      const itemEffects = item.effects ?? [];
-      const actorEffects = actor.effects ?? [];
-      const effectsToRemove = itemRemoved.effects ?? [];
-      if (effectsToRemove.size > 0) {
-        // TODO miglorare questo pezzo di codice
-        // if (DAE) {
-        //   for (const effectToRemove of effectsToRemove) {
-        //     for (const effect of effects) {
-        //       if (ItemLinkTreeManager._cleanLeafAndGem(effect.name) === ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)) {
-        //         log(`Rimosso effect '${effect.name}'`, true);
-        //         let uuidItem = item.uuid;
-        //         let origin = effect.origin;
-        //         let ignore = [];
-        //         let deleteEffects = [];
-        //         let removeSequencer = true;
-        //         await DAE.deleteActiveEffect(uuidItem, origin, ignore, deleteEffects, removeSequencer);
-        //       }
-        //     }
-        //   }
-        // } else {
-        const idsEffectItemToRemove = [];
-        for (const effectToRemove of effectsToRemove) {
-          for (const effect of itemEffects) {
-            if (
-              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
-              ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name)
-            ) {
-              // Non funziona  && effect.origin === itemRemoved.uuid
-              log(`Rimosso effect from item '${effect.name}'`, true);
-              idsEffectItemToRemove.push(effect.id);
-            }
-          }
-        }
-        if (idsEffectItemToRemove.length > 0) {
-          await item.deleteEmbeddedDocuments("ActiveEffect", idsEffectItemToRemove);
-        }
-
-        const idsEffectActorToRemove = [];
-        for (const effectToRemove of effectsToRemove) {
-          for (const effect of actorEffects) {
-            if (
-              ItemLinkTreeManager._cleanLeafAndGem(effect.name) ===
-                ItemLinkTreeManager._cleanLeafAndGem(effectToRemove.name) &&
-              effect.origin === item.uuid
-            ) {
-              log(`Rimosso effect from actor '${effect.name}'`, true);
-              idsEffectActorToRemove.push(effect.id);
-            }
-          }
-        }
-        if (idsEffectActorToRemove.length > 0) {
-          await actor.deleteEmbeddedDocuments("ActiveEffect", idsEffectActorToRemove);
-        }
-
-        // }
-      }
-    }
-    */
     const leafs = ItemLinkTreeHelpers.getCollectionEffectAndBonus(item) ?? [];
 
     let currentName = item.name.replaceAll(CONSTANTS.SYMBOL_UPGRADE, "").trim();
