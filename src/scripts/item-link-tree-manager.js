@@ -3,7 +3,7 @@ import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
 import { ItemPriceHelpers } from "./lib/item-price-helpers";
 import { ItemLinkTreeHelpers } from "./lib/item-link-tree-helpers";
 import { ItemLinkingHelpers } from "./lib/item-linking-helper";
-import { error, log, warn } from "./lib/lib";
+import { error, info, log, warn } from "./lib/lib";
 import { DaeHelpers } from "./lib/dae-helpers";
 
 export class ItemLinkTreeManager {
@@ -16,34 +16,42 @@ export class ItemLinkTreeManager {
   }
 
   static managePreAddLeafToItem(item, itemAdded) {
+    if (!item?.actor && game.user.isGM) {
+      info(`L'item '${item?.name}' non e' in un attore quindi e' il master che ci sta lavorando ?`);
+      return true;
+    }
+
+    const subtype = getProperty(itemBaseAdded, `flags.item-link-tree.subType`) || "";
+    const subtypeTarget = getProperty(item, `flags.item-link-tree.subType`) || "";
+
     const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
     if (!isCrafted) {
-      warn(`Non puoi aggiungere la gemma perche' l'oggetto di destinazione non e' craftato`, true);
+      warn(`Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione non e' craftato`, true);
       return false;
     }
     const quantityItem = item.system.quantity;
     if (quantityItem !== 1) {
       warn(
-        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
+        `Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione a una quantita' superiore a 1 o uguale a 0`,
         true
       );
       return false;
     }
     const isItemLinked = ItemLinkingHelpers.isItemLinked(item);
     if (!isItemLinked) {
-      warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non e' linkato`, true);
+      warn(`Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione non e' linkato`, true);
       return false;
     }
     const isItemLeaf = ItemLinkTreeHelpers.isItemLeaf(item);
     if (isItemLeaf && !game.user.isGM) {
-      warn(`Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' una gemma/foglia`, true);
+      warn(`Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione e' una '${subtypeTarget}'`, true);
       return false;
     }
 
     const isFilterByItemTypeOk = ItemLinkTreeHelpers.isFilterByItemTypeOk(itemAdded, item.type);
     if (!isFilterByItemTypeOk) {
       warn(
-        `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione e' un tipo non supportato '${item.type}'`,
+        `Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione e' un tipo non supportato '${item.type}'`,
         true
       );
       return false;
@@ -54,7 +62,7 @@ export class ItemLinkTreeManager {
       const itemLeaf = fromUuidSync(leaf.uuid);
       if (itemLeaf && itemLeaf.name === itemAdded.name) {
         warn(
-          `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione a gia' una gemma/foglia di quel tipo`,
+          `Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione a gia' una '${subtype}' di quel tipo`,
           true
         );
         return false;
@@ -64,12 +72,12 @@ export class ItemLinkTreeManager {
     if (!game.user.isGM) {
       const isItemAddedLinked = ItemLinkingHelpers.isItemLinked(itemAdded);
       if (!isItemAddedLinked) {
-        warn(`Non puoi aggiungere la gemma/foglia perche' non e' linkata`, true);
+        warn(`Non puoi aggiungere la '${subtype}' perche' non e' linkata`, true);
         return false;
       }
       const quantityItemAdded = itemAdded.system.quantity;
       if (quantityItemAdded < 1) {
-        warn(`Non puoi aggiungere la gemma/foglia perche' la quantita' e' uguale < 1`, true);
+        warn(`Non puoi aggiungere la '${subtype}' perche' la quantita' e' uguale < 1`, true);
         return false;
       }
     }
@@ -78,7 +86,7 @@ export class ItemLinkTreeManager {
       const isGemCanBeAdded = ItemLinkTreeManager.checkIfYouCanAddMoreGemsToItem(item);
       if (!isGemCanBeAdded) {
         warn(
-          `Non puoi aggiungere la gemma/foglia perche' l'oggetto di destinazione non puo' contenere altre gemme/foglie!`,
+          `Non puoi aggiungere la '${subtype}' perche' l'oggetto di destinazione non puo' contenere altre '${subtype}'!`,
           true
         );
         warn(`Hai raggiunto il numero massimo di gemme per l'arma '${item.name}'`, true);
