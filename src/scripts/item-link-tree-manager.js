@@ -21,7 +21,7 @@ export class ItemLinkTreeManager {
       return true;
     }
 
-    const subtype = getProperty(itemBaseAdded, `flags.item-link-tree.subType`) || "";
+    const subtype = getProperty(itemAdded, `flags.item-link-tree.subType`) || "";
     const subtypeTarget = getProperty(item, `flags.item-link-tree.subType`) || "";
 
     const isCrafted = BeaverCraftingHelpers.isItemBeaverCrafted(item);
