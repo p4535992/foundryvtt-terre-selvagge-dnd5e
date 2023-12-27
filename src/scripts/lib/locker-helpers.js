@@ -24,7 +24,13 @@ export class LockersHelpers {
         }
       });
 
-      const listItem = html.find("li.item .item-toggle");
+      let listItem = [];
+      const isTidySheetKgar = app.id.startsWith("Tidy5eCharacterSheet");
+      if (isTidySheetKgar) {
+        listItem = html.find($(".item-table .item-toggle")) ?? [];
+      } else {
+        listItem = html.find("li.item .item-toggle") ?? [];
+      }
       for (const liItemB of listItem) {
         const liItem = $(liItemB);
         const itemHTML = liItem?.parent()?.parent();

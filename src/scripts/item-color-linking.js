@@ -10,7 +10,14 @@ export function setItemLinkingColor(actorSheet, html, data) {
   // Non ve n e' più bisogno l'hook adesso e' renderActorSheet5e
   // if (actor.constructor.name !== "CompactBeyond5eSheet") return;
 
-  let items = html.find($(".item-list .item"));
+  let items = [];
+  const isTidySheetKgar = actorSheet.id.startsWith("Tidy5eCharacterSheet");
+  if (isTidySheetKgar) {
+    items = html.find($(".item-table .item-table-row"));
+  } else {
+    items = html.find($(".item-list .item"));
+  }
+
   for (let itemElement of items) {
     let htmlId = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
     if (!htmlId) {

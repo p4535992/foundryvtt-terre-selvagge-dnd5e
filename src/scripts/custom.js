@@ -108,9 +108,10 @@ export function patchForNoteWithMacroWheelModule(note, hover) {
 }
 
 export function patchStrangeEditableItem(actorSheet, html, data) {
-  html.find($(".item-list .item")).attr("contenteditable", "false");
-  // let items = html.find($(".item-list .item"));
-  // for (let itemElement of items) {
-  //   //
-  // }
+  const isTidySheetKgar = actorSheet.id.startsWith("Tidy5eCharacterSheet");
+  if (isTidySheetKgar) {
+    html.find($(".item-table .item-table-row")).attr("contenteditable", "false");
+  } else {
+    html.find($(".item-list .item")).attr("contenteditable", "false");
+  }
 }
