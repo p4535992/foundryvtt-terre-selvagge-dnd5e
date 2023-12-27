@@ -57,7 +57,12 @@ export function setItemLinkingColor(actorSheet, html, data) {
     }
 
     if (game.modules.get("beavers-crafting")?.active) {
-      const title = itemElement.querySelector("h4");
+      let title = null;
+      if (isTidySheetKgar) {
+        title = itemElement.querySelector(".item-name");
+      } else {
+        title = itemElement.querySelector("h4");
+      }
       if (BeaverCraftingHelpers.isItemBeaverCrafted(item)) {
         const img = document.createElement("img");
         img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;

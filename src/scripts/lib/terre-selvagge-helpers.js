@@ -1,5 +1,5 @@
 import CONSTANTS from "../constants/constants";
-import { error, log, warn } from "./lib";
+import { error, info, log, warn } from "./lib";
 
 export class TerreSelvaggeHelpers {
   // static showSettingsDialog() {
@@ -187,14 +187,15 @@ export class TerreSelvaggeHelpers {
       const spellNameB = spellName ? spellName : "";
 
       // Sanitize spellDescription
-      const sanitizedDescription = spellDescription
+      const sanitizedDescription = spellName
         .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/@Compendium\[[^\]]+\]\{([^}]+)\}/g, "<strong>$1</strong>")
         .replace(/@spell\[([^\]]+)\]/g, "<strong>$1</strong>")
-        .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>");
+        .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>")
+        .replace(/\s+/g, "_");
 
       const imgURL = `spellsanimations/${spellName}.gif`;
-
+      info(`Animation url '${imgURL}'`, false);
       try {
         const response = await fetch(imgURL);
         if (response.status === 200) {
