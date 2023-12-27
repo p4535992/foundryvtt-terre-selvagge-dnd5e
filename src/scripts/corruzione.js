@@ -132,7 +132,10 @@ export class Corruzione {
         break;
       }
       default: {
-        const htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        let htmlPrimaryResource = html.find("ul.attributes").find(".attribute.resource")[0];
+        if (!htmlPrimaryResource) {
+          htmlPrimaryResource = html.find(".attributes").find(".resource")[0];
+        }
         // Set css on corruzione
         if (!htmlPrimaryResource.classList.contains("terre-selvagge-dnd5e-resource")) {
           htmlPrimaryResource.classList.add("terre-selvagge-dnd5e-resource");

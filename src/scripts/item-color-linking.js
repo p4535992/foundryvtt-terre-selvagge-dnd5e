@@ -24,7 +24,7 @@ export function setItemLinkingColor(actorSheet, html, data) {
 
     let rarity = item.getRollData()?.item?.rarity || item?.system?.rarity || undefined;
     rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
-    let source = item.system?.source?.toLowerCase();
+    let source = item.system?.source?.custom?.toLowerCase();
     let consumableType = item.system?.consumableType?.toLowerCase() || undefined;
 
     if (
