@@ -1,5 +1,6 @@
 import CONSTANTS from "./constants/constants";
 import { BeaverCraftingHelpers } from "./lib/beavers-crafting-helpers";
+import { ItemLinkingHelpers } from "./lib/item-linking-helper";
 
 export function setItemLinkingColor(actorSheet, html, data) {
   if (!actorSheet) {
@@ -77,12 +78,28 @@ export function setItemLinkingColor(actorSheet, html, data) {
       if (!linked) {
         continue;
       }
-      itemElement.classList.add("linked");
-      fromUuid(item.getFlag("item-linking", "baseItem")).then((i) => {
-        if (i === null) {
-          itemElement.classList.add("broken-link");
-        }
-      });
+      let title = null;
+      if (isTidySheetKgar) {
+        title = itemElement.querySelector(".item-name");
+      } else {
+        title = itemElement.querySelector("h4");
+      }
+
+      if (ItemLinkingHelpers.isItemLinked(item)) {
+        //itemElement.classList.add("linked");
+        const img = document.createElement("img");
+        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/TS.png`;
+        img.style.border = "none";
+        img.style.paddingRight = "5px";
+        title.appendChild(img);
+      } else {
+        // itemElement.classList.add("broken-link");
+        const img = document.createElement("img");
+        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/TS2.png`;
+        img.style.border = "none";
+        img.style.paddingRight = "5px";
+        title.appendChild(img);
+      }
     }
   }
 }

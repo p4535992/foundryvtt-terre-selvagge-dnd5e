@@ -187,14 +187,15 @@ export class TerreSelvaggeHelpers {
       const spellNameB = spellName ? spellName : "";
 
       // Sanitize spellDescription
-      const sanitizedDescription = spellName
+      const sanitizedDescription = spellDescription
         .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/@Compendium\[[^\]]+\]\{([^}]+)\}/g, "<strong>$1</strong>")
         .replace(/@spell\[([^\]]+)\]/g, "<strong>$1</strong>")
-        .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>")
-        .replace(/\s+/g, "_");
+        .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>");
 
-      const imgURL = `spellsanimations/${spellName}.gif`;
+      const sanitizedName = spellName.toLowerCase().trim().replace(/\s+/g, "_");
+
+      const imgURL = `spellsanimations/${sanitizedName}.gif`;
       info(`Animation url '${imgURL}'`, false);
       try {
         const response = await fetch(imgURL);
