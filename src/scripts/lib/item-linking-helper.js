@@ -1,4 +1,4 @@
-import { warn } from "./lib";
+import { getItemSync, warn } from "./lib";
 
 export class ItemLinkingHelpers {
   /**
@@ -121,11 +121,11 @@ export class ItemLinkingHelpers {
    * @returns {Promise<Void>}
    */
   static async replaceItemWithLinkedItemOnActor(itemToCheck, force = false) {
-    let itemToCheck = await getItemAsync(itemToCheck);
+    let itemToCheckTmp = await getItemAsync(itemToCheck);
     // Replace only if there is a base item
-    if (this.isItemLinked(itemToCheck)) {
-      const toReplace = await getItemAsync(itemToCheck.uuid);
-      const itemLinked = this.retrieveLinkedItem(itemToCheck);
+    if (this.isItemLinked(itemToCheckTmp)) {
+      const toReplace = await getItemAsync(itemToCheckTmp.uuid);
+      const itemLinked = this.retrieveLinkedItem(itemToCheckTmp);
       const obj = item.toObject();
       obj.flags["item-linking"] = {
         isLinked: true,
@@ -134,7 +134,7 @@ export class ItemLinkingHelpers {
 
       const owner = toReplace.actor;
       if (!owner) {
-        throw error(`The item '${itemToCheck}' is not on a actor`);
+        throw error(`The item '${itemToCheckTmp}' is not on a actor`);
       }
       if (force) {
         await toReplace.delete();
@@ -146,7 +146,7 @@ export class ItemLinkingHelpers {
       }
       return await owner.createEmbeddedDocuments("Item", [obj]);
     } else {
-      warn(`The item '${itemToCheck?.name}' is already linked`);
+      warn(`The item '${itemToCheckTmp?.name}' is already linked`);
     }
   }
 

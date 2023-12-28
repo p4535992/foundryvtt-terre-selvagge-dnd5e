@@ -1,6 +1,6 @@
 import { debug, log, warn, i18n } from "./lib/lib.js";
 import CONSTANTS from "./constants/constants.js";
-import { RarityColorsApp } from "./apps/rarity-colors-app.js";
+// import { RarityColorsApp } from "./apps/rarity-colors-app.js";
 
 export const registerSettings = function () {
   // game.settings.registerMenu(CONSTANTS.MODULE_ID, "resetAllSettings", {
@@ -98,15 +98,15 @@ export const registerSettings = function () {
     },
   });
 
-  game.settings.registerMenu(CONSTANTS.MODULE_ID, "rarityColorsAppMenu", {
-    name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.name`),
-    label: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.label`),
-    hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.hint`),
-    icon: "fas fa-cogs",
-    scope: "world",
-    restricted: true,
-    type: RarityColorsApp,
-  });
+  // game.settings.registerMenu(CONSTANTS.MODULE_ID, "rarityColorsAppMenu", {
+  //   name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.name`),
+  //   label: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.label`),
+  //   hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.hint`),
+  //   icon: "fas fa-cogs",
+  //   scope: "world",
+  //   restricted: true,
+  //   type: RarityColorsApp,
+  // });
 
   game.settings.register(CONSTANTS.MODULE_ID, "hideEmpty", {
     name: "Hide Empty Sections",
