@@ -193,7 +193,7 @@ export class TerreSelvaggeHelpers {
         .replace(/@spell\[([^\]]+)\]/g, "<strong>$1</strong>")
         .replace(/\[\[\/r (\d+)d(\d+)\]\]/g, "<strong>$1d$2</strong>");
 
-      const sanitizedName = spellName.toLowerCase().trim().replace(/\s+/g, "_");
+      const sanitizedName = spellName.toLowerCase().trim().replace(/\s+/g, "");
 
       const imgURL = `spellsanimations/${sanitizedName}.gif`;
       info(`Animation url '${imgURL}'`, false);
