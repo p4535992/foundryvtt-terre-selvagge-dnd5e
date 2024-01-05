@@ -16,34 +16,6 @@
   display: none !important;
 }
 
-/* color item rarity */
-
-/* 
-.item.rarity-color-common {
-  background-color: rgba(255, 255, 225, 0.25);
-}
-
-.item.rarity-color-uncommon {
-  background-color: rgba(0, 255, 0, 0.15);
-}
-
-.item.rarity-color-rare {
-  background-color: rgba(0, 128, 255, 0.15);
-}
-
-.item.rarity-color-veryrare {
-  background-color: rgba(255, 128, 0, 0.15);
-}
-
-.item.rarity-color-legendary {
-  background-color: rgba(153, 51, 255, 0.15);
-}
-
-.item.rarity-color-artifact {
-  background-color: rgba(255, 225, 0, 0.3);
-}
-*/
-
 .item.linked div h4::after {
   content: url("/modules/terre-selvagge-dnd5e/assets/images/item-color-linking/TS.png");
 }

@@ -1,6 +1,5 @@
 import { debug, log, warn, i18n } from "./lib/lib.js";
 import CONSTANTS from "./constants/constants.js";
-// import { RarityColorsApp } from "./apps/rarity-colors-app.js";
 
 export const registerSettings = function () {
   // game.settings.registerMenu(CONSTANTS.MODULE_ID, "resetAllSettings", {
@@ -39,74 +38,6 @@ export const registerSettings = function () {
   });
 
   // ========================================================================
-
-  // RARITY COLOR
-
-  game.settings.register(CONSTANTS.MODULE_ID, "rarityFlag", {
-    name: `${CONSTANTS.MODULE_ID}.setting.rarityFlag.name`,
-    hint: `${CONSTANTS.MODULE_ID}.setting.rarityFlag.hint`,
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean,
-  });
-
-  game.settings.register(CONSTANTS.MODULE_ID, "spellFlag", {
-    name: `${CONSTANTS.MODULE_ID}.setting.spellFlag.name`,
-    hint: `${CONSTANTS.MODULE_ID}.setting.spellFlag.hint`,
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean,
-  });
-
-  game.settings.register(CONSTANTS.MODULE_ID, "featFlag", {
-    name: `${CONSTANTS.MODULE_ID}.setting.featFlag.name`,
-    hint: `${CONSTANTS.MODULE_ID}.setting.featFlag.hint`,
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean,
-  });
-
-  game.settings.register(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText", {
-    name: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.name`,
-    hint: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.hint`,
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean,
-  });
-
-  game.settings.register(CONSTANTS.MODULE_ID, "configurations", {
-    scope: "world",
-    config: false,
-    type: Object,
-    default: {
-      spellSchools: {
-        custom: {},
-        defaults: {},
-      },
-      itemRarity: {
-        custom: {},
-        defaults: {},
-      },
-      classFeatureTypes: {
-        custom: {},
-        defaults: {},
-      },
-    },
-  });
-
-  // game.settings.registerMenu(CONSTANTS.MODULE_ID, "rarityColorsAppMenu", {
-  //   name: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.name`),
-  //   label: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.label`),
-  //   hint: game.i18n.localize(`${CONSTANTS.MODULE_ID}.dialogs.menu.hint`),
-  //   icon: "fas fa-cogs",
-  //   scope: "world",
-  //   restricted: true,
-  //   type: RarityColorsApp,
-  // });
 
   game.settings.register(CONSTANTS.MODULE_ID, "hideEmpty", {
     name: "Hide Empty Sections",

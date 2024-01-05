@@ -20,7 +20,6 @@ import { LockersHelpers } from "./lib/locker-helpers.js";
 import { ScrollHelpers } from "./lib/scroll-helpers.js";
 import { TerreSelvaggeHelpers } from "./lib/terre-selvagge-helpers.js";
 import { ToolTipHelpers } from "./lib/tooltip-helpers.js";
-// import { initHooksrRarityColors, readyHooksRarityColors, setupHooksRarityColors } from "./raritycolors.js";
 
 export let invPlusActive = false;
 export let itemContainerActive = false;
@@ -35,7 +34,6 @@ export let itemLinkModuleActive = false;
 export const initHooks = async () => {
   // Hooks.once("socketlib.ready", registerSocket);
   // registerSocket();
-  // initHooksrRarityColors();
 
   invPlusActive = game.modules.get(CONSTANTS.INVENTORY_PLUS_MODULE_NAME)?.active;
   invMidiQol = game.modules.get(CONSTANTS.MIDI_QOL_MODULE_NAME)?.active;
@@ -49,12 +47,10 @@ export const initHooks = async () => {
 };
 
 export const setupHooks = async () => {
-  // setupHooksRarityColors();
   setApi(API);
 };
 
 export const readyHooks = () => {
-  // readyHooksRarityColors();
   CssHelpers.applyGMStyle();
   // CleanerSheetTitleBarHelpers.registerCleanerSheetTitleBarHandler();
   libWrapper.register(
