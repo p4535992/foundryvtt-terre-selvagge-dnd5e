@@ -377,7 +377,7 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, html, data) => {
       if (htmlBeaverCrafting !== "") {
         const primaryCell = row.querySelector(".item-table-cell.primary");
         primaryCell.insertAdjacentHTML("beforeend", htmlBeaverCrafting);
-        const craftedImage = primaryCell.querySelector("img[src*='cra.png']");
+        const craftedImage = primaryCell.querySelector(`img[src*='${CONSTANTS.IMAGES.IS_BEAVER_CRAFTED}']`);
         if (craftedImage) {
           // Add a Tippy tooltip for the "crafted" image
           PoppersJsHelpers.tippyTooltip(craftedImage, {
@@ -408,5 +408,6 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, html, data) => {
     }
   }
   // Ensure Tippy.js is loaded before running the main code
-  PoppersJsHelpers.ensureTippyLoaded(main);
+  // PoppersJsHelpers.ensureTippyLoaded(main);
+  main();
 });

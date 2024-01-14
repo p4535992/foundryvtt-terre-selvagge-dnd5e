@@ -68,7 +68,7 @@ export function setItemLinkingColor(actorSheet, html, data) {
       }
       if (BeaverCraftingHelpers.isItemBeaverCrafted(item)) {
         const img = document.createElement("img");
-        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
+        img.src = CONSTANTS.IMAGES.IS_BEAVER_CRAFTED; //`/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
         img.style.border = "none";
         img.style.paddingRight = "5px";
         title.appendChild(img);

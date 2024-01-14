@@ -1,3 +1,5 @@
+import CONSTANTS from "../src/scripts/constants/constants";
+
 export function setItemLinkingColor(actorSheet, html, dat) {
   if (!actorSheet) {
     return;
@@ -55,14 +57,14 @@ export function setItemLinkingColor(actorSheet, html, dat) {
       const status = item.getFlag("beavers-crafting", "status");
       if (status === "created") {
         const img = document.createElement("img");
-        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
+        img.src = CONSTANTS.IMAGES.IS_BEAVER_CRAFTED; //`/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
         img.style.border = "none";
         img.style.paddingRight = "5px";
         title.appendChild(img);
       }
       if (status === "updated") {
         const img = document.createElement("img");
-        img.src = `/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
+        img.src = CONSTANTS.IMAGES.IS_BEAVER_CRAFTED; //`/modules/${CONSTANTS.MODULE_ID}/assets/images/item-color-linking/cra.png`;
         img.style.border = "none";
         img.style.paddingRight = "5px";
         title.appendChild(img);
