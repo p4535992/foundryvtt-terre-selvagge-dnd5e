@@ -44,6 +44,12 @@ const CONSTANTS = {
   SYMBOL_LEAF: "🍃",
   SYMBOL_GEM: "💎",
   SYMBOL_UPGRADE: "✮",
+  IMAGES: {
+    IS_BEAVER_CRAFTED: "modules/terre-selvagge-dnd5e/assets/images/placeholders/beaver_crafted.png",
+    IS_BROKEN_LINK: "modules/terre-selvagge-dnd5e/assets/images/placeholders/broken_link.png",
+    IS_LINKED: "modules/terre-selvagge-dnd5e/assets/images/placeholders/linked.png",
+    IS_UPGRADED_WITH_SUCCESS: "modules/terre-selvagge-dnd5e/assets/images/placeholders/upgrade_chat_image_success.png",
+  },
 };
 
 CONSTANTS.PATH = `modules/${CONSTANTS.MODULE_ID}/`;

@@ -14,10 +14,12 @@ export function setItemLinkingColor(actorSheet, html, data) {
   let items = [];
   const isTidySheetKgar = actorSheet.id.startsWith("Tidy5eCharacterSheet");
   if (isTidySheetKgar) {
-    items = html.find($(".item-table .item-table-row"));
-  } else {
-    items = html.find($(".item-list .item"));
+    return;
   }
+  //   items = html.find($(".item-table .item-table-row"));
+  // } else {
+  items = html.find($(".item-list .item"));
+  // }
 
   for (let itemElement of items) {
     let htmlId = itemElement.outerHTML.match(/data-item-id="(.*?)"/);

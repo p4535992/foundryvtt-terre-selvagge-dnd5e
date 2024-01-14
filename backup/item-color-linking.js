@@ -2,6 +2,10 @@ export function setItemLinkingColor(actorSheet, html, dat) {
   if (!actorSheet) {
     return;
   }
+  const isTidySheetKgar = actorSheet.id.startsWith("Tidy5eCharacterSheet");
+  if (isTidySheetKgar) {
+    return;
+  }
   const actor = actorSheet.object;
   // Check if this is a 5E actor sheet
   // Non ve n e' più bisogno l'hook adesso e' renderActorSheet5e

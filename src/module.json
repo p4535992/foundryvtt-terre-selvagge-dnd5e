@@ -60,7 +60,8 @@
   "styles": [
     "styles/terre-selvagge-dnd5e.css",
     "styles/terre-selvagge-dnd5e-player-ui.css",
-    "styles/terre-selvagge-dnd5e-tooltip.css"
+    "styles/terre-selvagge-dnd5e-tooltip.css",
+    "styles/terre-selvagge-dnd5e-popperjs-material-badge-style.css"
   ],
   "compatibility": {
     "minimum": 11,

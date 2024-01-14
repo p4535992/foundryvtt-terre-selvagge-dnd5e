@@ -7,8 +7,8 @@ export class BeaverCraftingHelpers {
 
   static isItemBeaverCrafted(item) {
     // NOTE: is a boolean now
-    const status = item.getFlag("beavers-crafting", "status");
-    const isCrafted = item.getFlag("beavers-crafting", "isCrafted");
+    const status = getProperty(item, `flags.beavers-crafting.status`);
+    const isCrafted = getProperty(item, `flags.beavers-crafting.isCrafted`);
     // For retrocompatibility
     if (status === "created") {
       return true;
@@ -34,9 +34,9 @@ export class BeaverCraftingHelpers {
       return;
     }
     // NOTE: is a boolean now
-    const isCrafted = item.getFlag("beavers-crafting", "isCrafted");
+    const isCrafted = getProperty(item, `flags.beavers-crafting.isCrafted`);
     await item.unsetFlag("beavers-crafting", "status");
-    if (!isCrafted) {
+    if (String(isCrafted) !== "true") {
       await item.setFlag(`beavers-crafting`, `isCrafted`, true);
     }
   }
@@ -52,5 +52,9 @@ export class BeaverCraftingHelpers {
       await item.unsetFlag("beavers-crafting", "status");
     }
     await item.unsetFlag("beavers-crafting", "isCrafted");
+  }
+
+  static itemBeaverCraftedBy(item) {
+    return getProperty(item, `flags.beavers-crafting.crafted.byName`);
   }
 }
