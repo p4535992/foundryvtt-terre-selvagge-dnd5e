@@ -1,6 +1,10 @@
 import { getItemSync, warn } from "./lib";
 
 export class ItemLinkingHelpers {
+  static isItemLinkingModuleActive() {
+    return game.modules.get("item-linking")?.active;
+  }
+
   /**
    * Method for check if the item is linked
    * @param {string|Item} itemToCheck the item to check
@@ -53,7 +57,11 @@ export class ItemLinkingHelpers {
    */
   static retrieveLinkedItem(itemToCheck) {
     const itemToCheckTmp = getItemSync(itemToCheck);
-    if (!this.isItemLinked(itemToCheckTmp)) {
+    if (!ItemLinkingHelpers.isItemLinkingModuleActive()) {
+      warn(`The module 'item-linking' is not active`);
+      return;
+    }
+    if (!ItemLinkingHelpers.isItemLinked(itemToCheckTmp)) {
       warn(`The item ${itemToCheckTmp.name}|${itemToCheckTmp.uuid} is not linked`);
       return;
     }
@@ -77,19 +85,26 @@ export class ItemLinkingHelpers {
    * @returns {Promise<Void>}
    */
   static async setLinkedItem(itemToCheck, itemBaseReference) {
+    if (!ItemLinkingHelpers.isItemLinkingModuleActive()) {
+      warn(`The module 'item-linking' is not active`);
+      return;
+    }
+
     if (!itemBaseReference) {
       warn(`The 'baseItemReference' is null or empty`);
       return;
     }
 
     let itemToCheckTmp = await getItemAsync(itemToCheck);
-    if (this.isItemLinked(itemToCheckTmp)) {
+    if (ItemLinkingHelpers.isItemLinked(itemToCheckTmp)) {
       return itemToCheckTmp;
     }
 
     const baseItem = await getItemAsync(itemBaseReference);
     const uuidToSet =
-      this.retrieveLinkedItem(baseItem)?.uuid ?? getProperty(baseItem, `flags.core.sourceId`) ?? baseItem.uuid;
+      ItemLinkingHelpers.retrieveLinkedItem(baseItem)?.uuid ??
+      getProperty(baseItem, `flags.core.sourceId`) ??
+      baseItem.uuid;
 
     if (!uuidToSet) {
       warn(`The 'uuidToSet' is null or empty`);
@@ -123,9 +138,9 @@ export class ItemLinkingHelpers {
   static async replaceItemWithLinkedItemOnActor(itemToCheck, force = false) {
     let itemToCheckTmp = await getItemAsync(itemToCheck);
     // Replace only if there is a base item
-    if (this.isItemLinked(itemToCheckTmp)) {
+    if (ItemLinkingHelpers.isItemLinked(itemToCheckTmp)) {
       const toReplace = await getItemAsync(itemToCheckTmp.uuid);
-      const itemLinked = this.retrieveLinkedItem(itemToCheckTmp);
+      const itemLinked = ItemLinkingHelpers.retrieveLinkedItem(itemToCheckTmp);
       const obj = item.toObject();
       obj.flags["item-linking"] = {
         isLinked: true,
@@ -182,7 +197,7 @@ export class ItemLinkingHelpers {
       compendiumsFiltered = game.packs.contents.filter((pack) => compendiumsFolder.includes(pack.folder?.name));
     }
 
-    await this.tryToUpdateActorWithLinkedDocumentsFromCompendiums(actor, compendiumsFiltered, options);
+    await ItemLinkingHelpers.tryToUpdateActorWithLinkedDocumentsFromCompendiums(actor, compendiumsFiltered, options);
   }
 
   /**
