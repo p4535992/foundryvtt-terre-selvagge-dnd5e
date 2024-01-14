@@ -1,112 +1,125 @@
 import CONSTANTS from "../constants/constants.js";
 import SETTINGS from "../constants/settings.js";
 import { ItemLinkTreeHelpers } from "./item-link-tree-helpers.js";
+import Logger from "./Logger.js";
+import { RetrieveHelpers } from "./retrieve-helpers.js";
 
 // ================================
 // Logger utility
 // ================================
 
-// export let debugEnabled = 0;
-// 0 = none, warnings = 1, debug = 2, all = 3
-
 export function debug(msg, ...args) {
-  try {
-    if (
-      game.settings.get(CONSTANTS.MODULE_ID, "debug") ||
-      game.modules.get("_dev-mode")?.api?.getPackageDebugValue(CONSTANTS.MODULE_ID, "boolean")
-    ) {
-      console.log(`DEBUG | ${CONSTANTS.MODULE_ID} | ${msg}`, ...args);
-    }
-  } catch (e) {
-    console.error(e.message);
-  }
-  return msg;
+  return Logger.debug(msg, args);
 }
 
 export function log(message, ...args) {
-  try {
-    message = `${CONSTANTS.MODULE_ID} | ${message}`;
-    console.log(message.replace("<br>", "\n"), ...args);
-  } catch (e) {
-    console.error(e.message);
-  }
-  return message;
+  return Logger.log(message, args);
 }
 
 export function notify(message, ...args) {
-  try {
-    message = `${CONSTANTS.MODULE_ID} | ${message}`;
-    ui.notifications?.notify(message);
-    console.log(message.replace("<br>", "\n"), ...args);
-  } catch (e) {
-    console.error(e.message);
-  }
-  return message;
+  return Logger.notify(message, args);
 }
 
 export function info(info, notify = false, ...args) {
-  try {
-    info = `${CONSTANTS.MODULE_ID} | ${info}`;
-    if (notify) {
-      ui.notifications?.info(info);
-    }
-    console.log(info.replace("<br>", "\n"), ...args);
-  } catch (e) {
-    console.error(e.message);
-  }
-  return info;
+  return Logger.info(info, notify, args);
 }
 
 export function warn(warning, notify = false, ...args) {
-  try {
-    warning = `${CONSTANTS.MODULE_ID} | ${warning}`;
-    if (notify) {
-      ui.notifications?.warn(warning);
-    }
-    console.warn(warning.replace("<br>", "\n"), ...args);
-  } catch (e) {
-    console.error(e.message);
-  }
-  return warning;
+  return Logger.warn(warning, notify, args);
 }
 
 export function error(error, notify = true, ...args) {
-  try {
-    error = `${CONSTANTS.MODULE_ID} | ${error}`;
-    if (notify) {
-      ui.notifications?.error(error);
-    }
-    console.error(error.replace("<br>", "\n"), ...args);
-  } catch (e) {
-    console.error(e.message);
-  }
-  return new Error(error.replace("<br>", "\n"));
+  return Logger.error(error, notify, args);
 }
 
 export function timelog(message) {
-  warn(Date.now(), message);
+  return Logger.timelog(message);
 }
 
 export const i18n = (key) => {
-  return game.i18n.localize(key)?.trim();
+  return Logger.i18n(key);
 };
 
 export const i18nFormat = (key, data = {}) => {
-  return game.i18n.format(key, data)?.trim();
+  return Logger.i18nFormat(key, data);
 };
 
-// export const setDebugLevel = (debugText): void => {
-//   debugEnabled = { none: 0, warn: 1, debug: 2, all: 3 }[debugText] || 0;
-//   // 0 = none, warnings = 1, debug = 2, all = 3
-//   if (debugEnabled >= 3) CONFIG.debug.hooks = true;
-// };
-
 export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
-  return `<p class="${CONSTANTS.MODULE_ID}-dialog">
-        <i style="font-size:3rem;" class="${icon}"></i><br><br>
-        <strong style="font-size:1.2rem;">${CONSTANTS.MODULE_ID}</strong>
-        <br><br>${message}
-    </p>`;
+  return Logger.dialogWarning(message, icon);
+}
+
+// ================================================================================
+
+export function getDocument(target) {
+  return RetrieveHelpers.getDocument(target);
+}
+
+export function stringIsUuid(inId) {
+  return RetrieveHelpers.stringIsUuid(inId);
+}
+
+export function getUuid(target) {
+  return RetrieveHelpers.getUuid(target);
+}
+
+export function getCompendiumCollectionSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getCompendiumCollectionSync(target, ignoreError, ignoreName);
+}
+
+export async function getCompendiumCollectionAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getCompendiumCollectionAsync(target, ignoreError, ignoreName);
+}
+
+export function getUserSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getUserSync(target, ignoreError, ignoreName);
+}
+
+export function getActorSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getActorSync(target, ignoreError, ignoreName);
+}
+
+export async function getActorAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getActorAsync(target, ignoreError, ignoreName);
+}
+
+export function getJournalSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getJournalSync(target, ignoreError, ignoreName);
+}
+
+export async function getJournalAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getJournalAsync(target, ignoreError, ignoreName);
+}
+
+export function getMacroSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getMacroSync(target, ignoreError, ignoreName);
+}
+
+export async function getMacroAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getMacroAsync(target, ignoreError, ignoreName);
+}
+
+export function getSceneSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getSceneSync(target, ignoreError, ignoreName);
+}
+
+export async function getSceneAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getSceneAsync(target, ignoreError, ignoreName);
+}
+
+export function getItemSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getItemSync(target, ignoreError, ignoreName);
+}
+
+export async function getItemAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getItemAsync(target, ignoreError, ignoreName);
+}
+
+export function getPlaylistSoundPathSync(target, ignoreError = false, ignoreName = true) {
+  return RetrieveHelpers.getPlaylistSoundPathSync(target, ignoreError, ignoreName);
+}
+
+export async function getPlaylistSoundPathAsync(target, ignoreError = false, ignoreName = true) {
+  return await RetrieveHelpers.getPlaylistSoundPathAsync(target, ignoreError, ignoreName);
 }
 
 // ===============================================================================
@@ -184,117 +197,6 @@ export async function rollFormulaWithActorASync(formula, actor) {
   const r = new Roll(formula.toString(), dataObject);
   await r.evaluate({ async: true });
   return r.total;
-}
-
-export function getDocument(target) {
-  if (stringIsUuid(target)) {
-    target = fromUuidSync(target);
-  }
-  return target?.document ?? target;
-}
-
-export function stringIsUuid(inId) {
-  return typeof inId === "string" && (inId.match(/\./g) || []).length && !inId.endsWith(".");
-}
-
-export function getUuid(target) {
-  if (stringIsUuid(target)) {
-    return target;
-  }
-  const document = getDocument(target);
-  return document?.uuid ?? false;
-}
-
-export function getItemSync(target, ignoreError = false, ignoreName = true) {
-  if (!target) {
-    throw error(`Item is undefined`, true, target);
-  }
-  if (target instanceof Item) {
-    return target;
-  }
-  // This is just a patch for compatibility with others modules
-  if (target.document) {
-    target = target.document;
-  }
-  if (target.uuid) {
-    target = target.uuid;
-  }
-
-  if (target instanceof Item) {
-    return target;
-  }
-  if (stringIsUuid(target)) {
-    target = fromUuidSync(target);
-  } else {
-    target = game.items.get(target);
-    if (!target && !ignoreName) {
-      target = game.items.getName(target);
-    }
-  }
-  if (!target) {
-    if (ignoreError) {
-      warn(`Item is not found`, false, target);
-      return;
-    } else {
-      throw error(`Item is not found`, true, target);
-    }
-  }
-  // Type checking
-  if (!(target instanceof Item)) {
-    if (ignoreError) {
-      warn(`Invalid Item`, true, target);
-      return;
-    } else {
-      throw error(`Invalid Item`, true, target);
-    }
-  }
-  return target;
-}
-
-export async function getItemAsync(target, ignoreError = false, ignoreName = true) {
-  if (!target) {
-    throw error(`Item is undefined`, true, target);
-  }
-  if (target instanceof Item) {
-    return target;
-  }
-  // This is just a patch for compatibility with others modules
-  if (target.document) {
-    target = target.document;
-  }
-  if (target.uuid) {
-    target = target.uuid;
-  }
-
-  if (target instanceof Item) {
-    return target;
-  }
-  if (stringIsUuid(target)) {
-    target = await fromUuid(target);
-  } else {
-    target = game.items.get(target);
-    if (!target && !ignoreName) {
-      target = game.items.getName(target);
-    }
-  }
-  if (!target) {
-    if (ignoreError) {
-      warn(`Item is not found`, false, target);
-      return;
-    } else {
-      throw error(`Item is not found`, true, target);
-    }
-  }
-  // Type checking
-  if (!(target instanceof Item)) {
-    if (ignoreError) {
-      warn(`Invalid Item`, true, target);
-      return;
-    } else {
-      throw error(`Invalid Item`, true, target);
-    }
-  }
-  return target;
 }
 
 export function is_real_number(inNumber) {
