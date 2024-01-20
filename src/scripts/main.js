@@ -293,6 +293,7 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, html, data) => {
           }
         }
       }
+      TerreSelvaggeHelpers.createRecipeBadge(row.querySelector(".item-table-cell.primary"), item);
       //down
       // NOTE: This is trasnfered on the item-link-tree
       /*

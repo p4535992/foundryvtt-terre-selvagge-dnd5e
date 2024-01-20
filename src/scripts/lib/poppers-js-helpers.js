@@ -45,17 +45,63 @@ export class PoppersJsHelpers {
     }
   }
 
-  static _defaultOnShowCallback = (instance) => {};
-
   static tippyTooltip(
     htmlElement,
     {
-      content = "",
+      // CUSTOM
       allowHTML = true,
       placement = "right",
-      zIndex = 9999,
       interactive = true,
-      onShow = PoppersJsHelpers._defaultOnShowCallback,
+      // STANDARD
+      appendTo = function () {
+        return document.body;
+      },
+      aria = { content: "auto", expanded: "auto" },
+      delay = 0,
+      duration = [300, 250],
+      getReferenceClientRect = null,
+      hideOnClick = true,
+      ignoreAttributes = false,
+      // interactive = false,
+      interactiveBorder = 2,
+      interactiveDebounce = 0,
+      moveTransition = "",
+      offset = [0, 10],
+      onAfterUpdate = function () {},
+      onBeforeUpdate = function () {},
+      onCreate = function () {},
+      onDestroy = function () {},
+      onHidden = function () {},
+      onHide = function () {},
+      onMount = function () {},
+      onShow = function () {},
+      onShown = function () {},
+      onTrigger = function () {},
+      onUntrigger = function () {},
+      onClickOutside = function () {},
+      // placement = "top",
+      plugins = [],
+      popperOptions = {},
+      render = null,
+      showOnCreate = false,
+      touch = true,
+      trigger = "mouseenter focus",
+      triggerTarget = null,
+
+      animateFill = false,
+      followCursor = false,
+      inlinePositioning = false,
+      sticky = false,
+
+      // allowHTML = false,
+      animation = "fade",
+      arrow = true,
+      content = "",
+      inertia = false,
+      maxWidth = 350,
+      role = "tooltip",
+      theme = "",
+      zIndex = 9999,
     }
   ) {
     tippy(htmlElement, {
@@ -65,6 +111,7 @@ export class PoppersJsHelpers {
       zIndex: zIndex,
       interactive: interactive,
       onShow: onShow,
+      onShown: onShown,
     });
   }
 }

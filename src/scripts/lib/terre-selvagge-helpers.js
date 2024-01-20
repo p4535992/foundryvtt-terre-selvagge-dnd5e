@@ -1,5 +1,6 @@
 import CONSTANTS from "../constants/constants";
 import { error, info, log, warn } from "./lib";
+import { PoppersJsHelpers } from "./poppers-js-helpers";
 
 export class TerreSelvaggeHelpers {
   // static showSettingsDialog() {
@@ -229,5 +230,78 @@ export class TerreSelvaggeHelpers {
         error(`Failed to load image: ${imgURL}`, e);
       }
     }
+  }
+
+  static createRecipeBadge(element, item) {
+    const recipes = TerreSelvaggeHelpers._getItemRecipes(item);
+    if (recipes.length > 0) {
+      const badgeHtml = `
+        <span class="terre-selvagge-badgematerial3" data-tidy-render-scheme="handlebars" title="Craftable Recipes">Recipes</span>
+      `;
+      element.insertAdjacentHTML("beforeend", badgeHtml);
+
+      const badge = element.querySelector(".terre-selvagge-badgematerial3");
+
+      const tooltipContent = TerreSelvaggeHelpers._generateTooltipContentRecipes(recipes);
+      PoppersJsHelpers.tippyTooltip(badge, {
+        content: tooltipContent,
+        interactive: true,
+        zIndex: 9999,
+        placement: "right",
+        allowHTML: true,
+        onShown: (instance) => {
+          instance.popper.querySelectorAll(".recipe-output").forEach((r) => {
+            r.addEventListener("click", async (event) => {
+              event.preventDefault();
+              const uuid = event.currentTarget.dataset.uuid;
+              const item = await fromUuid(uuid);
+              if (item) {
+                item.sheet.render(true);
+                instance.hide();
+              }
+            });
+          });
+        },
+      });
+    }
+  }
+
+  static _generateTooltipContentRecipes(recipes) {
+    return recipes
+      .map(
+        (r) => `
+      <div>
+        <img src="${r.img}" style="width: 20px; height: 20px; margin-right: 5px;">
+        <a class="recipe-output" data-uuid="${r.output}">${r.name}</a>
+      </div>
+    `
+      )
+      .join("");
+  }
+
+  static _getItemRecipes(item) {
+    const recipes = game.items.filter((i) => i.getFlag("beavers-crafting", "subtype")?.toLowerCase() === "recipe");
+    const itemRecipes = recipes.filter((r) => {
+      const recipe = r.getFlag("beavers-crafting", "recipe");
+      for (const list of Object.values(recipe.input)) {
+        for (const input of Object.values(list)) {
+          // Replace isSame comparison with name comparison
+          if (item.name.toLowerCase() === input.name.toLowerCase()) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+    return itemRecipes.map((r) => ({
+      id: r.id,
+      img: Object.values(r.getFlag("beavers-crafting", "recipe").output)
+        .flatMap((i) => Object.values(i))
+        .find((o) => true)?.img,
+      name: r.name,
+      output: Object.values(r.getFlag("beavers-crafting", "recipe").output)
+        .flatMap((i) => Object.values(i))
+        .find((o) => o.type !== "RollTable")?.uuid,
+    }));
   }
 }

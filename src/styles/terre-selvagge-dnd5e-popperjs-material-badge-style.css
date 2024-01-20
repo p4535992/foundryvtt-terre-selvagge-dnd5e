@@ -13,6 +13,22 @@
   margin-left: 2px;
   border-style: ridge;
 }
+.terre-selvagge-badgematerial3 {
+  display: inline-block;
+  width: 55px;
+  height: 21px;
+  line-height: 16px;
+  text-align: center;
+  border-radius: 20%;
+  color: #191813;
+  font-size: 9px;
+  font-weight: bold;
+  margin-right: 8px;
+  margin-top: 2px;
+  margin-left: 2px;
+  border-style: ridge;
+  background-color: cornsilk;
+}
 .terre-selvagge-material-badge2 {
   display: inline-block;
   width: 21px;
