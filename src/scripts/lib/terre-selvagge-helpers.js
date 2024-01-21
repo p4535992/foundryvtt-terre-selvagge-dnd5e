@@ -181,8 +181,8 @@ export class TerreSelvaggeHelpers {
   }
 
   static async renderChatMessageAnimatedSpells(message, html, data) {
-    if (message.flags.dnd5e && message.flags.dnd5e.use.type === "spell") {
-      const spellId = await fromUuid(message.flags.dnd5e.use.itemUuid);
+    if (message.flags.dnd5e && message.flags.dnd5e.use?.type === "spell") {
+      const spellId = await fromUuid(message.flags.dnd5e.use?.itemUuid);
       let spellDescription = spellId ? spellId.system.description.value : "";
       const spellName = spellId.name; // message.flavor ? message.flavor.toLowerCase().replace(/\s+/g, "") : "";
       const spellNameB = spellName ? spellName : "";
