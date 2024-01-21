@@ -126,12 +126,6 @@ game.modules.get('terre-selvagge-dnd5e').api.unsetItemAsBeaverCrafted({
 ### createScroll({item: uuid|Item}):void ⇒ <code>Promise&lt;void&gt;</code>
 
 Crea uno scroll con valori predefiniti a partire da un'item.
-I valori predefiniti sono:
-
-- timeToken = "Time Coin";
-- label = "Scribe Scroll";
-- feats = [{ name: "", price: 0.5 }];
-- spellComponents =  { "Arcane Sword": { h: ["Miniature Platinum Sword (250 gp)"] }, Augury: { h: ["Specially Marked Tokens (25 gp)"] ... }
 
 **Returns**: <code>Promise&lt;void&gt;</code> - Return nothing
 
